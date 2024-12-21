@@ -1,4 +1,4 @@
-// src/components/Logout/logout.tsx
+// client/src/components/Logout/logout.tsx
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import "./logout.css";
