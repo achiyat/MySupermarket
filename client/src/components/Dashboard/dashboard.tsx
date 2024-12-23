@@ -6,21 +6,29 @@ import { RouterComponent } from "../RouterComponent/routerComponent";
 import { Navbar } from "../Navbar/navbar";
 import { Footer } from "../Footer/footer";
 import "./dashboard.css";
+import { SignUp } from "../SignUp/signUp";
 
 export const Dashboard: React.FC = () => {
   const { user } = useAuth0();
 
-  if (!user?.sub || !users[user.sub]) {
+  if (!user?.sub) {
     return <div>User not recognized</div>;
   }
 
-  const role = users[user.sub].role;
+  // Find the user object based on the id_auth0
+  const currentUser = users.find((u) => u.id_auth0 === user.sub);
+
+  if (!currentUser) {
+    return <SignUp />;
+  }
+
+  const { role } = currentUser;
 
   return (
     <div className="dashboard-layout">
       <Navbar role={role} />
       <main className="dashboard-content">
-        <RouterComponent role={role} />
+        <RouterComponent user={currentUser} />
       </main>
       <Footer />
     </div>
