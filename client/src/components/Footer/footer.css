@@ -1,0 +1,9 @@
+/* client/src/components/Footer/footer.css */
+.footer {
+  background-color: #222;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  margin-top: auto;
+  border-top: 1px solid #4caf50;
+}
