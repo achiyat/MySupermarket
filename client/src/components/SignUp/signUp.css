@@ -1,0 +1,106 @@
+/* client/src/components/SignUp/signUp.css */
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.signup-form {
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 20px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.signup-form h2 {
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  color: #333;
+  text-align: center;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.form-item-container {
+  margin-bottom: 15px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-item-container label {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 8px;
+  text-align: left;
+}
+
+.form-item-container input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.form-item-container input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.submit-button {
+  background: #4caf50;
+  color: #ffffff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  width: 30%;
+  align-self: center;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+  background: #45a049;
+}
+
+.submit-button:active {
+  background: #3e8e41;
+}
+
+.form-item-container select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  text-align: center;
+  background-color: #fff;
+  color: #555;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  appearance: none;
+}
+
+.form-item-container select option {
+  padding: 8px;
+  background-color: #fff;
+  color: #555;
+}
+
+.form-item-container select:active {
+  background-color: #f9f9f9;
+}
