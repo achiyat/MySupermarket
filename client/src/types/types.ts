@@ -1,10 +1,13 @@
 // client/src/types/types.ts
-import { UserFormData } from "../Interfaces/interfaces";
+import { MsgRes, SignUpData, Token, User } from "../Interfaces/interfaces";
 export type Role = "Administrator" | "Employee" | "Customer";
+export type User_Response = User | MsgRes;
+export type UsersResponse = User[] | MsgRes;
+export type TokenResponse = Token | MsgRes;
 
-export const DefaultFormData: UserFormData = {
-  name: "",
+export const DefaultFormData: SignUpData = {
+  username: "",
   email: "",
-  id_auth0: "",
+  password: "",
   role: "Customer",
 };

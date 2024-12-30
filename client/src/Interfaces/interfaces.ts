@@ -1,5 +1,5 @@
 // client/src/Interfaces/interfaces.ts
-import { ObjectId } from "bson";
+// import { ObjectId } from "bson";
 import { Role } from "../types/types";
 
 export interface Product {
@@ -15,16 +15,29 @@ export interface Product {
 }
 
 export interface User {
-  _id: ObjectId;
-  name: string;
+  _id: string;
+  username: string;
   email: string;
-  id_auth0: string;
+  role: Role;
+  __v: number;
+}
+
+export interface SignUpData {
+  username: string;
+  email: string;
+  password: string;
   role: Role;
 }
 
-export interface UserFormData {
-  name: string;
+export interface LoginData {
   email: string;
-  id_auth0: string;
-  role: Role;
+  password: string;
+}
+
+export interface Token {
+  token: string;
+}
+
+export interface MsgRes {
+  message: string;
 }

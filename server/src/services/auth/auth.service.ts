@@ -3,6 +3,8 @@ import jwt from "jsonwebtoken";
 import { JWT_SECRET, JWT_EXPIRES_IN } from "../../constants";
 import User, { IUser } from "../../models/User";
 
+type Role = "Administrator" | "Employee" | "Customer";
+
 // Verify the JWT token
 export const verifyToken = (token: string): any => {
   try {
@@ -16,11 +18,12 @@ class AuthService {
   async register(
     username: string,
     email: string,
-    password: string
+    password: string,
+    role: Role
   ): Promise<IUser> {
     const existingUser = await User.findOne({ email });
     if (existingUser) throw new Error("User already exists");
-    const user = new User({ username, email, password });
+    const user = new User({ username, email, password, role });
     await user.save();
     return user;
   }

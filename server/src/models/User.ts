@@ -2,11 +2,14 @@
 import bcrypt from "bcrypt";
 import mongoose, { Schema, Document } from "mongoose";
 
+type Role = "Administrator" | "Employee" | "Customer";
+
 // Define the IUser interface
 export interface IUser extends Document {
   username: string;
   email: string;
   password: string;
+  role: Role;
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
@@ -15,6 +18,7 @@ const UserSchema: Schema = new Schema({
   username: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  role: { type: String, required: true },
 });
 
 // Pre-save hook to hash the password before saving the user

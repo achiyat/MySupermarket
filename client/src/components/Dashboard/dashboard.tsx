@@ -1,36 +1,50 @@
-// client/src/components/Dashboard/dashboard.tsx
-import React from "react";
-import { useAuth0 } from "@auth0/auth0-react";
-import { users } from "../../dictionaries/users";
-import { RouterComponent } from "../RouterComponent/routerComponent";
-import { Navbar } from "../Navbar/navbar";
-import { Footer } from "../Footer/footer";
+import React, { useState, useEffect } from "react";
+import { fetchUserById } from "../../services/api"; // Assuming this function is available
 import "./dashboard.css";
-import { SignUp } from "../SignUp/signUp";
+import { Navbar } from "../Navbar/navbar";
+import { Outlet } from "react-router-dom";
+import { Footer } from "../Footer/footer";
 
-export const Dashboard: React.FC = () => {
-  const { user } = useAuth0();
+interface DashboardProps {
+  userId: string;
+}
 
-  if (!user?.sub) {
-    return <div>User not recognized</div>;
-  }
+export const Dashboard: React.FC<DashboardProps> = ({ userId }) => {
+  const [user, setUser] = useState<any>(null);
 
-  // Find the user object based on the id_auth0
-  const currentUser = users.find((u) => u.id_auth0 === user.sub);
+  // Directly fetch user data when the component mounts
+  const getUser = async (id: string) => {
+    try {
+      const result = await fetchUserById(id);
+      if ("message" in result) {
+        console.error(result.message);
+      } else {
+        setUser(result);
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
 
-  if (!currentUser) {
-    return <SignUp />;
-  }
-
-  const { role } = currentUser;
+  useEffect(() => {
+    if (userId) {
+      getUser(userId);
+    }
+  }, [userId]);
 
   return (
-    <div className="dashboard-layout">
-      <Navbar role={role} />
-      <main className="dashboard-content">
-        <RouterComponent user={currentUser} />
-      </main>
-      <Footer />
+    <div>
+      {user ? (
+        <div className="dashboard-layout">
+          <Navbar user={user} />
+          <main className="dashboard-content">
+            <Outlet context={{ user }} />
+          </main>
+          <Footer />
+        </div>
+      ) : (
+        <p>Loading user data...</p>
+      )}
     </div>
   );
 };
