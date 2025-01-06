@@ -41,36 +41,17 @@ export const updateUser = async (req: Request, res: Response) => {
   }
 };
 
-// export const deleteUser = async (req: Request, res: Response) => {
-//   try {
-//     const user = await User.findByIdAndDelete(req.params.id);
-//     console.log(user);
-//     if (!user) respond(res, 404, "User not found");
-//     if (user) respond(res, 200, "User deleted successfully");
-//   } catch (error) {
-//     console.log(error);
-//     respond(res, 500, "Internal Server Error");
-//   }
-// };
-
 export const deleteUser = async (req: Request, res: Response) => {
   try {
-    console.log(req.params.id);
     // Check if the ID is a valid ObjectId
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
       return respond(res, 400, "Invalid user ID format");
     }
 
     const user = await User.findByIdAndDelete(req.params.id);
-    if (!user) {
-      return respond(res, 404, "User not found");
-    }
-
-    respond(res, 200, "User deleted successfully");
+    if (!user) respond(res, 404, "User not found");
+    if (user) respond(res, 200, "User deleted successfully");
   } catch (error) {
-    console.error(error); // Log the error for debugging
-
-    // Type assertion for error
     if (
       error instanceof mongoose.Error.CastError &&
       error.kind === "ObjectId"
@@ -79,6 +60,42 @@ export const deleteUser = async (req: Request, res: Response) => {
     } else {
       respond(res, 500, "Internal Server Error");
     }
+  }
+};
+
+export const createStore = async (req: Request, res: Response) => {
+  try {
+    await create.store(req, res);
+  } catch (error) {
+    respond(res, 500, "Internal Server Error");
+  }
+};
+
+export const getAllStores = async (req: Request, res: Response) => {
+  try {
+    const stores = await getAll.store(req, res);
+    res.status(200).json(stores);
+  } catch (error) {
+    res.status(404).json(resError(error));
+  }
+};
+
+export const getStoreById = async (req: Request, res: Response) => {
+  try {
+    const store = await getById.store(req, res);
+    res.status(200).json(store);
+  } catch (error) {
+    console.log(error);
+    res.status(404).json(resError(error));
+  }
+};
+
+export const updateStore = async (req: Request, res: Response) => {
+  try {
+    const store = await update.store(req, res);
+    res.status(200).json(store);
+  } catch (error) {
+    res.status(400).json({ message: error });
   }
 };
 

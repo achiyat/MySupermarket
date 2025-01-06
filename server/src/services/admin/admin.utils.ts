@@ -5,7 +5,6 @@ import { User } from "../../models/User";
 import { Category } from "../../models/Category";
 import { Store } from "../../models/Store";
 import { MongoServerError } from "mongodb";
-import mongoose from "mongoose";
 import { respond } from "./admin.middlewares";
 
 export const resError = (error: any) => {

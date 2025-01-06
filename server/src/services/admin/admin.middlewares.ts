@@ -10,6 +10,21 @@ export const respond = (
   res.status(statusCode).json({ message });
 };
 
+export const validateStore = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void => {
+  const { name, branchName, address, employeeId } = req.body;
+
+  if (!name || !branchName || !address || !employeeId) {
+    respond(res, 400, "All fields are required");
+    return;
+  }
+
+  next();
+};
+
 export const validateUser = (
   req: Request,
   res: Response,

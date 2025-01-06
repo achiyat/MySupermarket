@@ -1,13 +1,17 @@
 // server/src/services/admin/admin.routes.ts
 import { Router } from "express";
 import {
+  createStore,
   createUser,
   deleteUser,
+  getAllStores,
   getAllUser,
+  getStoreById,
   getUserById,
+  updateStore,
   updateUser,
 } from "./admin.controller";
-import { validateUser } from "./admin.middlewares";
+import { validateStore, validateUser } from "./admin.middlewares";
 
 export const adminRoutes: Router = Router();
 
@@ -18,11 +22,11 @@ adminRoutes.get("/users", getAllUser);
 adminRoutes.put("/users/:id", updateUser);
 adminRoutes.delete("/users/:id", deleteUser);
 
-// // Store CRU operations
-// adminRoutes.post("/stores", create.store);
-// adminRoutes.get("/stores", getAll.store);
-// adminRoutes.get("/stores/:id", getById.store);
-// adminRoutes.put("/stores/:id", update.store);
+// Store CRU operations
+adminRoutes.post("/stores", createStore, validateStore);
+adminRoutes.get("/stores", getAllStores);
+adminRoutes.get("/stores/:id", getStoreById);
+adminRoutes.put("/stores/:id", updateStore);
 
 // // Category CRU operations
 // adminRoutes.post("/categories", create.category);
