@@ -1,9 +1,7 @@
 // src/services/auth/auth.service.ts
 import jwt from "jsonwebtoken";
 import { JWT_SECRET, JWT_EXPIRES_IN } from "../../constants";
-import User, { IUser } from "../../models/User";
-
-type Role = "Administrator" | "Employee" | "Customer";
+import { User } from "../../models/User";
 
 // Verify the JWT token
 export const verifyToken = (token: string): any => {
@@ -15,19 +13,6 @@ export const verifyToken = (token: string): any => {
 };
 
 class AuthService {
-  async register(
-    username: string,
-    email: string,
-    password: string,
-    role: Role
-  ): Promise<IUser> {
-    const existingUser = await User.findOne({ email });
-    if (existingUser) throw new Error("User already exists");
-    const user = new User({ username, email, password, role });
-    await user.save();
-    return user;
-  }
-
   async login(email: string, password: string): Promise<string> {
     const user = await User.findOne({ email });
     if (!user) throw new Error("Invalid credentials");

@@ -22,9 +22,9 @@
 //   },
 //   {
 //     _id: specificId3,
-//     name: "customer",
-//     email: "customer@example.com",
+//     name: "Buyer",
+//     email: "Buyer@example.com",
 //     id_auth0: "auth0|67643b296055ced20a3a7f47",
-//     role: "Customer",
+//     role: "Buyer",
 //   },
 // ];

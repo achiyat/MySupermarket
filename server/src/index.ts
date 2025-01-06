@@ -3,6 +3,7 @@ import { connectToDatabase } from "./config/db";
 import { PORT } from "./constants";
 import authRoutes from "./services/auth/auth.routes";
 import cors from "cors";
+import { adminRoutes } from "./services/admin/admin.routes";
 
 const app = express();
 
@@ -15,6 +16,7 @@ connectToDatabase();
 
 // Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/admin", adminRoutes);
 
 // Start the server
 app.listen(PORT, () => {

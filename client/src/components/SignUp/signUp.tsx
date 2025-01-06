@@ -10,7 +10,7 @@ export const SignUp: React.FC = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role] = useState<Role>("Customer");
+  const [role] = useState<Role>("Buyer");
   const navigate = useNavigate();
 
   const handleRegister = async (e: React.FormEvent) => {
@@ -117,7 +117,7 @@ onChange={(e) => setRole(e.target.value as Role)}
 className="signUp-input"
 required
 >
-<option value="Customer">Customer</option>
+<option value="Buyer">Buyer</option>
 <option value="Employee">Employee</option>
 <option value="Administrator">Administrator</option>
 </select> */

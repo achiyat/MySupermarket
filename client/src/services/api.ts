@@ -31,11 +31,11 @@ export const fetchUserById = async (id: string): Promise<User_Response> => {
   return response.data;
 };
 
-// Fetch all users
-export const fetchAllUsers = async (): Promise<UsersResponse> => {
-  const response = await axios.get<UsersResponse>(`${API_BASE_URL}/users`);
-  return response.data;
-};
+// // Fetch all users
+// export const fetchAllUsers = async (): Promise<UsersResponse> => {
+//   const response = await axios.get<UsersResponse>(`${API_BASE_URL}/users`);
+//   return response.data;
+// };
 
 // Access protected resource with a token
 export const fetchProtected = async (
