@@ -9,7 +9,7 @@ export const createUser = async (req: Request, res: Response) => {
   try {
     await create.user(req, res);
   } catch (error) {
-    res.status(400).json(resError(error));
+    respond(res, 500, "Internal Server Error");
   }
 };
 
@@ -94,6 +94,42 @@ export const updateStore = async (req: Request, res: Response) => {
   try {
     const store = await update.store(req, res);
     res.status(200).json(store);
+  } catch (error) {
+    res.status(400).json({ message: error });
+  }
+};
+
+export const createCategory = async (req: Request, res: Response) => {
+  try {
+    await create.category(req, res);
+  } catch (error) {
+    respond(res, 500, "Internal Server Error");
+  }
+};
+
+export const getAllCategories = async (req: Request, res: Response) => {
+  try {
+    const categories = await getAll.category(req, res);
+    res.status(200).json(categories);
+  } catch (error) {
+    res.status(404).json(resError(error));
+  }
+};
+
+export const getCategoryById = async (req: Request, res: Response) => {
+  try {
+    const category = await getById.category(req, res);
+    res.status(200).json(category);
+  } catch (error) {
+    console.log(error);
+    res.status(404).json(resError(error));
+  }
+};
+
+export const updateCategory = async (req: Request, res: Response) => {
+  try {
+    const category = await update.category(req, res);
+    res.status(200).json(category);
   } catch (error) {
     res.status(400).json({ message: error });
   }

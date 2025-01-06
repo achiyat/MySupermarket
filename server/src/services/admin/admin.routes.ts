@@ -1,17 +1,25 @@
 // server/src/services/admin/admin.routes.ts
 import { Router } from "express";
 import {
+  createCategory,
   createStore,
   createUser,
   deleteUser,
+  getAllCategories,
   getAllStores,
   getAllUser,
+  getCategoryById,
   getStoreById,
   getUserById,
+  updateCategory,
   updateStore,
   updateUser,
 } from "./admin.controller";
-import { validateStore, validateUser } from "./admin.middlewares";
+import {
+  validateCategory,
+  validateStore,
+  validateUser,
+} from "./admin.middlewares";
 
 export const adminRoutes: Router = Router();
 
@@ -28,8 +36,8 @@ adminRoutes.get("/stores", getAllStores);
 adminRoutes.get("/stores/:id", getStoreById);
 adminRoutes.put("/stores/:id", updateStore);
 
-// // Category CRU operations
-// adminRoutes.post("/categories", create.category);
-// adminRoutes.get("/categories", getAll.category);
-// adminRoutes.get("/categories/:id", getById.category);
-// adminRoutes.put("/categories/:id", update.category);
+// Category CRU operations
+adminRoutes.post("/categories", validateCategory, createCategory);
+adminRoutes.get("/categories", getAllCategories);
+adminRoutes.get("/categories/:id", getCategoryById);
+adminRoutes.put("/categories/:id", updateCategory);

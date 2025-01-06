@@ -9,6 +9,7 @@ import { respond } from "./admin.middlewares";
 
 export const resError = (error: any) => {
   const err = error as Error;
+  // console.log(err);
   return err.message;
 };
 

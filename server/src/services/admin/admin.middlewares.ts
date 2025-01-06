@@ -10,6 +10,22 @@ export const respond = (
   res.status(statusCode).json({ message });
 };
 
+export const validateCategory = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void => {
+  const { name, products } = req.body;
+
+  if (!name.isString().notEmpty())
+    return respond(res, 400, "Name is required and cannot be empty");
+
+  if (!products.isArray())
+    return respond(res, 400, "Products should be an array");
+
+  next();
+};
+
 export const validateStore = (
   req: Request,
   res: Response,

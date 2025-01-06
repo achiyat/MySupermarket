@@ -53,7 +53,7 @@ StoreSchema.post("findOneAndUpdate", async function (doc: any, next: any) {
 
   if (doc) {
     if (doc.active === false) {
-      // const activeProducts = await Product.find({ doc._id, active: true });
+      // const activeProducts = await Product.find({ store: doc._id, active: true });
       const activeProducts = [1, 2];
       if (activeProducts.length > 0)
         return next(
