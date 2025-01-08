@@ -18,24 +18,31 @@ interface IProduct extends Document {
   active: boolean;
 }
 
-const ProductSchema: Schema<IProduct> = new Schema({
-  store: { type: mongoose.Schema.Types.ObjectId, ref: "Store", required: true },
-  name: { type: String, required: true },
-  description: { type: String },
-  categories: [
-    { type: mongoose.Schema.Types.ObjectId, ref: "Category", default: [] },
-  ],
-  price: { type: Number, required: true },
-  sale: {
-    price: Number,
-    fromDate: Date,
-    toDate: Date,
+const ProductSchema: Schema<IProduct> = new Schema(
+  {
+    store: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Store",
+      required: true,
+    },
+    name: { type: String, required: true },
+    description: { type: String },
+    categories: [
+      { type: mongoose.Schema.Types.ObjectId, ref: "Category", default: [] },
+    ],
+    price: { type: Number, required: true },
+    sale: {
+      price: Number,
+      fromDate: Date,
+      toDate: Date,
+    },
+    images: [{ type: String, default: [] }],
+    lastUpdateDate: { type: Date, default: Date.now },
+    numberInStock: { type: Number, default: 0 },
+    active: { type: Boolean, default: true },
   },
-  images: [{ type: String, default: [] }],
-  lastUpdateDate: { type: Date, default: Date.now },
-  numberInStock: { type: Number, default: 0 },
-  active: { type: Boolean, default: true },
-});
+  { collection: "products" }
+);
 
-const Product: Model<IProduct> = mongoose.model("products", ProductSchema);
+const Product: Model<IProduct> = mongoose.model("Product", ProductSchema);
 export { Product, IProduct };

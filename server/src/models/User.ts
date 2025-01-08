@@ -28,28 +28,33 @@ interface IUser extends Document {
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
-const UserSchema: Schema<IUser> = new Schema({
-  username: { type: String, required: true, unique: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  role: { type: String, enum: Object.values(Role), required: true },
-  active: { type: Boolean, default: true },
-  adminFields: {
-    users: [{ type: mongoose.Schema.Types.ObjectId, ref: "User", default: [] }],
-    categories: [
-      { type: mongoose.Schema.Types.ObjectId, ref: "Category", default: [] },
-    ],
+const UserSchema: Schema<IUser> = new Schema(
+  {
+    username: { type: String, required: true, unique: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    role: { type: String, enum: Object.values(Role), required: true },
+    active: { type: Boolean, default: true },
+    adminFields: {
+      users: [
+        { type: mongoose.Schema.Types.ObjectId, ref: "User", default: [] },
+      ],
+      categories: [
+        { type: mongoose.Schema.Types.ObjectId, ref: "Category", default: [] },
+      ],
+    },
+    employeeFields: {
+      stores: [
+        { type: mongoose.Schema.Types.ObjectId, ref: "Store", default: [] },
+      ],
+    },
+    buyerFields: {
+      address: { type: String, default: "" },
+      phone: { type: String, default: "" },
+    },
   },
-  employeeFields: {
-    stores: [
-      { type: mongoose.Schema.Types.ObjectId, ref: "Store", default: [] },
-    ],
-  },
-  buyerFields: {
-    address: { type: String, default: "" },
-    phone: { type: String, default: "" },
-  },
-});
+  { collection: "users" }
+);
 
 // Pre-save hook to hash the password before saving the user
 UserSchema.pre("save", async function (next) {
@@ -77,6 +82,22 @@ UserSchema.pre("save", async function (next) {
     console.error("Error occurred while hashing password:", error);
     next(error as Error);
   }
+
+  // if (user.role !== "administrator") {
+  //   // Add the User to the administrator's users field
+  //   try {
+  //     const admin = await User.findOne({ role: "administrator" });
+  //     if (!admin) return next(new Error("Administrator not found"));
+  //     await User.findByIdAndUpdate(
+  //       admin._id,
+  //       { $push: { "adminFields.users": user._id } },
+  //       { new: true }
+  //     );
+  //     next();
+  //   } catch (error) {
+  //     return next(new Error("Cannot update administrator's users"));
+  //   }
+  // }
 
   // Remove unnecessary fields based on role
   if (user.role === "administrator") {
@@ -136,6 +157,6 @@ UserSchema.methods.comparePassword = async function (
 };
 
 // Specify collection name as 'users'
-const User: Model<IUser> = mongoose.model("users", UserSchema);
+const User: Model<IUser> = mongoose.model("User", UserSchema);
 
 export { User, IUser, Role };

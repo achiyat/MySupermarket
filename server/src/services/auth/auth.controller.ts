@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import authService from "./auth.service";
 import { User } from "../../models/User";
 import { adminService } from "../admin/admin.service";
-import { resError } from "../admin/admin.utils";
+import { resError } from "../admin/admin.common";
 
 // Register a new user
 export const register = async (req: Request, res: Response) => {

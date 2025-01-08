@@ -1,13 +1,15 @@
 // server/src/services/admin/admin.controller.ts
 import { Request, Response } from "express";
-import { create, getAll, getById, resError, update } from "./admin.utils";
+import { getAll, getById, resError, update } from "./admin.common";
 import { User } from "../../models/User";
 import { respond } from "./admin.middlewares";
 import mongoose from "mongoose";
+import { Models } from "../../utils";
+import { create } from "./admin.service";
 
 export const createUser = async (req: Request, res: Response) => {
   try {
-    await create.user(req, res);
+    await create(Models.User, req, res);
   } catch (error) {
     respond(res, 500, "Internal Server Error");
   }
@@ -15,7 +17,7 @@ export const createUser = async (req: Request, res: Response) => {
 
 export const getUserById = async (req: Request, res: Response) => {
   try {
-    const user = await getById.user(req, res);
+    const user = await getById(Models.User, req, res);
     res.status(200).json(user);
   } catch (error) {
     console.log(error);
@@ -25,7 +27,7 @@ export const getUserById = async (req: Request, res: Response) => {
 
 export const getAllUser = async (req: Request, res: Response) => {
   try {
-    const users = await getAll.user(req, res);
+    const users = await getAll(Models.User, req, res);
     res.status(200).json(users);
   } catch (error) {
     res.status(404).json(resError(error));
@@ -34,7 +36,7 @@ export const getAllUser = async (req: Request, res: Response) => {
 
 export const updateUser = async (req: Request, res: Response) => {
   try {
-    const user = await update.user(req, res);
+    const user = await update(Models.User, req, res);
     res.status(200).json(user);
   } catch (error) {
     res.status(400).json({ message: error });
@@ -65,7 +67,7 @@ export const deleteUser = async (req: Request, res: Response) => {
 
 export const createStore = async (req: Request, res: Response) => {
   try {
-    await create.store(req, res);
+    await create(Models.Store, req, res);
   } catch (error) {
     respond(res, 500, "Internal Server Error");
   }
@@ -73,7 +75,7 @@ export const createStore = async (req: Request, res: Response) => {
 
 export const getAllStores = async (req: Request, res: Response) => {
   try {
-    const stores = await getAll.store(req, res);
+    const stores = await getAll(Models.Store, req, res);
     res.status(200).json(stores);
   } catch (error) {
     res.status(404).json(resError(error));
@@ -82,7 +84,7 @@ export const getAllStores = async (req: Request, res: Response) => {
 
 export const getStoreById = async (req: Request, res: Response) => {
   try {
-    const store = await getById.store(req, res);
+    const store = await getById(Models.Store, req, res);
     res.status(200).json(store);
   } catch (error) {
     console.log(error);
@@ -92,7 +94,7 @@ export const getStoreById = async (req: Request, res: Response) => {
 
 export const updateStore = async (req: Request, res: Response) => {
   try {
-    const store = await update.store(req, res);
+    const store = await update(Models.Store, req, res);
     res.status(200).json(store);
   } catch (error) {
     res.status(400).json({ message: error });
@@ -101,7 +103,7 @@ export const updateStore = async (req: Request, res: Response) => {
 
 export const createCategory = async (req: Request, res: Response) => {
   try {
-    await create.category(req, res);
+    await create(Models.Category, req, res);
   } catch (error) {
     respond(res, 500, "Internal Server Error");
   }
@@ -109,7 +111,7 @@ export const createCategory = async (req: Request, res: Response) => {
 
 export const getAllCategories = async (req: Request, res: Response) => {
   try {
-    const categories = await getAll.category(req, res);
+    const categories = await getAll(Models.Category, req, res);
     res.status(200).json(categories);
   } catch (error) {
     res.status(404).json(resError(error));
@@ -118,7 +120,7 @@ export const getAllCategories = async (req: Request, res: Response) => {
 
 export const getCategoryById = async (req: Request, res: Response) => {
   try {
-    const category = await getById.category(req, res);
+    const category = await getById(Models.Category, req, res);
     res.status(200).json(category);
   } catch (error) {
     console.log(error);
@@ -128,8 +130,54 @@ export const getCategoryById = async (req: Request, res: Response) => {
 
 export const updateCategory = async (req: Request, res: Response) => {
   try {
-    const category = await update.category(req, res);
+    const category = await update(Models.Category, req, res);
     res.status(200).json(category);
+  } catch (error) {
+    res.status(400).json({ message: error });
+  }
+};
+
+export const getUserWithStores = async (req: Request, res: Response) => {
+  try {
+    const user = await getById(Models.User, req, res, "employeeFields.stores");
+    if (!user) respond(res, 404, "User not found");
+    if (user) res.status(200).json(user);
+  } catch (error) {
+    res.status(404).json(resError(error));
+  }
+};
+
+export const createProduct = async (req: Request, res: Response) => {
+  try {
+    await create(Models.Product, req, res);
+  } catch (error) {
+    respond(res, 500, "Internal Server Error");
+  }
+};
+
+export const getAllProducts = async (req: Request, res: Response) => {
+  try {
+    const products = await getAll(Models.Product, req, res);
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(404).json(resError(error));
+  }
+};
+
+export const getProductById = async (req: Request, res: Response) => {
+  try {
+    const product = await getById(Models.Product, req, res);
+    res.status(200).json(product);
+  } catch (error) {
+    console.log(error);
+    res.status(404).json(resError(error));
+  }
+};
+
+export const updateProduct = async (req: Request, res: Response) => {
+  try {
+    const product = await update(Models.Product, req, res);
+    res.status(200).json(product);
   } catch (error) {
     res.status(400).json({ message: error });
   }

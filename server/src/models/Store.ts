@@ -10,17 +10,20 @@ interface IStore extends Document {
   active: boolean;
 }
 
-const StoreSchema: Schema<IStore> = new Schema({
-  name: { type: String, required: true },
-  branchName: { type: String, required: true },
-  address: { type: String, required: true, unique: true },
-  employeeId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
+const StoreSchema: Schema<IStore> = new Schema(
+  {
+    name: { type: String, required: true },
+    branchName: { type: String, required: true },
+    address: { type: String, required: true, unique: true },
+    employeeId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    active: { type: Boolean, default: true },
   },
-  active: { type: Boolean, default: true },
-});
+  { collection: "stores" }
+);
 
 StoreSchema.pre("save", async function (next) {
   const store = this as IStore;
@@ -65,5 +68,5 @@ StoreSchema.post("findOneAndUpdate", async function (doc: any, next: any) {
   next();
 });
 
-const Store: Model<IStore> = mongoose.model("stores", StoreSchema);
+const Store: Model<IStore> = mongoose.model("Store", StoreSchema);
 export { Store, IStore };
