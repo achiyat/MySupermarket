@@ -11,18 +11,18 @@ export const resError = (error: any) => {
 };
 
 // Create operations
-// export const create = async (
-//   model: (typeof Models)[ModelKeys],
-//   req: Request,
-//   res: Response
-// ) => {
-//   try {
-//     const data = await adminService.create(model, req.body);
-//     return res.status(201).json(data);
-//   } catch (error) {
-//     return res.status(400).json(resError(error));
-//   }
-// };
+export const create = async (
+  model: (typeof Models)[ModelKeys],
+  req: Request,
+  res: Response
+) => {
+  try {
+    const data = await adminService.create(model, req.body);
+    return res.status(201).json(data);
+  } catch (error) {
+    return res.status(400).json(resError(error));
+  }
+};
 
 // Get All operations
 export const getAll = async (

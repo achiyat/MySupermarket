@@ -43,3 +43,5 @@ lerna-debug.log*
 client/src/components/SignUp/signUp copy.css
 client/src/components/SignUp/signUp copy.tsx
 server/src/models/index.ts
+
+.codegpt

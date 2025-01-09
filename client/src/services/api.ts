@@ -3,12 +3,12 @@ import axios from "axios";
 import { SignUpData, LoginData } from "../Interfaces/interfaces";
 import { TokenResponse, User_Response, UsersResponse } from "../types/types";
 
-const API_BASE_URL = "http://localhost:5000/api/auth";
+const API_BASE_URL = "http://localhost:5000/api";
 
 // Register a new user
 export const register = async (data: SignUpData): Promise<User_Response> => {
   const response = await axios.post<User_Response>(
-    `${API_BASE_URL}/register`,
+    `${API_BASE_URL}/auth/register`,
     data
   );
   return response.data;
@@ -17,7 +17,7 @@ export const register = async (data: SignUpData): Promise<User_Response> => {
 // Log in a user
 export const login = async (data: LoginData): Promise<TokenResponse> => {
   const response = await axios.post<TokenResponse>(
-    `${API_BASE_URL}/login`,
+    `${API_BASE_URL}/auth/login`,
     data
   );
   return response.data;
@@ -26,7 +26,7 @@ export const login = async (data: LoginData): Promise<TokenResponse> => {
 // Fetch a user by ID
 export const fetchUserById = async (id: string): Promise<User_Response> => {
   const response = await axios.get<User_Response>(
-    `${API_BASE_URL}/users/${id}`
+    `${API_BASE_URL}/admin/users/${id}`
   );
   return response.data;
 };
@@ -41,11 +41,14 @@ export const fetchUserById = async (id: string): Promise<User_Response> => {
 export const fetchProtected = async (
   token: string | null
 ): Promise<TokenResponse> => {
-  const response = await axios.get<TokenResponse>(`${API_BASE_URL}/protected`, {
-    headers: {
-      Authorization: `Bearer ${token}`, // Attach token to headers
-    },
-  });
+  const response = await axios.get<TokenResponse>(
+    `${API_BASE_URL}/auth/protected`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`, // Attach token to headers
+      },
+    }
+  );
   return response.data;
 };
 

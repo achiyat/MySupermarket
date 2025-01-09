@@ -9,7 +9,8 @@ import { create } from "./admin.service";
 
 export const createUser = async (req: Request, res: Response) => {
   try {
-    await create(Models.User, req, res);
+    const user = await create(Models.User, req, res);
+    res.status(200).json(user);
   } catch (error) {
     respond(res, 500, "Internal Server Error");
   }
@@ -67,7 +68,8 @@ export const deleteUser = async (req: Request, res: Response) => {
 
 export const createStore = async (req: Request, res: Response) => {
   try {
-    await create(Models.Store, req, res);
+    const store = await create(Models.Store, req, res);
+    res.status(200).json(store);
   } catch (error) {
     respond(res, 500, "Internal Server Error");
   }
@@ -103,7 +105,8 @@ export const updateStore = async (req: Request, res: Response) => {
 
 export const createCategory = async (req: Request, res: Response) => {
   try {
-    await create(Models.Category, req, res);
+    const category = await create(Models.Category, req, res);
+    res.status(200).json(category);
   } catch (error) {
     respond(res, 500, "Internal Server Error");
   }
@@ -149,7 +152,8 @@ export const getUserWithStores = async (req: Request, res: Response) => {
 
 export const createProduct = async (req: Request, res: Response) => {
   try {
-    await create(Models.Product, req, res);
+    const product = await create(Models.Product, req, res);
+    res.status(200).json(product);
   } catch (error) {
     respond(res, 500, "Internal Server Error");
   }

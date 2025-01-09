@@ -1,0 +1,170 @@
+import React, { ChangeEvent, useState } from "react";
+import "./dataTable.css";
+
+interface HeaderMapping {
+  [key: string]: { [key: string]: string };
+}
+
+const headerMapping: HeaderMapping = {
+  users: {
+    username: "Name",
+    email: "Email",
+    password: "Password",
+    role: "Type",
+    active: "Active",
+    showDetails: "Details",
+  },
+  stores: {
+    name: "Name",
+    branchName: "Branch",
+    address: "Address",
+    active: "Active",
+    showDetails: "Details",
+  },
+  categories: {
+    name: "Name",
+    productCount: "Product Count",
+    active: "Active",
+    showDetails: "Details",
+  },
+};
+
+interface DataTableProps<T> {
+  pageType: "users" | "stores" | "categories";
+  data: T[];
+}
+
+export const DataTable = <T,>({ pageType, data }: DataTableProps<T>) => {
+  const [filters, setFilters] = useState({
+    name: "",
+    type: "",
+    active: "all",
+  });
+
+  const handleTextSelectChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setFilters({
+      ...filters,
+      [name]: value,
+    });
+  };
+
+  const filteredData = data.filter((item) => {
+    const filterByName = Object.keys(headerMapping[pageType]).some((key) => {
+      const field = item[key as keyof T];
+      return (
+        typeof field === "string" &&
+        field.toLowerCase().includes(filters.name.toLowerCase())
+      );
+    });
+
+    const filterByType = filters.type
+      ? (item as any).role === filters.type ||
+        (item as any).employeeId === filters.type
+      : true;
+
+    const filterByActive =
+      filters.active === "all" ||
+      (filters.active === "active" && (item as any).active) ||
+      (filters.active === "inactive" && !(item as any).active);
+
+    return filterByName && filterByType && filterByActive;
+  });
+
+  const handleShowDetails = (item: any) => {
+    console.log("Showing details for:", item);
+  };
+
+  const renderTableHeaders = () => {
+    return Object.keys(headerMapping[pageType]).map((key) => (
+      <th key={key}>{headerMapping[pageType][key]}</th>
+    ));
+  };
+
+  const renderTableRows = () => {
+    return filteredData.map((item, index) => (
+      <tr key={index}>
+        {Object.keys(headerMapping[pageType]).map((key) => {
+          let value = (item as any)[key];
+          let cellClass = "";
+
+          if (key === "active") {
+            cellClass = value ? "active-cell" : "inactive-cell";
+            value = value ? "V" : "X";
+          }
+
+          if (key === "productCount" && (item as any).products) {
+            value = (item as any).products.length;
+          }
+
+          if (key === "showDetails") {
+            cellClass = "show-details-cell";
+            value = (
+              <button
+                onClick={() => handleShowDetails(item)}
+                className="show-details-btn"
+              >
+                Show Details
+              </button>
+            );
+          }
+
+          return (
+            <td key={key} className={cellClass}>
+              {value}
+            </td>
+          );
+        })}
+      </tr>
+    ));
+  };
+
+  return (
+    <div className="dynamic-page">
+      <header className="dynamic-page-header">
+        <div className="page-title">{String(pageType).toUpperCase()}</div>
+        <button className="add-new-btn">Add New</button>
+      </header>
+      <div className="filters">
+        <input
+          type="text"
+          name="name"
+          placeholder="Filter by Name"
+          value={filters.name}
+          onChange={handleTextSelectChange}
+          className="filter-input"
+        />
+        {pageType === "users" && (
+          <select
+            name="type"
+            value={filters.type}
+            onChange={handleTextSelectChange}
+            className="filter-select"
+          >
+            <option value="">Select Type</option>
+            <option value="employee">Employee</option>
+            <option value="buyer">Buyer</option>
+          </select>
+        )}
+        <select
+          name="active"
+          value={filters.active}
+          onChange={handleTextSelectChange}
+          className="filter-select"
+        >
+          <option value="all">{`All ${String(pageType)}`}</option>
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+        </select>
+      </div>
+      <table className="data-table">
+        <thead>
+          <tr>{renderTableHeaders()}</tr>
+        </thead>
+        <tbody>{renderTableRows()}</tbody>
+      </table>
+    </div>
+  );
+};

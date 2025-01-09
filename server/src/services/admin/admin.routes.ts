@@ -47,7 +47,7 @@ adminRoutes.get("/stores/:id", getStoreById);
 adminRoutes.put("/stores/:id", updateStore);
 
 // Category CRU operations
-adminRoutes.post("/categories", validateCategory, createCategory);
+adminRoutes.post("/categories", createCategory); // validateCategory
 adminRoutes.get("/categories", getAllCategories);
 adminRoutes.get("/categories/:id", getCategoryById);
 adminRoutes.put("/categories/:id", updateCategory);

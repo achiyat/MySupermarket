@@ -18,10 +18,10 @@ export const create = async (
 };
 
 export const adminService = {
-  // create: async (Model: any, data: any) => {
-  //   const _data = new Model(data);
-  //   return await _data.save();
-  // },
+  create: async (Model: any, data: any) => {
+    const _data = new Model(data);
+    return await _data.save();
+  },
 
   getAll: async (Model: any) => {
     return await Model.find().select("-password").exec();

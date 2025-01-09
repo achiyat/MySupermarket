@@ -1,0 +1,95 @@
+.dynamic-page {
+  padding: 20px;
+}
+
+.dynamic-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.add-new-btn {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add-new-btn:hover {
+  background-color: #218838;
+}
+
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filter-input,
+.filter-select,
+.filter-checkbox {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.data-table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+/* Style for cells in the "Active" column */
+.active-cell {
+  background-color: #d4edda;
+  color: #155724;
+  text-align: center;
+}
+
+.inactive-cell {
+  background-color: #f8d7da;
+  color: #721c24;
+  text-align: center;
+}
+
+.show-details-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Button styling (already centered within its cell) */
+.show-details-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.show-details-btn:hover {
+  background-color: #0056b3;
+}

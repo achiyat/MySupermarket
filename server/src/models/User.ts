@@ -83,21 +83,21 @@ UserSchema.pre("save", async function (next) {
     next(error as Error);
   }
 
-  // if (user.role !== "administrator") {
-  //   // Add the User to the administrator's users field
-  //   try {
-  //     const admin = await User.findOne({ role: "administrator" });
-  //     if (!admin) return next(new Error("Administrator not found"));
-  //     await User.findByIdAndUpdate(
-  //       admin._id,
-  //       { $push: { "adminFields.users": user._id } },
-  //       { new: true }
-  //     );
-  //     next();
-  //   } catch (error) {
-  //     return next(new Error("Cannot update administrator's users"));
-  //   }
-  // }
+  if (user.role !== "administrator") {
+    // Add the User to the administrator's users field
+    try {
+      const admin = await User.findOne({ role: "administrator" });
+      if (!admin) return next(new Error("Administrator not found"));
+      await User.findByIdAndUpdate(
+        admin._id,
+        { $push: { "adminFields.users": user._id } },
+        { new: true }
+      );
+      next();
+    } catch (error) {
+      return next(new Error("Cannot update administrator's users"));
+    }
+  }
 
   // Remove unnecessary fields based on role
   if (user.role === "administrator") {

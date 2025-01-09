@@ -10,7 +10,7 @@ export const SignUp: React.FC = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role] = useState<Role>("Buyer");
+  const [role] = useState<Role>("buyer");
   const navigate = useNavigate();
 
   const handleRegister = async (e: React.FormEvent) => {
@@ -109,16 +109,3 @@ export const SignUp: React.FC = () => {
     </div>
   );
 };
-
-{
-  /* <select
-value={role}
-onChange={(e) => setRole(e.target.value as Role)}
-className="signUp-input"
-required
->
-<option value="Buyer">Buyer</option>
-<option value="Employee">Employee</option>
-<option value="Administrator">Administrator</option>
-</select> */
-}
