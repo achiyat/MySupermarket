@@ -50,7 +50,7 @@ CategorySchema.post("findOneAndUpdate", async function (doc: any, next: any) {
     //   active: true,
     // });
 
-    const activeProducts = [1, 2];
+    const activeProducts = [];
     if (activeProducts.length > 0) {
       return next(
         new Error("Cannot inactivate category with active products.")

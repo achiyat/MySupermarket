@@ -45,3 +45,4 @@ client/src/components/SignUp/signUp copy.tsx
 server/src/models/index.ts
 
 .codegpt
+server/src/services/admin/service.txt

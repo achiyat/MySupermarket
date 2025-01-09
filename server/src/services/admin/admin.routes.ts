@@ -1,61 +1,39 @@
 // server/src/services/admin/admin.routes.ts
 import { Router } from "express";
+import { validateUser } from "./admin.middlewares";
+import { Models } from "../../utils";
 import {
-  createCategory,
-  createProduct,
-  createStore,
-  createUser,
+  createEntity,
   deleteUser,
-  getAllCategories,
-  getAllProducts,
-  getAllStores,
-  getAllUser,
-  getCategoryById,
-  getProductById,
-  getStoreById,
-  getUserById,
-  getUserWithStores,
-  updateCategory,
-  updateProduct,
-  updateStore,
-  updateUser,
+  getAllEntity,
+  getEntityById,
+  updateEntity,
 } from "./admin.controller";
-import {
-  validateCategory,
-  validateStore,
-  validateUser,
-} from "./admin.middlewares";
 
 export const adminRoutes: Router = Router();
 
-adminRoutes.post("/models", validateUser, createUser);
-adminRoutes.get("/models/:id", getUserById);
-// adminRoutes.get("/models", getAllUsers);
-
 // User CRUD operations
-adminRoutes.post("/users", createUser, validateUser);
-adminRoutes.get("/users/:id", getUserById);
-adminRoutes.get("/users", getAllUser);
-adminRoutes.put("/users/:id", updateUser);
+adminRoutes.post("/users", validateUser, createEntity(Models.User));
+adminRoutes.get("/users/:id", getEntityById(Models.User));
+adminRoutes.get("/users", getAllEntity(Models.User));
+adminRoutes.put("/users/:id", updateEntity(Models.User));
 adminRoutes.delete("/users/:id", deleteUser);
-adminRoutes.get("/users/stores/:id", getUserWithStores);
+// adminRoutes.get("/users/stores/:id", getEntityById(Models.User)); // WithStores
 
 // Store CRU operations
-adminRoutes.post("/stores", createStore, validateStore);
-adminRoutes.get("/stores", getAllStores);
-adminRoutes.get("/stores/:id", getStoreById);
-adminRoutes.put("/stores/:id", updateStore);
+adminRoutes.post("/stores", createEntity(Models.Store)); // validate validateStore
+adminRoutes.get("/stores/:id", getEntityById(Models.Store));
+adminRoutes.get("/stores", getAllEntity(Models.Store));
+adminRoutes.put("/stores/:id", updateEntity(Models.Store));
 
 // Category CRU operations
-adminRoutes.post("/categories", createCategory); // validateCategory
-adminRoutes.get("/categories", getAllCategories);
-adminRoutes.get("/categories/:id", getCategoryById);
-adminRoutes.put("/categories/:id", updateCategory);
+adminRoutes.post("/categories", createEntity(Models.Category)); // validate validateCategory
+adminRoutes.get("/categories/:id", getEntityById(Models.Category));
+adminRoutes.get("/categories", getAllEntity(Models.Category));
+adminRoutes.put("/categories/:id", updateEntity(Models.Category));
 
 // Product CRU operations
-adminRoutes.post("/products", createProduct);
-adminRoutes.get("/products", getAllProducts);
-adminRoutes.get("/products/:id", getProductById);
-adminRoutes.put("/products/:id", updateProduct);
-
-// validateProduct
+adminRoutes.post("/products", createEntity(Models.Product)); // validate
+adminRoutes.get("/products/:id", getEntityById(Models.Product));
+adminRoutes.get("/products", getAllEntity(Models.Product));
+adminRoutes.put("/products/:id", updateEntity(Models.Product));

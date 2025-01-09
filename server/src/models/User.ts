@@ -100,6 +100,35 @@ UserSchema.pre("save", async function (next) {
   }
 
   // Remove unnecessary fields based on role
+  cleanFields(user);
+
+  next();
+});
+
+// Post-findOne hook to clean up fields after retrieval
+UserSchema.post("findOne", function (doc, next) {
+  if (doc) {
+    cleanFields(doc);
+  }
+
+  next();
+});
+
+// Post-find hook
+UserSchema.post("find", function (docs, next) {
+  if (docs) {
+    const filteredDocs = docs.filter(
+      (doc: IUser) => doc.role !== "administrator"
+    );
+
+    filteredDocs.forEach((doc: IUser) => cleanFields(doc));
+    docs.length = 0;
+    docs.push(...filteredDocs);
+  }
+  next();
+});
+
+const cleanFields = (user: IUser) => {
   if (user.role === "administrator") {
     user.employeeFields = undefined;
     user.buyerFields = undefined;
@@ -110,40 +139,11 @@ UserSchema.pre("save", async function (next) {
     user.adminFields = undefined;
     user.employeeFields = undefined;
   }
-
-  next();
-});
-
-// Post-findOne hook to clean up fields after retrieval
-UserSchema.post("findOne", function (doc, next) {
-  if (doc) {
-    if (doc.role === "administrator") {
-      doc.employeeFields = undefined;
-      doc.buyerFields = undefined;
-    } else if (doc.role === "employee") {
-      doc.adminFields = undefined;
-      doc.buyerFields = undefined;
-    } else if (doc.role === "buyer") {
-      doc.adminFields = undefined;
-      doc.employeeFields = undefined;
-    }
-  }
-
-  next();
-});
+};
 
 UserSchema.post("findOneAndUpdate", async function (doc: any, next: any) {
   if (doc) {
-    if (doc.role === "administrator") {
-      doc.employeeFields = undefined;
-      doc.buyerFields = undefined;
-    } else if (doc.role === "employee") {
-      doc.adminFields = undefined;
-      doc.buyerFields = undefined;
-    } else if (doc.role === "buyer") {
-      doc.adminFields = undefined;
-      doc.employeeFields = undefined;
-    }
+    cleanFields(doc);
   }
 
   next();

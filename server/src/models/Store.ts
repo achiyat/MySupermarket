@@ -57,7 +57,7 @@ StoreSchema.post("findOneAndUpdate", async function (doc: any, next: any) {
   if (doc) {
     if (doc.active === false) {
       // const activeProducts = await Product.find({ store: doc._id, active: true });
-      const activeProducts = [1, 2];
+      const activeProducts = [];
       if (activeProducts.length > 0)
         return next(
           new Error("Cannot inactivate the store with active products")
