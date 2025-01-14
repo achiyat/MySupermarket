@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { fetchUserById } from "../../services/api"; // Assuming this function is available
 import "./dashboard.css";
 import { Navbar } from "../Navbar/navbar";
 import { Outlet } from "react-router-dom";
 import { Footer } from "../Footer/footer";
+import { getUserById } from "../../services/api";
 
 interface DashboardProps {
   userId: string;
@@ -15,9 +15,12 @@ export const Dashboard: React.FC<DashboardProps> = ({ userId }) => {
   // Directly fetch user data when the component mounts
   const getUser = async (id: string) => {
     try {
-      const result = await fetchUserById(id);
+      const result = await getUserById(id);
       if ("message" in result) {
         console.error(result.message);
+      } else if (result === null) {
+        console.error(`result is ${result}`);
+        localStorage.removeItem("authToken");
       } else {
         setUser(result);
       }

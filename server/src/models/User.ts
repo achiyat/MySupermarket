@@ -13,17 +13,11 @@ interface IUser extends Document {
   email: string;
   password: string;
   role: Role;
+  phone: string;
+  address: string;
   active: boolean;
-  adminFields?: {
-    users: string[];
-    categories: string[];
-  };
   employeeFields?: {
     stores: string[];
-  };
-  buyerFields?: {
-    address: string;
-    phone: string;
   };
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
@@ -34,23 +28,13 @@ const UserSchema: Schema<IUser> = new Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     role: { type: String, enum: Object.values(Role), required: true },
+    phone: { type: String, required: true, default: "" },
+    address: { type: String, default: "" },
     active: { type: Boolean, default: true },
-    adminFields: {
-      users: [
-        { type: mongoose.Schema.Types.ObjectId, ref: "User", default: [] },
-      ],
-      categories: [
-        { type: mongoose.Schema.Types.ObjectId, ref: "Category", default: [] },
-      ],
-    },
     employeeFields: {
       stores: [
         { type: mongoose.Schema.Types.ObjectId, ref: "Store", default: [] },
       ],
-    },
-    buyerFields: {
-      address: { type: String, default: "" },
-      phone: { type: String, default: "" },
     },
   },
   { collection: "users" }
@@ -80,23 +64,7 @@ UserSchema.pre("save", async function (next) {
     user.password = await bcrypt.hash(user.password, salt);
   } catch (error) {
     console.error("Error occurred while hashing password:", error);
-    next(error as Error);
-  }
-
-  if (user.role !== "administrator") {
-    // Add the User to the administrator's users field
-    try {
-      const admin = await User.findOne({ role: "administrator" });
-      if (!admin) return next(new Error("Administrator not found"));
-      await User.findByIdAndUpdate(
-        admin._id,
-        { $push: { "adminFields.users": user._id } },
-        { new: true }
-      );
-      next();
-    } catch (error) {
-      return next(new Error("Cannot update administrator's users"));
-    }
+    return next(error as Error);
   }
 
   // Remove unnecessary fields based on role
@@ -114,7 +82,7 @@ UserSchema.post("findOne", function (doc, next) {
   next();
 });
 
-// Post-find hook
+// Accept all users except the system administrator
 UserSchema.post("find", function (docs, next) {
   if (docs) {
     const filteredDocs = docs.filter(
@@ -129,14 +97,7 @@ UserSchema.post("find", function (docs, next) {
 });
 
 const cleanFields = (user: IUser) => {
-  if (user.role === "administrator") {
-    user.employeeFields = undefined;
-    user.buyerFields = undefined;
-  } else if (user.role === "employee") {
-    user.adminFields = undefined;
-    user.buyerFields = undefined;
-  } else if (user.role === "buyer") {
-    user.adminFields = undefined;
+  if (user.role !== "employee") {
     user.employeeFields = undefined;
   }
 };

@@ -17,6 +17,7 @@ export const ProtectedRoute: React.FC = () => {
 
   // Parse the token if available
   const userId = token ? parseJwt(token)?.id : null;
+  console.log(userId, userId ? "dashboard" : "login");
 
   // Render directly based on token existence and userId
   return userId ? <Dashboard userId={userId} /> : <Navigate to="/login" />;

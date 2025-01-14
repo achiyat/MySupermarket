@@ -5,11 +5,10 @@ import mongoose, { Model } from "mongoose";
 import { create, getAll, getById, update } from "./admin.service";
 import { User } from "../../models/User";
 
-// Entity = User/product/category
 export const createEntity = <T>(model: Model<T & Document>) => {
   return async (req: Request, res: Response) => {
     try {
-      const entities = await create(model, req, res);
+      const entities = await create(model, req.body);
       res.status(200).json(entities);
     } catch (error) {
       respond(res, 500, "Internal Server Error");
@@ -20,7 +19,7 @@ export const createEntity = <T>(model: Model<T & Document>) => {
 export const getAllEntity = <T>(model: Model<T & Document>) => {
   return async (req: Request, res: Response) => {
     try {
-      const entities = await getAll(model, req, res);
+      const entities = await getAll(model);
       res.status(200).json(entities);
     } catch (error) {
       respond(res, 500, "Internal Server Error");
@@ -31,7 +30,7 @@ export const getAllEntity = <T>(model: Model<T & Document>) => {
 export const getEntityById = <T>(model: Model<T & Document>) => {
   return async (req: Request, res: Response) => {
     try {
-      const entities = await getById(model, res, req.params.id);
+      const entities = await getById(model, req.params.id);
       res.status(200).json(entities);
     } catch (error) {
       respond(res, 500, "Internal Server Error");
@@ -42,7 +41,7 @@ export const getEntityById = <T>(model: Model<T & Document>) => {
 export const updateEntity = <T>(model: Model<T & Document>) => {
   return async (req: Request, res: Response) => {
     try {
-      const entities = await update(model, res, req.params.id, req.body);
+      const entities = await update(model, req.params.id, req.body);
       res.status(200).json(entities);
     } catch (error) {
       respond(res, 500, "Internal Server Error");

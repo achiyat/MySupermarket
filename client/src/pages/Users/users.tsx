@@ -1,35 +1,25 @@
-import React from "react";
+// client/src/pages/Users/users.tsx
+import React, { useEffect, useState } from "react";
 import { User } from "../../Interfaces/interfaces";
 import { useOutletContext } from "react-router-dom";
 import { DataTable } from "../../components/DataTable/dataTable";
+import { getAllUsers } from "../../services/api";
 
 export const Users: React.FC = () => {
   const { user } = useOutletContext<{ user: User }>();
-  if (!user) console.log("");
+  if (!user) console.log("user is null");
 
-  const users = [
-    {
-      username: "employee1",
-      email: "employee1@example.com",
-      password: "pass123",
-      role: "employee",
-      active: true,
-    },
-    {
-      username: "employee2",
-      email: "employee2@example.com",
-      password: "password456",
-      role: "employee",
-      active: false,
-    },
-    {
-      username: "buyer",
-      email: "buyer@example.com",
-      password: "buyer789",
-      role: "buyer",
-      active: true,
-    },
-  ];
+  const [users, setUsers] = useState<User[]>([]);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const response = await getAllUsers();
+      if (response && Array.isArray(response)) {
+        setUsers(response);
+      }
+    };
+    fetchUsers();
+  }, []);
 
   return (
     <div>

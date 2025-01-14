@@ -1,3 +1,4 @@
+// client/src/components/DataTable/dataTable.tsx
 import React, { ChangeEvent, useState } from "react";
 import "./dataTable.css";
 
@@ -9,7 +10,6 @@ const headerMapping: HeaderMapping = {
   users: {
     username: "Name",
     email: "Email",
-    password: "Password",
     role: "Type",
     active: "Active",
     showDetails: "Details",
@@ -52,19 +52,18 @@ export const DataTable = <T,>({ pageType, data }: DataTableProps<T>) => {
   };
 
   const filteredData = data.filter((item) => {
-    const filterByName = Object.keys(headerMapping[pageType]).some((key) => {
-      const field = item[key as keyof T];
-      return (
-        typeof field === "string" &&
-        field.toLowerCase().includes(filters.name.toLowerCase())
-      );
-    });
+    // Ensure the 'name' property exists before applying the filter
+    const itemName = (item as any).name || (item as any).username;
+    const filterByName =
+      itemName && itemName.toLowerCase().includes(filters.name.toLowerCase());
 
-    const filterByType = filters.type
-      ? (item as any).role === filters.type ||
-        (item as any).employeeId === filters.type
-      : true;
+    // Filter by "type" (only for users page)
+    const filterByType =
+      pageType === "users" && filters.type
+        ? (item as any).role === filters.type
+        : true;
 
+    // Filter by "active" status
     const filterByActive =
       filters.active === "all" ||
       (filters.active === "active" && (item as any).active) ||

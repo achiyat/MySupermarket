@@ -46,3 +46,5 @@ server/src/models/index.ts
 
 .codegpt
 server/src/services/admin/service.txt
+server/src/models/User copy.ts
+client/src/services/api copy.ts

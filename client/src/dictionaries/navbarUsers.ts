@@ -8,9 +8,9 @@ export const navbarUsers: Record<Role, string[]> = {
     "users",
     "category",
     "stores",
-    "permissions",
-    "management",
+    // "permissions",
+    // "management",
   ],
   employee: ["home", "profile", "work"],
-  buyer: ["home", "profile", "store"],
+  buyer: ["home", "profile", "shopping"],
 };

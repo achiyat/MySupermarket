@@ -1,6 +1,7 @@
 // server/src/models/Store.ts
 import mongoose, { Schema, Document, Model } from "mongoose";
 import { User } from "./User";
+import { Product } from "./Product";
 
 interface IStore extends Document {
   name: string;
@@ -51,17 +52,24 @@ StoreSchema.pre("save", async function (next) {
   }
 });
 
-StoreSchema.post("findOneAndUpdate", async function (doc: any, next: any) {
-  // Check if trying to inactivate the store with active products
+// Middleware to check if the store has active products before deactivating the store
+StoreSchema.pre("findOneAndUpdate", async function (next) {
+  const store = this.getUpdate() as Partial<IStore>;
 
-  if (doc) {
-    if (doc.active === false) {
-      // const activeProducts = await Product.find({ store: doc._id, active: true });
-      const activeProducts = [];
-      if (activeProducts.length > 0)
-        return next(
-          new Error("Cannot inactivate the store with active products")
-        );
+  if (store.active === false) {
+    try {
+      const storeId = this.getQuery()._id;
+      // Check if there are any active products associated with this store
+      const activeProducts = await Product.find({
+        store: storeId,
+        active: true,
+      });
+
+      if (activeProducts.length > 0) {
+        return next(new Error("Cannot deactivate store with active products"));
+      }
+    } catch (error) {
+      return next(new Error("Error checking for active products in the store"));
     }
   }
 

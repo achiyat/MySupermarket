@@ -1,6 +1,6 @@
 // server/src/services/admin/admin.routes.ts
 import { Router } from "express";
-import { validateUser } from "./admin.middlewares";
+// import { validateUser } from "./admin.middlewares";
 import { Models } from "../../utils";
 import {
   createEntity,
@@ -13,7 +13,7 @@ import {
 export const adminRoutes: Router = Router();
 
 // User CRUD operations
-adminRoutes.post("/users", validateUser, createEntity(Models.User));
+adminRoutes.post("/users", createEntity(Models.User));
 adminRoutes.get("/users/:id", getEntityById(Models.User));
 adminRoutes.get("/users", getAllEntity(Models.User));
 adminRoutes.put("/users/:id", updateEntity(Models.User));
@@ -33,7 +33,7 @@ adminRoutes.get("/categories", getAllEntity(Models.Category));
 adminRoutes.put("/categories/:id", updateEntity(Models.Category));
 
 // Product CRU operations
-adminRoutes.post("/products", createEntity(Models.Product)); // validate
-adminRoutes.get("/products/:id", getEntityById(Models.Product));
+adminRoutes.post("/products", createEntity(Models.Product));
 adminRoutes.get("/products", getAllEntity(Models.Product));
+adminRoutes.get("/products/:id", getEntityById(Models.Product));
 adminRoutes.put("/products/:id", updateEntity(Models.Product));

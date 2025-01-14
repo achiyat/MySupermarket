@@ -20,7 +20,8 @@ export type ModelType = (typeof Models)[ModelKeys];
 
 export const resError = (error: any) => {
   const err = error as Error;
-  // console.log(err);
+  // console.log(err.message);
+  console.log(err);
   return err.message;
 };
 

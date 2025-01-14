@@ -1,32 +1,19 @@
 // client/src/Interfaces/interfaces.ts
-// import { ObjectId } from "bson";
 import { Role } from "../types/types";
 
-export interface Product {
-  id: string;
-  name: string;
-  description: string;
-  category: string;
-  tags: string[];
-  price: number;
-  image: string;
-  quantityInStock: number;
-  lastUpdated: string;
-}
-
 export interface User {
-  _id: string;
-  username: string;
-  email: string;
-  role: Role;
-  __v: number;
-}
-
-export interface SignUpData {
+  _id?: string;
   username: string;
   email: string;
   password: string;
   role: Role;
+  phone: string;
+  address?: string;
+  active?: boolean;
+  employeeFields?: {
+    stores: string[];
+  };
+  __v?: number;
 }
 
 export interface LoginData {
@@ -40,4 +27,41 @@ export interface Token {
 
 export interface MsgRes {
   message: string;
+}
+
+export interface Store {
+  _id?: string;
+  name: string;
+  branchName: string;
+  address: string;
+  employeeId: string;
+  active?: boolean;
+  __v?: number;
+}
+
+export interface Category {
+  _id?: string;
+  name: string;
+  products: string[];
+  active?: boolean;
+  __v?: number;
+}
+
+export interface Product {
+  _id?: string;
+  store: string;
+  name: string;
+  description?: string;
+  categories: string[];
+  price: number;
+  sale?: {
+    price: number;
+    fromDate: Date;
+    toDate: Date;
+  };
+  images?: string[];
+  lastUpdateDate?: Date;
+  numberInStock?: number;
+  active?: boolean;
+  __v?: number;
 }
