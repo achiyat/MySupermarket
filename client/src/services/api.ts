@@ -1,16 +1,6 @@
 // client/src/services/api.ts
 import axios from "axios";
-import {
-  CategoriesResponse,
-  Category_Response,
-  Product_Response,
-  ProductsResponse,
-  Store_Response,
-  StoresResponse,
-  TokenResponse,
-  User_Response,
-  UsersResponse,
-} from "../types/types";
+import { TokenResponse } from "../types/types";
 import {
   Category,
   LoginData,
@@ -22,140 +12,237 @@ import {
 const API_BASE_URL = "http://localhost:5000/api";
 
 // Register a new user
-export const register = async (data: User): Promise<User_Response> => {
-  const response = await axios.post<User_Response>(
-    `${API_BASE_URL}/auth/register`,
-    data
-  );
-  return response.data;
+export const register = async (data: User): Promise<User> => {
+  try {
+    const response = await axios.post<User>(
+      `${API_BASE_URL}/auth/register`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to register user");
+  }
 };
 
-// Log in a user
+// Log in a user and retrieve a token
 export const login = async (data: LoginData): Promise<TokenResponse> => {
-  const response = await axios.post<TokenResponse>(
-    `${API_BASE_URL}/auth/login`,
-    data
-  );
-  return response.data;
+  try {
+    const response = await axios.post<TokenResponse>(
+      `${API_BASE_URL}/auth/login`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to log in user");
+  }
 };
 
-// Users API
-export const getAllUsers = async (): Promise<UsersResponse> => {
-  const response = await axios.get<UsersResponse>(
-    `${API_BASE_URL}/admin/users`
-  );
-  return response.data;
+// `${API_BASE_URL}/admin/users`
+// Retrieve all users
+export const getAllUsers = async (): Promise<User[]> => {
+  try {
+    const response = await axios.get<User[]>(
+      `${API_BASE_URL}/admin/fields/users`
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to fetch users");
+  }
 };
 
-export const getUserById = async (id: string): Promise<User_Response> => {
-  const response = await axios.get<User_Response>(
-    `${API_BASE_URL}/admin/users/${id}`
-  );
-  console.log(response.data);
-  return response.data;
+// Retrieve a user by ID
+export const getUserById = async (id: string): Promise<User> => {
+  try {
+    const response = await axios.get<User>(
+      `${API_BASE_URL}/admin/fields/users/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to fetch user by ID");
+  }
 };
 
-export const updateUser = async (id: string): Promise<User_Response> => {
-  const response = await axios.put<User_Response>(
-    `${API_BASE_URL}/admin/users/${id}`
-  );
-  return response.data;
+// Update a user by ID
+export const updateUser = async (id: string, data: User): Promise<User> => {
+  try {
+    const response = await axios.put<User>(
+      `${API_BASE_URL}/admin/users/${id}`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to update user");
+  }
 };
 
-// Stores API
-export const createStore = async (data: Store): Promise<Store_Response> => {
-  const response = await axios.post<Store_Response>(
-    `${API_BASE_URL}/admin/stores`,
-    data
-  );
-  return response.data;
+// Create a new store
+export const createStore = async (data: Store): Promise<Store> => {
+  try {
+    const response = await axios.post<Store>(
+      `${API_BASE_URL}/admin/stores`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to create store");
+  }
 };
 
-export const getAllStores = async (): Promise<StoresResponse> => {
-  const response = await axios.get<StoresResponse>(
-    `${API_BASE_URL}/admin/stores`
-  );
-  return response.data;
+// Retrieve all stores
+export const getAllStores = async (): Promise<Store[]> => {
+  try {
+    const response = await axios.get<Store[]>(`${API_BASE_URL}/admin/stores`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to fetch stores");
+  }
 };
 
-export const getStoreById = async (id: string): Promise<Store_Response> => {
-  const response = await axios.get<Store_Response>(
-    `${API_BASE_URL}/admin/stores/${id}`
-  );
-  return response.data;
+// Retrieve a store by ID
+export const getStoreById = async (id: string): Promise<Store> => {
+  try {
+    const response = await axios.get<Store>(
+      `${API_BASE_URL}/admin/stores/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to fetch store by ID");
+  }
 };
 
-export const updateStore = async (id: string): Promise<Store_Response> => {
-  const response = await axios.put<Store_Response>(
-    `${API_BASE_URL}/admin/stores/${id}`
-  );
-  return response.data;
+// Update a store by ID
+export const updateStore = async (id: string, data: Store): Promise<Store> => {
+  try {
+    const response = await axios.put<Store>(
+      `${API_BASE_URL}/admin/stores/${id}`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to update store");
+  }
 };
 
-// Categories API
-export const createCategory = async (
-  data: Category
-): Promise<Category_Response> => {
-  const response = await axios.post<Category_Response>(
-    `${API_BASE_URL}/admin/categories`,
-    data
-  );
-  return response.data;
+// Create a new category
+export const createCategory = async (data: Category): Promise<Category> => {
+  try {
+    const response = await axios.post<Category>(
+      `${API_BASE_URL}/admin/categories`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to create category");
+  }
 };
 
-export const getAllCategories = async (): Promise<CategoriesResponse> => {
-  const response = await axios.get<CategoriesResponse>(
-    `${API_BASE_URL}/admin/categories`
-  );
-  return response.data;
+// `${API_BASE_URL}/admin/categories`
+// Retrieve all categories
+export const getAllCategories = async (): Promise<Category[]> => {
+  try {
+    const response = await axios.get<Category[]>(
+      `${API_BASE_URL}/admin/fields/categories`
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to fetch categories");
+  }
 };
 
-export const getCategoryById = async (
-  id: string
-): Promise<Category_Response> => {
-  const response = await axios.get<Category_Response>(
-    `${API_BASE_URL}/admin/categories/${id}`
-  );
-  return response.data;
+// Retrieve a category by ID
+export const getCategoryById = async (id: string): Promise<Category> => {
+  try {
+    const response = await axios.get<Category>(
+      `${API_BASE_URL}/admin/categories/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to fetch category by ID");
+  }
 };
 
+// Update a category by ID
 export const updateCategory = async (
-  id: string
-): Promise<Category_Response> => {
-  const response = await axios.put<Category_Response>(
-    `${API_BASE_URL}/admin/categories/${id}`
-  );
-  return response.data;
+  id: string,
+  data: Category
+): Promise<Category> => {
+  try {
+    const response = await axios.put<Category>(
+      `${API_BASE_URL}/admin/categories/${id}`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to update category");
+  }
 };
 
-// Products API
-export const createProduct = async (
+// Create a new product
+export const createProduct = async (data: Product): Promise<Product> => {
+  try {
+    const response = await axios.post<Product>(
+      `${API_BASE_URL}/admin/products`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to create product");
+  }
+};
+
+// Retrieve all products
+export const getAllProducts = async (): Promise<Product[]> => {
+  try {
+    const response = await axios.get<Product[]>(
+      `${API_BASE_URL}/admin/products`
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to fetch products");
+  }
+};
+
+// Retrieve a product by ID
+export const getProductById = async (id: string): Promise<Product> => {
+  try {
+    const response = await axios.get<Product>(
+      `${API_BASE_URL}/admin/products/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to fetch product by ID");
+  }
+};
+
+// Update a product by ID
+export const updateProduct = async (
+  id: string,
   data: Product
-): Promise<Product_Response> => {
-  const response = await axios.post<Product_Response>(
-    `${API_BASE_URL}/admin/products`,
-    data
-  );
-  return response.data;
-};
-
-export const getAllProducts = async (): Promise<ProductsResponse> => {
-  const response = await axios.get<ProductsResponse>(
-    `${API_BASE_URL}/admin/products`
-  );
-  return response.data;
-};
-
-export const getProductById = async (id: string): Promise<Product_Response> => {
-  const response = await axios.get<Product_Response>(
-    `${API_BASE_URL}/admin/products/${id}`
-  );
-  return response.data;
-};
-
-export const updateProduct = async (id: string): Promise<Product_Response> => {
-  const response = await axios.put<Product_Response>(
-    `${API_BASE_URL}/admin/products/${id}`
-  );
-  return response.data;
+): Promise<Product> => {
+  try {
+    const response = await axios.put<Product>(
+      `${API_BASE_URL}/admin/products/${id}`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to update product");
+  }
 };

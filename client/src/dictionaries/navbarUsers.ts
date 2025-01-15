@@ -6,7 +6,7 @@ export const navbarUsers: Record<Role, string[]> = {
     "home",
     "profile",
     "users",
-    "category",
+    "categories",
     "stores",
     // "permissions",
     // "management",

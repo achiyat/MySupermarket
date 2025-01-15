@@ -1,6 +1,21 @@
 // client/src/Interfaces/interfaces.ts
 import { Role } from "../types/types";
 
+// export interface User {
+//   _id?: string;
+//   username: string;
+//   email: string;
+//   password: string;
+//   role: Role;
+//   phone: string;
+//   address?: string;
+//   active?: boolean;
+//   employeeFields?: {
+//     stores: string[];
+//   };
+//   __v?: number;
+// }
+
 export interface User {
   _id?: string;
   username: string;
@@ -11,7 +26,7 @@ export interface User {
   address?: string;
   active?: boolean;
   employeeFields?: {
-    stores: string[];
+    stores: Store[];
   };
   __v?: number;
 }

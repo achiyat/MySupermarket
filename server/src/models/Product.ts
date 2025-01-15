@@ -28,7 +28,7 @@ const ProductSchema: Schema<IProduct> = new Schema(
       ref: "Store",
     },
     name: { type: String, required: true },
-    description: { type: String, default: "" },
+    description: { type: String, default: "No description available" },
     categories: [
       {
         type: mongoose.Schema.Types.ObjectId,

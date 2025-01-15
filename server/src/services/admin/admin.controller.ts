@@ -16,10 +16,13 @@ export const createEntity = <T>(model: Model<T & Document>) => {
   };
 };
 
-export const getAllEntity = <T>(model: Model<T & Document>) => {
+export const getAllEntity = <T>(
+  model: Model<T & Document>,
+  fields?: string | string[]
+) => {
   return async (req: Request, res: Response) => {
     try {
-      const entities = await getAll(model);
+      const entities = await getAll(model, fields);
       res.status(200).json(entities);
     } catch (error) {
       respond(res, 500, "Internal Server Error");
@@ -27,10 +30,13 @@ export const getAllEntity = <T>(model: Model<T & Document>) => {
   };
 };
 
-export const getEntityById = <T>(model: Model<T & Document>) => {
+export const getEntityById = <T>(
+  model: Model<T & Document>,
+  fields?: string | string[]
+) => {
   return async (req: Request, res: Response) => {
     try {
-      const entities = await getById(model, req.params.id);
+      const entities = await getById(model, req.params.id, fields);
       res.status(200).json(entities);
     } catch (error) {
       respond(res, 500, "Internal Server Error");

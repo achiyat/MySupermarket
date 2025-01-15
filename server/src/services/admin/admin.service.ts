@@ -16,12 +16,13 @@ export const create = async <T>(model: Model<T & Document>, body: any) => {
 
 export const getAll = async <T>(
   model: Model<T & Document>,
-  fields?: string
+  fields?: string | string[]
 ) => {
   try {
-    const query = fields
-      ? model.find().populate(fields).select("-password")
-      : model.find().select("-password");
+    const query = model
+      .find()
+      .populate(fields || [])
+      .select("-password");
 
     return await query.exec();
   } catch (error) {
@@ -32,12 +33,13 @@ export const getAll = async <T>(
 export const getById = async <T>(
   model: Model<T & Document>,
   id: string,
-  fields?: string
+  fields?: string | string[]
 ) => {
   try {
-    const query = fields
-      ? model.findById(id).populate(fields).select("-password")
-      : model.findById(id).select("-password");
+    const query = model
+      .findById(id)
+      .populate(fields || [])
+      .select("-password");
 
     return await query.exec();
   } catch (error) {

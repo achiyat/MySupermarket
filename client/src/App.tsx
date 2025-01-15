@@ -9,6 +9,11 @@ import { SignUp } from "./components/SignUp/signUp";
 import { Users } from "./pages/Users/users";
 import { Stores } from "./pages/Stores/stores";
 import { Categories } from "./pages/Categories/categories";
+// import { UserDetail } from "./pages/Users/userDetail";
+// import { StoreDetail } from "./pages/Stores/storeDetail";
+// import { CategoryDetail } from "./pages/Categories/categoryDetail";
+import { DetailView } from "./pages/DetailView/detailView";
+import { Category, Store, User } from "./Interfaces/interfaces";
 
 const App: React.FC = () => {
   return (
@@ -22,9 +27,21 @@ const App: React.FC = () => {
         <Route path="/permissions" element={<div>Permissions Page</div>} />
         <Route path="/work" element={<div>Work Page</div>} />
         <Route path="/shopping" element={<div>Shopping Page</div>} />
-        <Route path="/category" element={<Categories />} />
         <Route path="/users" element={<Users />} />
+        <Route
+          path="/users/:id"
+          element={<DetailView<User> pageType="users" />}
+        />
         <Route path="/stores" element={<Stores />} />
+        <Route
+          path="/stores/:id"
+          element={<DetailView<Store> pageType="stores" />}
+        />
+        <Route path="/categories" element={<Categories />} />
+        <Route
+          path="/categories/:id"
+          element={<DetailView<Category> pageType="categories" />}
+        />
       </Route>
 
       {/* Public Routes */}

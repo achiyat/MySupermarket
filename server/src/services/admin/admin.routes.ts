@@ -18,7 +18,14 @@ adminRoutes.get("/users/:id", getEntityById(Models.User));
 adminRoutes.get("/users", getAllEntity(Models.User));
 adminRoutes.put("/users/:id", updateEntity(Models.User));
 adminRoutes.delete("/users/:id", deleteUser);
-// adminRoutes.get("/users/stores/:id", getEntityById(Models.User)); // WithStores
+adminRoutes.get(
+  "/fields/users/:id",
+  getEntityById(Models.User, "employeeFields.stores")
+);
+adminRoutes.get(
+  "/fields/users",
+  getAllEntity(Models.User, "employeeFields.stores")
+);
 
 // Store CRU operations
 adminRoutes.post("/stores", createEntity(Models.Store)); // validate validateStore
@@ -31,6 +38,14 @@ adminRoutes.post("/categories", createEntity(Models.Category)); // validate vali
 adminRoutes.get("/categories/:id", getEntityById(Models.Category));
 adminRoutes.get("/categories", getAllEntity(Models.Category));
 adminRoutes.put("/categories/:id", updateEntity(Models.Category));
+adminRoutes.get(
+  "/fields/categories",
+  getAllEntity(Models.Category, ["products", "products.categories"])
+);
+adminRoutes.get(
+  "/fields/categories/:id",
+  getEntityById(Models.Category, ["products", "products.categories"])
+);
 
 // Product CRU operations
 adminRoutes.post("/products", createEntity(Models.Product));

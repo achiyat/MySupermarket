@@ -8,6 +8,9 @@ import {
   User,
 } from "../Interfaces/interfaces";
 export type Role = "administrator" | "employee" | "buyer";
+export type PageType = "users" | "stores" | "categories";
+// export type Pages = User | Store | Category;
+
 export type User_Response = User | MsgRes;
 export type UsersResponse = User[] | MsgRes;
 

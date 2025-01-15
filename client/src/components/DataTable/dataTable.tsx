@@ -1,40 +1,17 @@
 // client/src/components/DataTable/dataTable.tsx
-import React, { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import "./dataTable.css";
-
-interface HeaderMapping {
-  [key: string]: { [key: string]: string };
-}
-
-const headerMapping: HeaderMapping = {
-  users: {
-    username: "Name",
-    email: "Email",
-    role: "Type",
-    active: "Active",
-    showDetails: "Details",
-  },
-  stores: {
-    name: "Name",
-    branchName: "Branch",
-    address: "Address",
-    active: "Active",
-    showDetails: "Details",
-  },
-  categories: {
-    name: "Name",
-    productCount: "Product Count",
-    active: "Active",
-    showDetails: "Details",
-  },
-};
+import { headerMapping } from "../../dictionaries/headerMapping";
+import { useNavigate } from "react-router-dom";
+import { PageType } from "../../types/types";
 
 interface DataTableProps<T> {
-  pageType: "users" | "stores" | "categories";
+  pageType: PageType;
   data: T[];
 }
 
 export const DataTable = <T,>({ pageType, data }: DataTableProps<T>) => {
+  const navigate = useNavigate();
   const [filters, setFilters] = useState({
     name: "",
     type: "",
@@ -73,7 +50,9 @@ export const DataTable = <T,>({ pageType, data }: DataTableProps<T>) => {
   });
 
   const handleShowDetails = (item: any) => {
-    console.log("Showing details for:", item);
+    const name = item.username || item.name;
+    console.log(`/${pageType}/${name}`);
+    navigate(`/${pageType}/${name}`, { state: { item } });
   };
 
   const renderTableHeaders = () => {

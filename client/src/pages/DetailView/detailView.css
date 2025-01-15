@@ -1,0 +1,84 @@
+.detailView-container {
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.detailView-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.detailView-title {
+  margin: 0;
+}
+
+.detailView-save {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.detailView-save.inactive {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.detailView-save.active {
+  background-color: #28a745;
+  color: white;
+}
+
+.detailView-field {
+  display: flex;
+  align-items: center; /* Vertically aligns items */
+  margin-bottom: 10px;
+}
+
+.detailView-field p {
+  margin: 0px;
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+.detailView-field .active-yes {
+  color: green;
+}
+
+.detailView-field .active-no {
+  color: red;
+}
+
+.detailView-input {
+  margin-left: 10px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.detailView-array-info {
+  margin-top: 20px;
+}
+
+.detailView-array-container {
+  display: flex;
+  flex-wrap: wrap; /* Allows items to wrap if needed */
+  gap: 20px; /* Spacing between items */
+  margin-top: 10px; /* Add space between the h3 and items */
+}
+
+.detailView-array-item {
+  background-color: #ffffff;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  /* Adjusts width to fit two items per row with a gap */
+  width: calc(50% - 20px);
+  box-sizing: border-box; /* Includes padding and border in width */
+}
