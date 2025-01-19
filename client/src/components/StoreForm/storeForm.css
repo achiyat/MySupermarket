@@ -1,0 +1,22 @@
+/* client/src/components/StoreForm/storeForm.css */
+.storeForm-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.storeForm-label {
+  display: flex;
+  flex-direction: column;
+}
+
+.storeForm-input {
+  padding: 8px;
+  font-size: 16px;
+}
+
+.storeForm-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}

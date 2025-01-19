@@ -1,5 +1,6 @@
 // client/src/components/StoreForm/storeForm.tsx
 import React, { useState } from "react";
+import "./storeForm.css";
 
 export const StoreForm: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -18,35 +19,43 @@ export const StoreForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Store Name:
-        <input
-          type="text"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-        />
-      </label>
-      <label>
-        Branch:
-        <input
-          type="text"
-          name="branch"
-          value={formData.branch}
-          onChange={handleChange}
-        />
-      </label>
-      <label>
-        Address:
-        <input
-          type="text"
-          name="address"
-          value={formData.address}
-          onChange={handleChange}
-        />
-      </label>
-      <button type="submit">Create Store</button>
-    </form>
+    <div className="storeForm-container">
+      <h3>Create a Store</h3>
+      <form onSubmit={handleSubmit}>
+        <label className="storeForm-label">
+          Store Name:
+          <input
+            className="storeForm-input"
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+          />
+        </label>
+        <label className="storeForm-label">
+          Branch:
+          <input
+            className="storeForm-input"
+            type="text"
+            name="branch"
+            value={formData.branch}
+            onChange={handleChange}
+          />
+        </label>
+        <label className="storeForm-label">
+          Address:
+          <input
+            className="storeForm-input"
+            type="text"
+            name="address"
+            value={formData.address}
+            onChange={handleChange}
+          />
+        </label>
+        <button className="storeForm-button" type="submit">
+          Create Store
+        </button>
+      </form>
+    </div>
   );
 };
