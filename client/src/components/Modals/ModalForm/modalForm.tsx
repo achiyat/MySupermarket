@@ -1,5 +1,5 @@
 import React from "react";
-import "./ModalForm.css";
+import "./modalForm.css";
 
 interface ModalFormProps {
   isOpen: boolean;
