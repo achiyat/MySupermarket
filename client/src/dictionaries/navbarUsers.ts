@@ -1,16 +1,15 @@
 // client/src/dictionaries/navbarUsers.ts
 import { Role } from "../types/types";
+import { links } from "./links";
 
 export const navbarUsers: Record<Role, string[]> = {
   administrator: [
-    "home",
-    "profile",
-    "users",
-    "categories",
-    "stores",
+    links.users,
+    links.stores,
+    links.categories,
     // "permissions",
     // "management",
   ],
-  employee: ["home", "profile", "work"],
-  buyer: ["home", "profile", "shopping"],
+  employee: [links.home, links.profile, links.work],
+  buyer: [links.home, links.profile, links.shopping],
 };
