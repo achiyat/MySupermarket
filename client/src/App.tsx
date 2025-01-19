@@ -38,6 +38,12 @@ const App: React.FC = () => {
           path={`/${links.categories}/:id`}
           element={<DetailView<Category> pageType="categories" />}
         />
+
+        <Route path={`/${links.settings}`} element={<div>Settings Page</div>} />
+        <Route
+          path={`/${links.permissions}`}
+          element={<div>Permissions Page</div>}
+        />
       </Route>
 
       {/* Public Routes */}

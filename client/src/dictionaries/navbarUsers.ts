@@ -7,9 +7,8 @@ export const navbarUsers: Record<Role, string[]> = {
     links.users,
     links.stores,
     links.categories,
-    // "permissions",
-    // "management",
+    links.permissions,
   ],
   employee: [links.home, links.profile, links.work],
-  buyer: [links.home, links.profile, links.shopping],
+  buyer: [links.home, links.settings, links.shopping],
 };
