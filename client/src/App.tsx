@@ -12,6 +12,7 @@ import { Categories } from "./pages/Categories/categories";
 import { DetailView } from "./pages/DetailView/detailView";
 import { Category, Store, User } from "./Interfaces/interfaces";
 import { links } from "./dictionaries/links";
+import { Settings } from "./pages/Settings/settings";
 
 const App: React.FC = () => {
   return (
@@ -39,7 +40,7 @@ const App: React.FC = () => {
           element={<DetailView<Category> pageType="categories" />}
         />
 
-        <Route path={`/${links.settings}`} element={<div>Settings Page</div>} />
+        <Route path={`/${links.settings}`} element={<Settings />} />
         <Route
           path={`/${links.permissions}`}
           element={<div>Permissions Page</div>}

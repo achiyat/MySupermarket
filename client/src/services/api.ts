@@ -11,6 +11,10 @@ import {
 
 const API_BASE_URL = "http://localhost:5000/api";
 
+export const createRequest = async (requestData: any) => {
+  console.log(requestData);
+};
+
 // Register a new user
 export const register = async (data: User): Promise<User> => {
   try {
