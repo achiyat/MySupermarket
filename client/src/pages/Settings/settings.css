@@ -26,14 +26,9 @@
   background-color: #0056b3;
 }
 
-.request-sent-button {
+.create-request-button.inactive {
   background-color: #6c757d;
-  color: white;
-  padding: 10px 20px;
-  border: none;
   cursor: not-allowed;
-  font-size: 16px;
-  border-radius: 5px;
 }
 
 .request-explanation {
