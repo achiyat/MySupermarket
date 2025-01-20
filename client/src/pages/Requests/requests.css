@@ -1,0 +1,47 @@
+/* client/src/pages/Requests/requests.css */
+.requests-container {
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+.requests-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.requests-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.request-item {
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+.request-type {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.request-name,
+.request-created-at,
+.request-status {
+  margin: 5px 0;
+}
+
+.request-status.pending {
+  color: orange;
+}
+
+.request-status.approved {
+  color: green;
+}
+
+.request-status.rejected {
+  color: red;
+}

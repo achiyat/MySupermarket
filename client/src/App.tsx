@@ -13,6 +13,7 @@ import { DetailView } from "./pages/DetailView/detailView";
 import { Category, Store, User } from "./Interfaces/interfaces";
 import { links } from "./dictionaries/links";
 import { Settings } from "./pages/Settings/settings";
+import { Requests } from "./pages/Requests/requests";
 
 const App: React.FC = () => {
   return (
@@ -21,7 +22,8 @@ const App: React.FC = () => {
       <Route element={<ProtectedRoute />}>
         <Route path={`/`} element={<Home />} />
         <Route path={`/${links.home}`} element={<Home />} />
-        <Route path={`/${links.profile}`} element={<div>Profile Page</div>} />
+        <Route path={`/${links.settings}`} element={<Settings />} />
+        <Route path={`/${links.requests}`} element={<Requests />} />
         <Route path={`/${links.work}`} element={<div>Work Page</div>} />
         <Route path={`/${links.shopping}`} element={<div>Shopping Page</div>} />
         <Route path={`/${links.users}`} element={<Users />} />
@@ -39,8 +41,6 @@ const App: React.FC = () => {
           path={`/${links.categories}/:id`}
           element={<DetailView<Category> pageType="categories" />}
         />
-
-        <Route path={`/${links.settings}`} element={<Settings />} />
         <Route
           path={`/${links.permissions}`}
           element={<div>Permissions Page</div>}

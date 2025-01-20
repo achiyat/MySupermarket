@@ -5,6 +5,7 @@ import {
   Category,
   LoginData,
   Product,
+  Request,
   Store,
   User,
 } from "../Interfaces/interfaces";
@@ -13,6 +14,43 @@ const API_BASE_URL = "http://localhost:5000/api";
 
 export const createRequest = async (requestData: any) => {
   console.log(requestData);
+};
+
+export const getAllRequests = async (): Promise<Request[]> => {
+  return [
+    {
+      _id: "678hh503dd38a936cab7e719",
+      type: "Change status",
+      status: "Pending",
+      fromUser: "6785b5037638a936cab7e710",
+      username: "user",
+      data: {
+        _id: "6785b5037638a936cab7e710",
+        username: "user",
+        email: "user@gmail.com",
+        role: "employee",
+        phone: "0541234567",
+        address: "user address",
+        active: false,
+        __v: 0,
+      },
+      created_at: "2025-01-20T01:14:12.274Z",
+    },
+    {
+      _id: "888rh503ydd34a936cab7e719",
+      type: "Create a store",
+      status: "Pending",
+      fromUser: "67858a9292b0ed20c81e6425",
+      username: "employee",
+      data: {
+        name: "Store Name",
+        branchName: "Store Branch",
+        address: "Store Address",
+        employeeId: "67858a9292b0ed20c81e6425",
+      },
+      created_at: "2025-01-20T01:16:01.205Z",
+    },
+  ];
 };
 
 // Register a new user

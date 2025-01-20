@@ -3,6 +3,7 @@ export const links = {
   home: "home",
   profile: "profile",
   settings: "settings",
+  requests: "requests",
   permissions: "permissions",
   work: "work",
   shopping: "shopping",

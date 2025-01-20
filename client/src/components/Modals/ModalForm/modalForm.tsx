@@ -8,16 +8,18 @@ interface ModalFormProps {
   user: User;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  onRequestSent: () => void;
 }
 
 export const ModalForm: React.FC<ModalFormProps> = ({
   user,
   isOpen,
   setIsOpen,
+  onRequestSent,
 }) => {
   const [formData, setFormData] = React.useState({
     name: "",
-    branch: "",
+    branchName: "",
     address: "",
   });
 
@@ -28,22 +30,26 @@ export const ModalForm: React.FC<ModalFormProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const requestData = {
-      requestType: "Create a store",
-      requestDate: new Date().toISOString(),
+      type: "Create a store",
       status: "Pending",
+      fromUser: user._id,
+      username: user.username,
       data: { ...formData, employeeId: user._id },
+      created_at: new Date().toISOString(),
     };
 
     try {
       await createRequest(requestData);
-      setFormData({ name: "", branch: "", address: "" });
+      setFormData({ name: "", branchName: "", address: "" });
       setIsOpen(false);
+      onRequestSent();
     } catch (error) {
       console.error("Error creating store request:", error);
     }
   };
 
-  const isFormEmpty = !formData.name || !formData.branch || !formData.address;
+  const isFormEmpty =
+    !formData.name || !formData.branchName || !formData.address;
 
   return (
     isOpen && (
@@ -72,7 +78,7 @@ export const ModalForm: React.FC<ModalFormProps> = ({
                   className="modalForm-input"
                   type="text"
                   name="branch"
-                  value={formData.branch}
+                  value={formData.branchName}
                   onChange={handleChange}
                   required
                 />

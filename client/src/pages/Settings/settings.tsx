@@ -14,10 +14,12 @@ export const Settings: React.FC = () => {
   const handleCreateStatus = async () => {
     try {
       const requestData = {
-        requestType: "Change status",
-        requestDate: new Date().toISOString(),
+        type: "Change status",
         status: "Pending",
-        data: { user: { ...user, role: "employee" } },
+        fromUser: user._id,
+        username: user.username,
+        data: { ...user, role: "employee" },
+        created_at: new Date().toISOString(),
       };
       await createRequest(requestData);
       setIsRequestSent(true);
@@ -71,7 +73,14 @@ export const Settings: React.FC = () => {
             user={user}
             isOpen={isModalOpen}
             setIsOpen={setIsModalOpen}
+            onRequestSent={() => setIsRequestSent(true)}
           />
+          {isRequestSent && (
+            <p className="settings-explanation">
+              The request has been sent, please wait for the response. You can
+              track the status of the request in the "Requests" area.
+            </p>
+          )}
         </div>
       )}
     </div>

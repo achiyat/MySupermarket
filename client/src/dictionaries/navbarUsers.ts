@@ -8,7 +8,8 @@ export const navbarUsers: Record<Role, string[]> = {
     links.stores,
     links.categories,
     links.permissions,
+    links.requests,
   ],
-  employee: [links.home, links.settings, links.work],
-  buyer: [links.home, links.settings, links.shopping],
+  employee: [links.work, links.settings, links.requests],
+  buyer: [links.shopping, links.settings, links.requests],
 };

@@ -1,26 +1,11 @@
 // client/src/Interfaces/interfaces.ts
-import { Role } from "../types/types";
-
-// export interface User {
-//   _id?: string;
-//   username: string;
-//   email: string;
-//   password: string;
-//   role: Role;
-//   phone: string;
-//   address?: string;
-//   active?: boolean;
-//   employeeFields?: {
-//     stores: string[];
-//   };
-//   __v?: number;
-// }
+import { Role, Status } from "../types/types";
 
 export interface User {
   _id?: string;
   username: string;
   email: string;
-  password: string;
+  password?: string;
   role: Role;
   phone: string;
   address?: string;
@@ -79,4 +64,14 @@ export interface Product {
   numberInStock?: number;
   active?: boolean;
   __v?: number;
+}
+
+export interface Request {
+  _id: string;
+  type: string;
+  status: Status;
+  fromUser: string;
+  username: string;
+  data: User | Store;
+  created_at: string;
 }
