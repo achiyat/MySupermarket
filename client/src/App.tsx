@@ -14,6 +14,7 @@ import { Category, Store, User } from "./Interfaces/interfaces";
 import { links } from "./dictionaries/links";
 import { Settings } from "./pages/Settings/settings";
 import { Requests } from "./pages/Requests/requests";
+import { Approvals } from "./pages/Approvals/approvals";
 
 const App: React.FC = () => {
   return (
@@ -24,6 +25,7 @@ const App: React.FC = () => {
         <Route path={`/${links.home}`} element={<Home />} />
         <Route path={`/${links.settings}`} element={<Settings />} />
         <Route path={`/${links.requests}`} element={<Requests />} />
+        <Route path={`/${links.approvals}`} element={<Approvals />} />
         <Route path={`/${links.work}`} element={<div>Work Page</div>} />
         <Route path={`/${links.shopping}`} element={<div>Shopping Page</div>} />
         <Route path={`/${links.users}`} element={<Users />} />
@@ -40,10 +42,6 @@ const App: React.FC = () => {
         <Route
           path={`/${links.categories}/:id`}
           element={<DetailView<Category> pageType="categories" />}
-        />
-        <Route
-          path={`/${links.permissions}`}
-          element={<div>Permissions Page</div>}
         />
       </Route>
 

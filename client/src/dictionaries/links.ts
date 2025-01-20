@@ -4,7 +4,7 @@ export const links = {
   profile: "profile",
   settings: "settings",
   requests: "requests",
-  permissions: "permissions",
+  approvals: "approvals",
   work: "work",
   shopping: "shopping",
   users: "users",

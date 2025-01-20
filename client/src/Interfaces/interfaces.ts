@@ -74,4 +74,5 @@ export interface Request {
   username: string;
   data: User | Store;
   created_at: string;
+  message?: string;
 }
