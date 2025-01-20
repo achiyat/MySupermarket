@@ -8,11 +8,11 @@
   margin-bottom: 20px;
 }
 
-.permissions-section {
+.settings-section {
   margin-top: 20px;
 }
 
-.create-request-button {
+.settings-button {
   background-color: #007bff;
   color: white;
   padding: 10px 20px;
@@ -22,16 +22,16 @@
   border-radius: 5px;
 }
 
-.create-request-button:hover {
+.settings-button:hover {
   background-color: #0056b3;
 }
 
-.create-request-button.inactive {
+.settings-button.inactive {
   background-color: #6c757d;
   cursor: not-allowed;
 }
 
-.request-explanation {
+.settings-explanation {
   margin-top: 20px;
   font-size: 14px;
   color: #555;
