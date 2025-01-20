@@ -31,43 +31,49 @@ export const Settings: React.FC = () => {
       <h1 className="settings-title">Settings</h1>
 
       {/* Permissions Section */}
-      <div className="settings-section">
-        <h2>Permissions</h2>
-        <p>
-          To become a seller and create your own store, you must create a status
-          change request.
-        </p>
-        <button
-          className={`settings-button ${isRequestSent ? "inactive" : ""}`}
-          onClick={handleCreateStatus}
-          disabled={isRequestSent}
-        >
-          {isRequestSent ? "Request sent" : "Create a request to change status"}
-        </button>
-        {isRequestSent && (
-          <p className="settings-explanation">
-            The request has been sent, please wait for the response. You can
-            track the status of the request in the "Requests" area.
+      {user.role === "buyer" && (
+        <div className="settings-section">
+          <h2>Permissions</h2>
+          <p>
+            To become a seller and create your own store, you must create a
+            status change request.
           </p>
-        )}
-      </div>
+          <button
+            className={`settings-button ${isRequestSent ? "inactive" : ""}`}
+            onClick={handleCreateStatus}
+            disabled={isRequestSent}
+          >
+            {isRequestSent
+              ? "Request sent"
+              : "Create a request to change status"}
+          </button>
+          {isRequestSent && (
+            <p className="settings-explanation">
+              The request has been sent, please wait for the response. You can
+              track the status of the request in the "Requests" area.
+            </p>
+          )}
+        </div>
+      )}
 
       {/* Create Store Section */}
-      <div className="settings-section">
-        <h2>Create a Store</h2>
-        <p>To create a store, you must send a request to create a store.</p>
-        <button
-          className="settings-button"
-          onClick={() => setIsModalOpen(true)}
-        >
-          Create a request to create a store
-        </button>
-        <ModalForm
-          user={user}
-          isOpen={isModalOpen}
-          setIsOpen={setIsModalOpen}
-        />
-      </div>
+      {user.role === "employee" && (
+        <div className="settings-section">
+          <h2>Create a Store</h2>
+          <p>To create a store, you must send a request to create a store.</p>
+          <button
+            className="settings-button"
+            onClick={() => setIsModalOpen(true)}
+          >
+            Create a request to create a store
+          </button>
+          <ModalForm
+            user={user}
+            isOpen={isModalOpen}
+            setIsOpen={setIsModalOpen}
+          />
+        </div>
+      )}
     </div>
   );
 };
