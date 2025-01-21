@@ -1,3 +1,4 @@
+// client/src/pages/Approvals/approvals.tsx
 import React, { useEffect, useState } from "react";
 import "./approvals.css";
 import { getAllRequests } from "../../services/api";
@@ -33,6 +34,8 @@ export const Approvals: React.FC = () => {
 
   const handleCheckRequest = (requestId: string) => {
     const response = responses.find((res) => res._id === requestId);
+    const request = requests.find((req) => req._id === requestId);
+    console.log(request?.fromUser, request?.status, request?.message);
     if (response) {
       setCheckedRequests((prevChecked) => ({
         ...prevChecked,
@@ -53,11 +56,6 @@ export const Approvals: React.FC = () => {
           : request
       )
     );
-
-    setCheckedRequests((prevChecked) => ({
-      ...prevChecked,
-      [requestId]: "approved",
-    }));
   };
 
   const handleRejection = (requestId: string) => {
@@ -72,11 +70,6 @@ export const Approvals: React.FC = () => {
           : request
       )
     );
-
-    setCheckedRequests((prevChecked) => ({
-      ...prevChecked,
-      [requestId]: "rejected",
-    }));
   };
 
   return (
@@ -133,6 +126,10 @@ export const Approvals: React.FC = () => {
                 >
                   Check Request
                 </button>
+              ) : request.message ? (
+                <p className={`message ${request.status}`}>
+                  {requests.find((req) => req._id === request._id)?.message}
+                </p>
               ) : checkedRequests[request._id] === "success" ? (
                 <button
                   className="approve-btn"
@@ -141,21 +138,13 @@ export const Approvals: React.FC = () => {
                   Approve
                 </button>
               ) : checkedRequests[request._id] === "rejected" ? (
-                request.message ? (
-                  <p className={`message rejected`}>{request.message}</p>
-                ) : (
-                  <button
-                    className="reject-btn"
-                    onClick={() => handleRejection(request._id)}
-                  >
-                    Reject
-                  </button>
-                )
-              ) : (
-                <p className={`message ${checkedRequests[request._id]}`}>
-                  {requests.find((req) => req._id === request._id)?.message}
-                </p>
-              )}
+                <button
+                  className="reject-btn"
+                  onClick={() => handleRejection(request._id)}
+                >
+                  Reject
+                </button>
+              ) : null}
             </div>
           </div>
         ))}

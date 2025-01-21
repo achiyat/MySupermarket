@@ -1,3 +1,4 @@
+/* client/src/pages/Approvals/approvals.css */
 .approvals-container {
   padding: 20px;
   background-color: #f9f9f9;
@@ -82,11 +83,11 @@ h1 {
   font-size: 14px;
 }
 
-.message.approved {
+.message.Approved {
   color: green;
 }
 
-.message.rejected {
+.message.Rejected {
   color: red;
 }
 
