@@ -52,3 +52,9 @@ adminRoutes.post("/products", createEntity(Models.Product));
 adminRoutes.get("/products", getAllEntity(Models.Product));
 adminRoutes.get("/products/:id", getEntityById(Models.Product));
 adminRoutes.put("/products/:id", updateEntity(Models.Product));
+
+// Product CRU operations
+adminRoutes.post("/requests", createEntity(Models.Request));
+adminRoutes.get("/requests", getAllEntity(Models.Request));
+adminRoutes.get("/requests/:id", getEntityById(Models.Request));
+adminRoutes.put("/requests/:id", updateEntity(Models.Request));
