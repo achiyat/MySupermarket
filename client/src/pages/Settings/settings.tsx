@@ -1,8 +1,8 @@
 // client/src/pages/Settings/settings.tsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { Request, User } from "../../Interfaces/interfaces";
-import { createRequest } from "../../services/api";
+import { createRequest, getRequestById } from "../../services/api";
 import { ModalForm } from "../../components/Modals/ModalForm/modalForm";
 import "./settings.css";
 
@@ -10,6 +10,24 @@ export const Settings: React.FC = () => {
   const { user } = useOutletContext<{ user: User }>();
   const [isRequestSent, setIsRequestSent] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    const getRequests = async () => {
+      try {
+        const data = await getRequestById(user._id!);
+        if (data) setIsRequestSent(true);
+        return true;
+      } catch (error: any) {
+        if (error.response && error.response.status === 404) {
+          setIsRequestSent(false);
+        } else {
+          console.error("Error fetching requests:", error);
+        }
+      }
+    };
+
+    getRequests();
+  }, [user._id]);
 
   const handleCreateStatus = async () => {
     try {
