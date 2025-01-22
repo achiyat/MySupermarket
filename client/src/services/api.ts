@@ -25,92 +25,28 @@ export const createRequest = async (data: Request): Promise<Request> => {
   }
 };
 
-// return requests;
 export const getAllRequests = async (): Promise<Request[]> => {
-  return [
-    {
-      _id: "1",
-      type: "Change status",
-      status: "pending",
-      fromUser: "user1",
-      username: "user1",
-      data: {
-        _id: "6785b5037638a936cab7e710",
-        username: "user1",
-        email: "user1@gmail.com",
-        role: "employee",
-        phone: "0541234567",
-        address: "user1 address",
-        active: false,
-        __v: 0,
-      },
-      created_at: "2025-01-20T01:14:12.274Z",
-    },
-    {
-      _id: "2",
-      type: "Create a store",
-      status: "pending",
-      fromUser: "user2",
-      username: "user2",
-      data: {
-        name: "Store A",
-        branchName: "Main Branch",
-        address: "123 Main St",
-        employeeId: "67858a9292b0ed20c81e6425",
-      },
-      created_at: "2025-01-20T01:15:00.000Z",
-    },
-    {
-      _id: "3",
-      type: "Change status",
-      status: "pending",
-      fromUser: "user3",
-      username: "user3",
-      data: {
-        _id: "6785b5037638a936cab7e710",
-        username: "user3",
-        email: "user3@gmail.com",
-        role: "employee",
-        phone: "0549876543",
-        address: "user3 address",
-        active: true,
-        __v: 0,
-      },
-      created_at: "2025-01-20T01:16:12.274Z",
-    },
-    {
-      _id: "4",
-      type: "Create a store",
-      status: "pending",
-      fromUser: "user4",
-      username: "user4",
-      data: {
-        name: "Store B",
-        branchName: "Secondary Branch",
-        address: "456 Secondary St",
-        employeeId: "67858a9292b0ed20c81e6426",
-      },
-      created_at: "2025-01-20T01:17:00.000Z",
-    },
-    {
-      _id: "5",
-      type: "Change status",
-      status: "pending",
-      fromUser: "user5",
-      username: "user5",
-      data: {
-        _id: "6785b5037638a936cab7e710",
-        username: "user5",
-        email: "user5@gmail.com",
-        role: "administrator",
-        phone: "0545678901",
-        address: "user5 address",
-        active: true,
-        __v: 0,
-      },
-      created_at: "2025-01-20T01:18:12.274Z",
-    },
-  ];
+  try {
+    const response = await axios.get<Request[]>(
+      `${API_BASE_URL}/admin/requests`
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to fetch users");
+  }
+};
+
+export const getRequestById = async (id: string): Promise<Request> => {
+  try {
+    const response = await axios.get<Request>(
+      `${API_BASE_URL}/admin/requests/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to fetch user by ID");
+  }
 };
 
 // Register a new user
