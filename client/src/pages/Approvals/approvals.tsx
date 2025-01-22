@@ -35,7 +35,7 @@ export const Approvals: React.FC = () => {
   const handleCheckRequest = (requestId: string) => {
     const response = responses.find((res) => res._id === requestId);
     const request = requests.find((req) => req._id === requestId);
-    console.log(request?.fromUser, request?.status, request?.message);
+    console.log(request, request?.message);
     if (response) {
       setCheckedRequests((prevChecked) => ({
         ...prevChecked,
@@ -50,7 +50,7 @@ export const Approvals: React.FC = () => {
         request._id === requestId
           ? {
               ...request,
-              status: "Approved",
+              status: "approved",
               message: "The request was approved",
             }
           : request
@@ -66,7 +66,7 @@ export const Approvals: React.FC = () => {
     setRequests((prevRequests) =>
       prevRequests.map((request) =>
         request._id === requestId
-          ? { ...request, status: "Rejected", message: rejectionMessage }
+          ? { ...request, status: "rejected", message: rejectionMessage }
           : request
       )
     );

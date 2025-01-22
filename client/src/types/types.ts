@@ -8,7 +8,7 @@ import {
   User,
 } from "../Interfaces/interfaces";
 export type Role = "administrator" | "employee" | "buyer";
-export type Status = "Pending" | "Approved" | "Rejected";
+export type Status = "pending" | "approved" | "rejected";
 export type PageType = "users" | "stores" | "categories";
 // export type Pages = User | Store | Category;
 

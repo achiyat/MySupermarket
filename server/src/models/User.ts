@@ -2,11 +2,7 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 import bcrypt from "bcrypt";
 
-enum Role {
-  Administrator = "administrator",
-  Employee = "employee",
-  Buyer = "buyer",
-}
+type Role = "administrator" | "employee" | "buyer";
 
 interface IUser extends Document {
   username: string;
@@ -27,7 +23,7 @@ const UserSchema: Schema<IUser> = new Schema(
     username: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    role: { type: String, enum: Object.values(Role), required: true },
+    role: { type: String, required: true },
     phone: { type: String, required: true, default: "" },
     address: { type: String, default: "" },
     active: { type: Boolean, default: true },

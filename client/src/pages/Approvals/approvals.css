@@ -83,11 +83,11 @@ h1 {
   font-size: 14px;
 }
 
-.message.Approved {
+.message.approved {
   color: green;
 }
 
-.message.Rejected {
+.message.rejected {
   color: red;
 }
 
