@@ -12,16 +12,26 @@ import {
 
 const API_BASE_URL = "http://localhost:5000/api";
 
-export const createRequest = async (requestData: any) => {
-  console.log(requestData);
+export const createRequest = async (data: Request): Promise<Request> => {
+  try {
+    const response = await axios.post<Request>(
+      `${API_BASE_URL}/admin/requests`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to create request");
+  }
 };
+
 // return requests;
 export const getAllRequests = async (): Promise<Request[]> => {
   return [
     {
       _id: "1",
       type: "Change status",
-      status: "Pending",
+      status: "pending",
       fromUser: "user1",
       username: "user1",
       data: {
@@ -35,12 +45,11 @@ export const getAllRequests = async (): Promise<Request[]> => {
         __v: 0,
       },
       created_at: "2025-01-20T01:14:12.274Z",
-      message: "",
     },
     {
       _id: "2",
       type: "Create a store",
-      status: "Pending",
+      status: "pending",
       fromUser: "user2",
       username: "user2",
       data: {
@@ -50,12 +59,11 @@ export const getAllRequests = async (): Promise<Request[]> => {
         employeeId: "67858a9292b0ed20c81e6425",
       },
       created_at: "2025-01-20T01:15:00.000Z",
-      message: "",
     },
     {
       _id: "3",
       type: "Change status",
-      status: "Pending",
+      status: "pending",
       fromUser: "user3",
       username: "user3",
       data: {
@@ -69,12 +77,11 @@ export const getAllRequests = async (): Promise<Request[]> => {
         __v: 0,
       },
       created_at: "2025-01-20T01:16:12.274Z",
-      message: "",
     },
     {
       _id: "4",
       type: "Create a store",
-      status: "Pending",
+      status: "pending",
       fromUser: "user4",
       username: "user4",
       data: {
@@ -84,12 +91,11 @@ export const getAllRequests = async (): Promise<Request[]> => {
         employeeId: "67858a9292b0ed20c81e6426",
       },
       created_at: "2025-01-20T01:17:00.000Z",
-      message: "",
     },
     {
       _id: "5",
       type: "Change status",
-      status: "Pending",
+      status: "pending",
       fromUser: "user5",
       username: "user5",
       data: {
@@ -103,7 +109,6 @@ export const getAllRequests = async (): Promise<Request[]> => {
         __v: 0,
       },
       created_at: "2025-01-20T01:18:12.274Z",
-      message: "",
     },
   ];
 };

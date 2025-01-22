@@ -1,7 +1,7 @@
 // client/src/pages/Settings/settings.tsx
 import React, { useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import { User } from "../../Interfaces/interfaces";
+import { Request, User } from "../../Interfaces/interfaces";
 import { createRequest } from "../../services/api";
 import { ModalForm } from "../../components/Modals/ModalForm/modalForm";
 import "./settings.css";
@@ -13,15 +13,15 @@ export const Settings: React.FC = () => {
 
   const handleCreateStatus = async () => {
     try {
-      const requestData = {
+      const request: Request = {
         type: "Change status",
-        status: "Pending",
-        fromUser: user._id,
+        status: "pending",
+        fromUser: user._id!,
         username: user.username,
         data: { ...user, role: "employee" },
         created_at: new Date().toISOString(),
       };
-      await createRequest(requestData);
+      await createRequest(request);
       setIsRequestSent(true);
     } catch (error) {
       console.error("Error creating request:", error);

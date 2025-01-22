@@ -1,7 +1,7 @@
 // client/src/components/Modals/ModalForm/modalForm.tsx
 import React from "react";
 import { createRequest } from "../../../services/api";
-import { User } from "../../../Interfaces/interfaces";
+import { Request, User } from "../../../Interfaces/interfaces";
 import "./modalForm.css";
 
 interface ModalFormProps {
@@ -29,17 +29,18 @@ export const ModalForm: React.FC<ModalFormProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const requestData = {
+
+    const request: Request = {
       type: "Create a store",
-      status: "Pending",
-      fromUser: user._id,
+      status: "pending",
+      fromUser: user._id!,
       username: user.username,
-      data: { ...formData, employeeId: user._id },
+      data: { ...formData, employeeId: user._id! },
       created_at: new Date().toISOString(),
     };
 
     try {
-      await createRequest(requestData);
+      await createRequest(request);
       setFormData({ name: "", branchName: "", address: "" });
       setIsOpen(false);
       onRequestSent();
