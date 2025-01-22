@@ -1,14 +1,17 @@
 // client/src/pages/Approvals/approvals.tsx
 import React, { useEffect, useState } from "react";
 import "./approvals.css";
-import { getAllRequests } from "../../services/api";
+import { checkRequest, getAllRequests } from "../../services/api";
 import { Request, Store, User } from "../../Interfaces/interfaces";
-import { responses } from "./mockData";
+import { Status } from "../../types/types";
 
 export const Approvals: React.FC = () => {
   const [requests, setRequests] = useState<Request[]>([]);
   const [checkedRequests, setCheckedRequests] = useState<{
-    [key: string]: string; // Tracks the state of each request ("pending", "success", "rejected")
+    [key: string]: {
+      response: Status;
+      message: string;
+    };
   }>({});
 
   const isUser = (data: User | Store): data is User => {
@@ -21,8 +24,8 @@ export const Approvals: React.FC = () => {
 
   useEffect(() => {
     const fetchRequests = async () => {
-      const fetchedRequests = await getAllRequests();
-      setRequests(fetchedRequests);
+      const data = await getAllRequests();
+      setRequests(data);
     };
 
     fetchRequests();
@@ -32,14 +35,18 @@ export const Approvals: React.FC = () => {
     console.log(requests);
   }, [requests]);
 
-  const handleCheckRequest = (requestId: string) => {
-    const response = responses.find((res) => res._id === requestId);
-    const request = requests.find((req) => req._id === requestId);
+  const handleCheckRequest = async (_request: Request) => {
+    const response = await checkRequest(_request);
+    const request = requests.find((req) => req._id === response._id);
     console.log(request, request?.message);
+
     if (response) {
       setCheckedRequests((prevChecked) => ({
         ...prevChecked,
-        [requestId]: response.response === "success" ? "success" : "rejected",
+        [response._id]: {
+          response: response.response === "approved" ? "approved" : "rejected",
+          message: response.message,
+        },
       }));
     }
   };
@@ -50,8 +57,8 @@ export const Approvals: React.FC = () => {
         request._id === requestId
           ? {
               ...request,
-              status: "approved",
-              message: "The request was approved",
+              status: checkedRequests[requestId]?.response,
+              message: checkedRequests[requestId]?.message,
             }
           : request
       )
@@ -59,14 +66,14 @@ export const Approvals: React.FC = () => {
   };
 
   const handleRejection = (requestId: string) => {
-    const rejectionMessage =
-      responses.find((res) => res._id === requestId)?.message ||
-      "Request was rejected";
-
     setRequests((prevRequests) =>
       prevRequests.map((request) =>
         request._id === requestId
-          ? { ...request, status: "rejected", message: rejectionMessage }
+          ? {
+              ...request,
+              status: checkedRequests[requestId]?.response,
+              message: checkedRequests[requestId]?.message,
+            }
           : request
       )
     );
@@ -123,14 +130,14 @@ export const Approvals: React.FC = () => {
                 <p className={`message ${request.status}`}>
                   {requests.find((req) => req._id === request._id)?.message}
                 </p>
-              ) : checkedRequests[request._id!] === "success" ? (
+              ) : checkedRequests[request._id!]?.response === "approved" ? (
                 <button
                   className="approve-btn"
                   onClick={() => handleApproval(request._id!)}
                 >
                   Approve
                 </button>
-              ) : checkedRequests[request._id!] === "rejected" ? (
+              ) : checkedRequests[request._id!]?.response === "rejected" ? (
                 <button
                   className="reject-btn"
                   onClick={() => handleRejection(request._id!)}
@@ -140,7 +147,7 @@ export const Approvals: React.FC = () => {
               ) : (
                 <button
                   className="check-btn"
-                  onClick={() => handleCheckRequest(request._id!)}
+                  onClick={() => handleCheckRequest(request)}
                 >
                   Check Request
                 </button>

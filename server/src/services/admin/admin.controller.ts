@@ -102,7 +102,7 @@ export const getCheckRequest = async (req: Request, res: Response) => {
     // Prepare the response object
     const response = {
       _id: fromUser,
-      response: isValid ? "success" : "rejected",
+      response: isValid ? "approved" : "rejected",
       message: message,
     };
 

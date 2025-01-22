@@ -57,7 +57,7 @@ export const checkRequest = async (req: Request) => {
   // If all validations pass
   return {
     isValid: true,
-    message: "The request was approved successfully.",
+    message: "The request was approved.",
     fromUser,
   };
 };
