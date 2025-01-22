@@ -67,7 +67,7 @@ export interface Product {
 }
 
 export interface Request {
-  _id: string;
+  _id?: string;
   type: string;
   status: Status;
   fromUser: string;
