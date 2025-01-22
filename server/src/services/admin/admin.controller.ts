@@ -4,6 +4,7 @@ import { respond } from "./admin.middlewares";
 import mongoose, { Model } from "mongoose";
 import { create, getAll, getById, update } from "./admin.service";
 import { User } from "../../models/User";
+import { checkRequest } from "../../middlewares/middlewares.request";
 
 export const createEntity = <T>(model: Model<T & Document>) => {
   return async (req: Request, res: Response) => {
@@ -91,6 +92,25 @@ export const getRequestById = <T>(model: Model<T & Document>) => {
       respond(res, 500, "Internal Server Error");
     }
   };
+};
+
+export const getCheckRequest = async (req: Request, res: Response) => {
+  try {
+    // Call the checkRequest function to validate the request
+    const { isValid, message, fromUser } = await checkRequest(req);
+
+    // Prepare the response object
+    const response = {
+      _id: fromUser,
+      response: isValid ? "success" : "rejected",
+      message: message,
+    };
+
+    // Send the response to the client
+    res.status(200).json(response);
+  } catch (error) {
+    respond(res, 500, "Internal Server Error");
+  }
 };
 
 // export const getUserWithStores = async (req: Request, res: Response) => {
