@@ -76,3 +76,9 @@ export interface Request {
   created_at: string;
   message?: string;
 }
+
+export interface Check {
+  _id: string;
+  response: string;
+  message: string;
+}

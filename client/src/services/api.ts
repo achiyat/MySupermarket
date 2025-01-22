@@ -3,6 +3,7 @@ import axios from "axios";
 import { TokenResponse } from "../types/types";
 import {
   Category,
+  Check,
   LoginData,
   Product,
   Request,
@@ -46,6 +47,19 @@ export const getRequestById = async (id: string): Promise<Request> => {
   } catch (error) {
     console.log(error);
     throw new Error("Failed to fetch user by ID");
+  }
+};
+
+export const checkRequest = async (data: Request): Promise<Check> => {
+  try {
+    const response = await axios.post<Check>(
+      `${API_BASE_URL}/admin/requests/check`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to get check request");
   }
 };
 
