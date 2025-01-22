@@ -60,4 +60,4 @@ adminRoutes.post("/requests", createEntity(Models.Request));
 adminRoutes.get("/requests", getAllEntity(Models.Request));
 adminRoutes.get("/requests/:id", getRequestById(Models.Request));
 adminRoutes.put("/requests/:id", updateEntity(Models.Request));
-adminRoutes.get("/requests/check", getCheckRequest);
+adminRoutes.post("/requests/check", getCheckRequest);

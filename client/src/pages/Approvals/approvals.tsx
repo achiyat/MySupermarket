@@ -37,8 +37,6 @@ export const Approvals: React.FC = () => {
 
   const handleCheckRequest = async (_request: Request) => {
     const response = await checkRequest(_request);
-    const request = requests.find((req) => req._id === response._id);
-    console.log(request, request?.message);
 
     if (response) {
       setCheckedRequests((prevChecked) => ({
@@ -52,31 +50,31 @@ export const Approvals: React.FC = () => {
   };
 
   const handleApproval = (requestId: string) => {
-    setRequests((prevRequests) =>
-      prevRequests.map((request) =>
-        request._id === requestId
-          ? {
-              ...request,
-              status: checkedRequests[requestId]?.response,
-              message: checkedRequests[requestId]?.message,
-            }
-          : request
-      )
+    const updatedRequests = requests.map((request) =>
+      request.fromUser === requestId
+        ? {
+            ...request,
+            status: checkedRequests[requestId]?.response,
+            message: checkedRequests[requestId]?.message,
+          }
+        : request
     );
+
+    setRequests(updatedRequests);
   };
 
   const handleRejection = (requestId: string) => {
-    setRequests((prevRequests) =>
-      prevRequests.map((request) =>
-        request._id === requestId
-          ? {
-              ...request,
-              status: checkedRequests[requestId]?.response,
-              message: checkedRequests[requestId]?.message,
-            }
-          : request
-      )
+    const updatedRequests = requests.map((request) =>
+      request.fromUser === requestId
+        ? {
+            ...request,
+            status: checkedRequests[requestId]?.response,
+            message: checkedRequests[requestId]?.message,
+          }
+        : request
     );
+
+    setRequests(updatedRequests);
   };
 
   return (
@@ -127,20 +125,20 @@ export const Approvals: React.FC = () => {
             </div>
             <div className="request-actions">
               {request.message ? (
-                <p className={`message ${request.status}`}>
-                  {requests.find((req) => req._id === request._id)?.message}
-                </p>
-              ) : checkedRequests[request._id!]?.response === "approved" ? (
+                <p className={`message ${request.status}`}>{request.message}</p>
+              ) : checkedRequests[request.fromUser!]?.response ===
+                "approved" ? (
                 <button
                   className="approve-btn"
-                  onClick={() => handleApproval(request._id!)}
+                  onClick={() => handleApproval(request.fromUser!)}
                 >
                   Approve
                 </button>
-              ) : checkedRequests[request._id!]?.response === "rejected" ? (
+              ) : checkedRequests[request.fromUser!]?.response ===
+                "rejected" ? (
                 <button
                   className="reject-btn"
-                  onClick={() => handleRejection(request._id!)}
+                  onClick={() => handleRejection(request.fromUser!)}
                 >
                   Reject
                 </button>
