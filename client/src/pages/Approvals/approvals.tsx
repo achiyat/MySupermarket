@@ -34,8 +34,6 @@ export const Approvals: React.FC = () => {
 
   const handleCheckRequest = (requestId: string) => {
     const response = responses.find((res) => res._id === requestId);
-    const request = requests.find((req) => req._id === requestId);
-    console.log(request, request?.message);
     if (response) {
       setCheckedRequests((prevChecked) => ({
         ...prevChecked,
@@ -119,32 +117,32 @@ export const Approvals: React.FC = () => {
               ) : null}
             </div>
             <div className="request-actions">
-              {checkedRequests[request._id] === undefined ? (
-                <button
-                  className="check-btn"
-                  onClick={() => handleCheckRequest(request._id)}
-                >
-                  Check Request
-                </button>
-              ) : request.message ? (
+              {request.message ? (
                 <p className={`message ${request.status}`}>
                   {requests.find((req) => req._id === request._id)?.message}
                 </p>
-              ) : checkedRequests[request._id] === "success" ? (
+              ) : checkedRequests[request._id!] === "success" ? (
                 <button
                   className="approve-btn"
-                  onClick={() => handleApproval(request._id)}
+                  onClick={() => handleApproval(request._id!)}
                 >
                   Approve
                 </button>
-              ) : checkedRequests[request._id] === "rejected" ? (
+              ) : checkedRequests[request._id!] === "rejected" ? (
                 <button
                   className="reject-btn"
-                  onClick={() => handleRejection(request._id)}
+                  onClick={() => handleRejection(request._id!)}
                 >
                   Reject
                 </button>
-              ) : null}
+              ) : (
+                <button
+                  className="check-btn"
+                  onClick={() => handleCheckRequest(request._id!)}
+                >
+                  Check Request
+                </button>
+              )}
             </div>
           </div>
         ))}
