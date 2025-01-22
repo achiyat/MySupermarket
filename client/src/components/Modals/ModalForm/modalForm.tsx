@@ -78,7 +78,7 @@ export const ModalForm: React.FC<ModalFormProps> = ({
                 <input
                   className="modalForm-input"
                   type="text"
-                  name="branch"
+                  name="branchName"
                   value={formData.branchName}
                   onChange={handleChange}
                   required
