@@ -77,6 +77,22 @@ export const deleteUser = async (req: Request, res: Response) => {
   }
 };
 
+export const getRequestById = <T>(model: Model<T & Document>) => {
+  return async (req: Request, res: Response) => {
+    try {
+      const requests = await model.find({ fromUser: req.params.id });
+
+      if (requests.length === 0) {
+        res.status(404).json({ message: "No requests found for this user." });
+      } else {
+        res.status(200).json(requests);
+      }
+    } catch (error) {
+      respond(res, 500, "Internal Server Error");
+    }
+  };
+};
+
 // export const getUserWithStores = async (req: Request, res: Response) => {
 //   try {
 //     const user = await getById(Models.User, req, res, "employeeFields.stores");

@@ -7,6 +7,7 @@ import {
   deleteUser,
   getAllEntity,
   getEntityById,
+  getRequestById,
   updateEntity,
 } from "./admin.controller";
 
@@ -56,5 +57,5 @@ adminRoutes.put("/products/:id", updateEntity(Models.Product));
 // Product CRU operations
 adminRoutes.post("/requests", createEntity(Models.Request));
 adminRoutes.get("/requests", getAllEntity(Models.Request));
-adminRoutes.get("/requests/:id", getEntityById(Models.Request));
+adminRoutes.get("/requests/:id", getRequestById(Models.Request));
 adminRoutes.put("/requests/:id", updateEntity(Models.Request));
