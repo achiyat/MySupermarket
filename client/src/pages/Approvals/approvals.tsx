@@ -49,21 +49,7 @@ export const Approvals: React.FC = () => {
     }
   };
 
-  const handleApproval = (requestId: string) => {
-    const updatedRequests = requests.map((request) =>
-      request.fromUser === requestId
-        ? {
-            ...request,
-            status: checkedRequests[requestId]?.response,
-            message: checkedRequests[requestId]?.message,
-          }
-        : request
-    );
-
-    setRequests(updatedRequests);
-  };
-
-  const handleRejection = (requestId: string) => {
+  const handleRequest = (requestId: string) => {
     const updatedRequests = requests.map((request) =>
       request.fromUser === requestId
         ? {
@@ -130,7 +116,7 @@ export const Approvals: React.FC = () => {
                 "approved" ? (
                 <button
                   className="approve-btn"
-                  onClick={() => handleApproval(request.fromUser!)}
+                  onClick={() => handleRequest(request.fromUser!)}
                 >
                   Approve
                 </button>
@@ -138,7 +124,7 @@ export const Approvals: React.FC = () => {
                 "rejected" ? (
                 <button
                   className="reject-btn"
-                  onClick={() => handleRejection(request.fromUser!)}
+                  onClick={() => handleRequest(request.fromUser!)}
                 >
                   Reject
                 </button>
