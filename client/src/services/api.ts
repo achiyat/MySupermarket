@@ -50,14 +50,17 @@ export const getRequestById = async (id: string): Promise<Request> => {
   }
 };
 
-export const updateRequest = async (id: string): Promise<Request> => {
+export const updateRequest = async (
+  id: string,
+  data: Request
+): Promise<Request> => {
   try {
     const response = await axios.put<Request>(
-      `${API_BASE_URL}/admin/requests/${id}`
+      `${API_BASE_URL}/admin/requests/${id}`,
+      data
     );
     return response.data;
   } catch (error) {
-    console.log(error);
     throw new Error("Failed to update request");
   }
 };
