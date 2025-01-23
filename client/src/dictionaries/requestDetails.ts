@@ -19,7 +19,6 @@ export const userDetails = (request: Request) => {
       { label: "Active", value: request.data.active ? "Yes" : "No" },
     ];
   }
-  return [];
 };
 
 export const storeDetails = (request: Request) => {
@@ -31,5 +30,4 @@ export const storeDetails = (request: Request) => {
       { label: "Address", value: request.data.address },
     ];
   }
-  return [];
 };

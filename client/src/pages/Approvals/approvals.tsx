@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import "./approvals.css";
 import { checkRequest, getAllRequests } from "../../services/api";
-import { Request, Store, User } from "../../Interfaces/interfaces";
+import { Request } from "../../Interfaces/interfaces";
 import { Status } from "../../types/types";
 import { storeDetails, userDetails } from "../../dictionaries/requestDetails";
 
@@ -14,14 +14,6 @@ export const Approvals: React.FC = () => {
       message: string;
     };
   }>({});
-
-  const isUser = (data: User | Store): data is User => {
-    return (data as User).email !== undefined;
-  };
-
-  const isStore = (data: User | Store): data is Store => {
-    return "branchName" in data;
-  };
 
   useEffect(() => {
     const fetchRequests = async () => {
@@ -64,42 +56,33 @@ export const Approvals: React.FC = () => {
     setRequests(updatedRequests);
   };
 
-  const getActionButton = (request: Request) => {
-    const response = checkedRequests[request.fromUser!]?.response;
-
-    if (response === "approved") {
-      return getRequestButton("approve-btn", "Approve", () =>
-        handleRequest(request.fromUser)
-      );
-    } else if (response === "rejected") {
-      return getRequestButton("reject-btn", "Reject", () =>
-        handleRequest(request.fromUser)
-      );
-    } else {
-      return getRequestButton("check-btn", "Check Request", () =>
-        handleCheckRequest(request)
-      );
-    }
-  };
-
-  const getRequestButton = (
-    className: string,
-    label: string,
-    onClick: () => void
-  ) => {
-    return (
-      <button className={className} onClick={onClick}>
-        {label}
-      </button>
-    );
-  };
-
   return (
     <div className="approvals-container">
       <h1>Request Approvals</h1>
       <div className="requests-list">
         {requests.map((request) => {
           const details = userDetails(request) || storeDetails(request) || [];
+          const response = checkedRequests[request.fromUser!]?.response;
+
+          // Determine button class, label, and onClick handler
+          const buttonProps = response
+            ? response === "approved"
+              ? {
+                  className: "approve-btn",
+                  label: "Approve",
+                  onClick: () => handleRequest(request.fromUser),
+                }
+              : {
+                  className: "reject-btn",
+                  label: "Reject",
+                  onClick: () => handleRequest(request.fromUser),
+                }
+            : {
+                className: "check-btn",
+                label: "Check Request",
+                onClick: () => handleCheckRequest(request),
+              };
+
           return (
             <div key={request._id} className="request-item">
               <div className="request-header">
@@ -120,7 +103,12 @@ export const Approvals: React.FC = () => {
                     {request.message}
                   </p>
                 ) : (
-                  getActionButton(request)
+                  <button
+                    className={buttonProps.className}
+                    onClick={buttonProps.onClick}
+                  >
+                    {buttonProps.label}
+                  </button>
                 )}
               </div>
             </div>
