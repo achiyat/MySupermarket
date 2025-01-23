@@ -1,5 +1,6 @@
 import { Request } from "express";
 import { Store } from "../models/Store";
+import { User } from "../models/User";
 
 // Middleware to validate requests
 export const checkRequest = async (req: Request) => {
@@ -7,7 +8,8 @@ export const checkRequest = async (req: Request) => {
 
   // Handle "Change status" type requests
   if (type === "Change status") {
-    const { role, active } = data || {};
+    const user = await User.findOne({ fromUser });
+    const { role, active } = user || {};
     // Condition 1: Status already defined for "employee"
     if (role === "employee") {
       return {
