@@ -27,65 +27,76 @@ const UserSchema: Schema<IUser> = new Schema(
     address: { type: String, default: "" },
     active: { type: Boolean, default: true },
     employeeFields: {
-      stores: [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Store",
-          default: [],
-          validate: {
-            validator: function (value: any) {
-              // Ensure stores are only set for employees
-              return this.role === "employee" || value.length === 0;
-            },
-            message:
-              "Employee fields can only be set for users with the 'employee' role.",
-          },
-        },
-      ],
+      stores: {
+        type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Store" }],
+        default: undefined, // Only include when explicitly set
+      },
     },
   },
-  { collection: "users" }
+  {
+    collection: "users",
+    toJSON: {
+      transform: (_, ret) => {
+        // Exclude sensitive and irrelevant fields
+        delete ret.password;
+
+        // Remove `employeeFields` if the user is not an employee
+        if (ret.role !== "employee") {
+          delete ret.employeeFields;
+        }
+        return ret;
+      },
+    },
+  }
 );
 
-// Pre-save hook to hash the password before saving the user
+// Pre-save hook to hash the password and handle `employeeFields`
 UserSchema.pre("save", async function (next) {
   const user = this as IUser;
 
-  // Check if the email or username already exists in the database
-  const existingUser = await User.findOne({
-    email: user.email,
-    username: user.username,
-  });
-  if (existingUser) {
-    if (existingUser.email === user.email)
-      return next(new Error("Email already in use"));
-    if (existingUser.username === user.username)
-      return next(new Error("User Name already in use"));
+  // Hash password if modified
+  if (user.isModified("password")) {
+    try {
+      const salt = await bcrypt.genSalt(6);
+      user.password = await bcrypt.hash(user.password, salt);
+    } catch (error) {
+      console.error("Error occurred while hashing password:", error);
+      return next(error as Error);
+    }
   }
 
-  if (!user.isModified("password"))
-    return next(new Error("Password not modified"));
-
-  try {
-    const salt = await bcrypt.genSalt(6);
-    user.password = await bcrypt.hash(user.password, salt);
-  } catch (error) {
-    console.error("Error occurred while hashing password:", error);
-    return next(error as Error);
+  // Ensure `employeeFields` is set if the role is `employee`
+  if (user.role === "employee" && !user.employeeFields) {
+    user.employeeFields = { stores: [] };
   }
 
   next();
 });
 
-// Post-find hook to filter out administrator users
-UserSchema.post("find", function (docs, next) {
-  if (docs) {
-    const filteredDocs = docs.filter(
-      (doc: IUser) => doc.role !== "administrator"
-    );
-    docs.length = 0;
-    docs.push(...filteredDocs);
+// Pre-update hook to handle role changes
+UserSchema.pre("findOneAndUpdate", async function (next) {
+  const update = this.getUpdate() as any;
+
+  // If the role is being changed to `employee`, ensure `employeeFields` is added
+  if (update?.role === "employee" && !update.employeeFields) {
+    update.employeeFields = { stores: [] };
   }
+
+  // If the role is not `employee`, remove `employeeFields` from the update
+  if (update?.role && update.role !== "employee") {
+    update.$unset = { ...update.$unset, employeeFields: "" };
+  }
+
+  next();
+});
+
+// Post-find hook to ensure `employeeFields` is included only for employees
+UserSchema.post("find", function (docs, next) {
+  docs.forEach((doc: IUser) => {
+    if (doc.role !== "employee" && doc.employeeFields) {
+      doc.employeeFields = undefined;
+    }
+  });
   next();
 });
 
