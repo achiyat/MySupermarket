@@ -1,10 +1,21 @@
 // client/src/pages/Approvals/approvals.tsx
 import React, { useEffect, useState } from "react";
 import "./approvals.css";
-import { checkRequest, getAllRequests } from "../../services/api";
+import {
+  checkRequest,
+  createStore,
+  getAllRequests,
+  updateRequest,
+  updateUser,
+} from "../../services/api";
 import { Request } from "../../Interfaces/interfaces";
 import { Status } from "../../types/types";
-import { storeDetails, userDetails } from "../../dictionaries/requestDetails";
+import {
+  isStore,
+  isUser,
+  storeDetails,
+  userDetails,
+} from "../../dictionaries/requestDetails";
 
 export const Approvals: React.FC = () => {
   const [requests, setRequests] = useState<Request[]>([]);
@@ -24,10 +35,6 @@ export const Approvals: React.FC = () => {
     fetchRequests();
   }, []);
 
-  useEffect(() => {
-    console.log(requests);
-  }, [requests]);
-
   const handleCheckRequest = async (_request: Request) => {
     const response = await checkRequest(_request);
 
@@ -42,18 +49,38 @@ export const Approvals: React.FC = () => {
     }
   };
 
-  const handleRequest = (requestId: string) => {
-    const updatedRequests = requests.map((request) =>
-      request.fromUser === requestId
-        ? {
-            ...request,
-            status: checkedRequests[requestId]?.response,
-            message: checkedRequests[requestId]?.message,
-          }
-        : request
-    );
+  const handleRequest = async (userId: string) => {
+    const request = requests.find((req) => req.fromUser === userId);
+    if (!request) return;
 
-    setRequests(updatedRequests);
+    const { response, message } = checkedRequests[userId] || {};
+
+    try {
+      if (response === "approved") {
+        if (isUser(request.data)) {
+          await updateUser(userId, request.data);
+        } else if (isStore(request.data)) {
+          await createStore(request.data);
+        }
+      }
+
+      const updatedRequestData: Request = {
+        ...request,
+        status: response,
+        message,
+      };
+
+      await updateRequest(updatedRequestData._id!, updatedRequestData);
+
+      // Update the state after performing actions
+      setRequests((prevRequests) =>
+        prevRequests.map((req) =>
+          req.fromUser === userId ? { ...req, status: response, message } : req
+        )
+      );
+    } catch (error) {
+      console.error("Error handling request:", error);
+    }
   };
 
   return (
@@ -64,7 +91,6 @@ export const Approvals: React.FC = () => {
           const details = userDetails(request) || storeDetails(request) || [];
           const response = checkedRequests[request.fromUser!]?.response;
 
-          // Determine button class, label, and onClick handler
           const buttonProps = response
             ? response === "approved"
               ? {
