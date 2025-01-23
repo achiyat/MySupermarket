@@ -34,7 +34,7 @@ export const getAllRequests = async (): Promise<Request[]> => {
     return response.data;
   } catch (error) {
     console.log(error);
-    throw new Error("Failed to fetch users");
+    throw new Error("Failed to fetch requests");
   }
 };
 
@@ -46,7 +46,19 @@ export const getRequestById = async (id: string): Promise<Request> => {
     return response.data;
   } catch (error) {
     console.log(error);
-    throw new Error("Failed to fetch user by ID");
+    throw new Error("Failed to fetch request by ID");
+  }
+};
+
+export const updateRequest = async (id: string): Promise<Request> => {
+  try {
+    const response = await axios.put<Request>(
+      `${API_BASE_URL}/admin/requests/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to update request");
   }
 };
 
