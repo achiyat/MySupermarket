@@ -106,6 +106,14 @@ UserSchema.post("findOneAndUpdate", async function (doc: any, next: any) {
   next();
 });
 
+UserSchema.pre("findOneAndUpdate", async function (doc: any, next: any) {
+  if (doc) {
+    cleanFields(doc);
+  }
+
+  next();
+});
+
 // Method to compare candidate password with the stored hashed password
 UserSchema.methods.comparePassword = async function (
   candidatePassword: string
