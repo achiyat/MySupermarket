@@ -5,7 +5,6 @@ import { Store } from "../models/Store";
 export const checkRequest = async (req: Request) => {
   const { fromUser, type, data } = req.body;
 
-  console.log(req.body);
   // Handle "Change status" type requests
   if (type === "Change status") {
     const { role, active } = data || {};

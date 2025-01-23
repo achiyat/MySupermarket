@@ -63,6 +63,36 @@ export const Approvals: React.FC = () => {
     setRequests(updatedRequests);
   };
 
+  const getActionButton = (request: Request) => {
+    const response = checkedRequests[request.fromUser!]?.response;
+
+    if (response === "approved") {
+      return getRequestButton("approve-btn", "Approve", () =>
+        handleRequest(request.fromUser)
+      );
+    } else if (response === "rejected") {
+      return getRequestButton("reject-btn", "Reject", () =>
+        handleRequest(request.fromUser)
+      );
+    } else {
+      return getRequestButton("check-btn", "Check Request", () =>
+        handleCheckRequest(request)
+      );
+    }
+  };
+
+  const getRequestButton = (
+    className: string,
+    label: string,
+    onClick: () => void
+  ) => {
+    return (
+      <button className={className} onClick={onClick}>
+        {label}
+      </button>
+    );
+  };
+
   return (
     <div className="approvals-container">
       <h1>Request Approvals</h1>
@@ -88,8 +118,8 @@ export const Approvals: React.FC = () => {
                     <strong>Role:</strong> {request.data.role}
                   </p>
                   <p>
-                    <strong>Status:</strong>{" "}
-                    {request.data.active ? "Active" : "Inactive"}
+                    <strong>Active:</strong>
+                    {request.data.active ? "Yes" : "No"}
                   </p>
                 </div>
               ) : isStore(request.data) ? (
@@ -112,29 +142,8 @@ export const Approvals: React.FC = () => {
             <div className="request-actions">
               {request.message ? (
                 <p className={`message ${request.status}`}>{request.message}</p>
-              ) : checkedRequests[request.fromUser!]?.response ===
-                "approved" ? (
-                <button
-                  className="approve-btn"
-                  onClick={() => handleRequest(request.fromUser!)}
-                >
-                  Approve
-                </button>
-              ) : checkedRequests[request.fromUser!]?.response ===
-                "rejected" ? (
-                <button
-                  className="reject-btn"
-                  onClick={() => handleRequest(request.fromUser!)}
-                >
-                  Reject
-                </button>
               ) : (
-                <button
-                  className="check-btn"
-                  onClick={() => handleCheckRequest(request)}
-                >
-                  Check Request
-                </button>
+                getActionButton(request)
               )}
             </div>
           </div>
