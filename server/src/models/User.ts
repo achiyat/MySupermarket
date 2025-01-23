@@ -1,4 +1,3 @@
-// server/src/models/User.ts
 import mongoose, { Schema, Document, Model } from "mongoose";
 import bcrypt from "bcrypt";
 
@@ -29,7 +28,19 @@ const UserSchema: Schema<IUser> = new Schema(
     active: { type: Boolean, default: true },
     employeeFields: {
       stores: [
-        { type: mongoose.Schema.Types.ObjectId, ref: "Store", default: [] },
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Store",
+          default: [],
+          validate: {
+            validator: function (value: any) {
+              // Ensure stores are only set for employees
+              return this.role === "employee" || value.length === 0;
+            },
+            message:
+              "Employee fields can only be set for users with the 'employee' role.",
+          },
+        },
       ],
     },
   },
@@ -63,54 +74,18 @@ UserSchema.pre("save", async function (next) {
     return next(error as Error);
   }
 
-  // Remove unnecessary fields based on role
-  cleanFields(user);
-
   next();
 });
 
-// Post-findOne hook to clean up fields after retrieval
-UserSchema.post("findOne", function (doc, next) {
-  if (doc) {
-    cleanFields(doc);
-  }
-
-  next();
-});
-
-// Accept all users except the system administrator
+// Post-find hook to filter out administrator users
 UserSchema.post("find", function (docs, next) {
   if (docs) {
     const filteredDocs = docs.filter(
       (doc: IUser) => doc.role !== "administrator"
     );
-
-    filteredDocs.forEach((doc: IUser) => cleanFields(doc));
     docs.length = 0;
     docs.push(...filteredDocs);
   }
-  next();
-});
-
-const cleanFields = (user: IUser) => {
-  if (user.role !== "employee") {
-    user.employeeFields = undefined;
-  }
-};
-
-UserSchema.post("findOneAndUpdate", async function (doc: any, next: any) {
-  if (doc) {
-    cleanFields(doc);
-  }
-
-  next();
-});
-
-UserSchema.pre("findOneAndUpdate", async function (doc: any, next: any) {
-  if (doc) {
-    cleanFields(doc);
-  }
-
   next();
 });
 
