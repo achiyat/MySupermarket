@@ -4,6 +4,7 @@ import "./approvals.css";
 import { checkRequest, getAllRequests } from "../../services/api";
 import { Request, Store, User } from "../../Interfaces/interfaces";
 import { Status } from "../../types/types";
+import { storeDetails, userDetails } from "../../dictionaries/requestDetails";
 
 export const Approvals: React.FC = () => {
   const [requests, setRequests] = useState<Request[]>([]);
@@ -97,57 +98,34 @@ export const Approvals: React.FC = () => {
     <div className="approvals-container">
       <h1>Request Approvals</h1>
       <div className="requests-list">
-        {requests.map((request) => (
-          <div key={request._id} className="request-item">
-            <div className="request-header">
-              <h2>{request.type}</h2>
-            </div>
-            <div className="request-details">
-              {isUser(request.data) ? (
+        {requests.map((request) => {
+          const details = userDetails(request) || storeDetails(request) || [];
+          return (
+            <div key={request._id} className="request-item">
+              <div className="request-header">
+                <h2>{request.type}</h2>
+              </div>
+              <div className="request-details">
                 <div>
-                  <p>
-                    <strong>Name:</strong> {request.username}
-                  </p>
-                  <p>
-                    <strong>Email:</strong> {request.data.email}
-                  </p>
-                  <p>
-                    <strong>Phone:</strong> {request.data.phone}
-                  </p>
-                  <p>
-                    <strong>Role:</strong> {request.data.role}
-                  </p>
-                  <p>
-                    <strong>Active:</strong>
-                    {request.data.active ? "Yes" : "No"}
-                  </p>
+                  {details.map((field, index) => (
+                    <p key={index}>
+                      <strong>{field.label}:</strong> {field.value}
+                    </p>
+                  ))}
                 </div>
-              ) : isStore(request.data) ? (
-                <div>
-                  <p>
-                    <strong>Name:</strong> {request.username}
+              </div>
+              <div className="request-actions">
+                {request.message ? (
+                  <p className={`message ${request.status}`}>
+                    {request.message}
                   </p>
-                  <p>
-                    <strong>Store Name:</strong> {request.data.name}
-                  </p>
-                  <p>
-                    <strong>Branch:</strong> {request.data.branchName}
-                  </p>
-                  <p>
-                    <strong>Address:</strong> {request.data.address}
-                  </p>
-                </div>
-              ) : null}
+                ) : (
+                  getActionButton(request)
+                )}
+              </div>
             </div>
-            <div className="request-actions">
-              {request.message ? (
-                <p className={`message ${request.status}`}>{request.message}</p>
-              ) : (
-                getActionButton(request)
-              )}
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
