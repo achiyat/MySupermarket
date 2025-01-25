@@ -67,6 +67,11 @@ export const Requests: React.FC = () => {
             <p className={`request-status ${request.status.toLowerCase()}`}>
               Status: {request.status}
             </p>
+            {request.message && (
+              <p className={`request-message ${request.status.toLowerCase()}`}>
+                {request.message}
+              </p>
+            )}
             {request.status.toLowerCase() === "rejected" && (
               <button
                 className="request-edit"

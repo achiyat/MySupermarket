@@ -38,12 +38,19 @@
   color: orange;
 }
 
-.request-status.approved {
+.request-status.approved,
+.request-message.approved {
   color: green;
 }
 
-.request-status.rejected {
+.request-status.rejected,
+.request-message.rejected {
   color: red;
+}
+
+.request-message {
+  font-size: 14px;
+  margin: 5px 0;
 }
 
 .request-edit {
