@@ -26,7 +26,6 @@ export const Requests: React.FC = () => {
 
   const handleEditClick = (requestId: string) => {
     const request = requests.find((req) => req._id === requestId);
-    console.log(request);
 
     if (request && isStore(request.data)) {
       setSelectedRequest(request);
@@ -36,10 +35,16 @@ export const Requests: React.FC = () => {
 
   const handleRequestUpdated = async (updatedRequest: Request) => {
     try {
-      const request = await updateRequest(updatedRequest._id!, updatedRequest); // Call the API
-      setRequests((prev) =>
-        prev.map((req) => (req._id === request._id ? request : req))
+      const requestWithId = {
+        ...updatedRequest,
+        _id: selectedRequest?._id,
+        message: "",
+      };
+      const response = await updateRequest(requestWithId._id!, requestWithId);
+      const _requests = requests.map((req) =>
+        req._id === response._id ? response : req
       );
+      setRequests(_requests);
       setIsModalOpen(false);
       setSelectedRequest(null);
     } catch (error) {
@@ -54,7 +59,7 @@ export const Requests: React.FC = () => {
       <h1 className="requests-title">Your Requests</h1>
       <div className="requests-list">
         {requests.map((request) => (
-          <div key={request._id} className="request-item">
+          <div key={request?._id} className="request-item">
             <h3 className="request-type">{request.type}</h3>
             <p className="request-name">
               {"name" in request.data
