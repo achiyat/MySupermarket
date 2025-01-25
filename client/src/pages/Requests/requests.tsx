@@ -1,3 +1,4 @@
+// client/src/pages/Requests/requests.tsx
 import React, { useEffect, useState } from "react";
 import { Request } from "../../Interfaces/interfaces";
 import { getAllRequests } from "../../services/api";
@@ -19,6 +20,10 @@ export const Requests: React.FC = () => {
     getRequests();
   }, []);
 
+  const handleEditClick = (requestId: string) => {
+    console.log(`Editing request with ID: ${requestId}`);
+  };
+
   if (!requests) return <p>no requests</p>;
 
   return (
@@ -39,6 +44,14 @@ export const Requests: React.FC = () => {
             <p className={`request-status ${request.status.toLowerCase()}`}>
               Status: {request.status}
             </p>
+            {request.status.toLowerCase() === "rejected" && (
+              <button
+                className="request-edit"
+                onClick={() => handleEditClick(request._id!)}
+              >
+                Edit
+              </button>
+            )}
           </div>
         ))}
       </div>

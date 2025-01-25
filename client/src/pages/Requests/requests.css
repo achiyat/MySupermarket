@@ -45,3 +45,18 @@
 .request-status.rejected {
   color: red;
 }
+
+.request-edit {
+  margin-top: 10px;
+  padding: 8px 30px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.request-edit:hover {
+  background-color: #0056b3;
+}
