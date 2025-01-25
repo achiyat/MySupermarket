@@ -5,8 +5,12 @@ export const isUser = (data: User | Store): data is User => {
   return (data as User).email !== undefined;
 };
 
+// export const isStore = (data: User | Store): data is Store => {
+//   return "branchName" in data;
+// };
+
 export const isStore = (data: User | Store): data is Store => {
-  return "branchName" in data;
+  return (data as Store).branchName !== undefined;
 };
 
 export const userDetails = (request: Request) => {

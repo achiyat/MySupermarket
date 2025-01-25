@@ -1,27 +1,34 @@
 // client/src/components/Modals/ModalForm/modalForm.tsx
 import React from "react";
 import { createRequest } from "../../../services/api";
-import { Request, User } from "../../../Interfaces/interfaces";
+import { Request } from "../../../Interfaces/interfaces";
 import "./modalForm.css";
 
 interface ModalFormProps {
-  user: User;
+  user: {
+    id: string;
+    username: string;
+  };
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  onRequestSent: () => void;
+  onSent?: () => void;
+  onUpdated?: (updatedRequest: Request) => void;
+  initialData?: {
+    name: string;
+    branchName: string;
+    address: string;
+  };
 }
 
 export const ModalForm: React.FC<ModalFormProps> = ({
   user,
   isOpen,
   setIsOpen,
-  onRequestSent,
+  onSent,
+  onUpdated,
+  initialData = { name: "", branchName: "", address: "" },
 }) => {
-  const [formData, setFormData] = React.useState({
-    name: "",
-    branchName: "",
-    address: "",
-  });
+  const [formData, setFormData] = React.useState(initialData);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -33,19 +40,23 @@ export const ModalForm: React.FC<ModalFormProps> = ({
     const request: Request = {
       type: "Create a store",
       status: "pending",
-      fromUser: user._id!,
+      fromUser: user.id!,
       username: user.username,
-      data: { ...formData, employeeId: user._id! },
+      data: { ...formData, employeeId: user.id! },
       created_at: new Date().toISOString(),
     };
 
     try {
-      await createRequest(request);
+      if (onUpdated) {
+        onUpdated(request);
+      } else if (onSent) {
+        await createRequest(request);
+        onSent();
+      }
       setFormData({ name: "", branchName: "", address: "" });
       setIsOpen(false);
-      onRequestSent();
     } catch (error) {
-      console.error("Error creating store request:", error);
+      console.error("Error saving request:", error);
     }
   };
 

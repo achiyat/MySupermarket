@@ -1,11 +1,15 @@
 // client/src/pages/Requests/requests.tsx
 import React, { useEffect, useState } from "react";
 import { Request } from "../../Interfaces/interfaces";
-import { getAllRequests } from "../../services/api";
+import { getAllRequests, updateRequest } from "../../services/api";
+import { ModalForm } from "../../components/Modals/ModalForm/modalForm";
+import { isStore } from "../../dictionaries/requestDetails";
 import "./requests.css";
 
 export const Requests: React.FC = () => {
   const [requests, setRequests] = useState<Request[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedRequest, setSelectedRequest] = useState<Request | null>(null);
 
   useEffect(() => {
     const getRequests = async () => {
@@ -13,7 +17,7 @@ export const Requests: React.FC = () => {
         const data = await getAllRequests();
         setRequests(data);
       } catch (error) {
-        console.error("Error creating store request:", error);
+        console.error("Error fetching requests:", error);
       }
     };
 
@@ -21,10 +25,29 @@ export const Requests: React.FC = () => {
   }, []);
 
   const handleEditClick = (requestId: string) => {
-    console.log(`Editing request with ID: ${requestId}`);
+    const request = requests.find((req) => req._id === requestId);
+    console.log(request);
+
+    if (request && isStore(request.data)) {
+      setSelectedRequest(request);
+      setIsModalOpen(true);
+    }
   };
 
-  if (!requests) return <p>no requests</p>;
+  const handleRequestUpdated = async (updatedRequest: Request) => {
+    try {
+      const request = await updateRequest(updatedRequest._id!, updatedRequest); // Call the API
+      setRequests((prev) =>
+        prev.map((req) => (req._id === request._id ? request : req))
+      );
+      setIsModalOpen(false);
+      setSelectedRequest(null);
+    } catch (error) {
+      console.error("Error updating request:", error);
+    }
+  };
+
+  if (!requests) return <p>No requests</p>;
 
   return (
     <div className="requests-container">
@@ -55,6 +78,24 @@ export const Requests: React.FC = () => {
           </div>
         ))}
       </div>
+
+      {isModalOpen && selectedRequest && isStore(selectedRequest.data) && (
+        <ModalForm
+          user={{
+            id: selectedRequest.fromUser,
+            username: selectedRequest.username,
+          }}
+          isOpen={isModalOpen}
+          setIsOpen={setIsModalOpen}
+          onSent={() => {}}
+          onUpdated={handleRequestUpdated}
+          initialData={{
+            name: selectedRequest.data.name,
+            branchName: selectedRequest.data.branchName,
+            address: selectedRequest.data.address,
+          }}
+        />
+      )}
     </div>
   );
 };

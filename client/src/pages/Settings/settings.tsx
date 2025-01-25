@@ -88,10 +88,10 @@ export const Settings: React.FC = () => {
             Create a request to create a store
           </button>
           <ModalForm
-            user={user}
+            user={{ id: user._id!, username: user.username }}
             isOpen={isModalOpen}
             setIsOpen={setIsModalOpen}
-            onRequestSent={() => setIsRequestSent(true)}
+            onSent={() => setIsRequestSent(true)}
           />
           {isRequestSent && (
             <p className="settings-explanation">
