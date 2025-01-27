@@ -3,32 +3,31 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { register, login } from "../../services/api";
 import "./signUp.css";
-import { Role } from "../../types/types";
 import { LoginData, User } from "../../Interfaces/interfaces";
+import { fieldConfig } from "../../dictionaries/fieldConfig";
 
 export const SignUp: React.FC = () => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
-  const [role] = useState<Role>("buyer");
+  const [formData, setFormData] = useState<User>({
+    username: "",
+    email: "",
+    password: "",
+    phone: "",
+    address: "",
+    role: "buyer",
+  });
+
   const navigate = useNavigate();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
   const handleRegister = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
 
-    const userData: User = {
-      username,
-      email,
-      password,
-      role,
-      phone,
-      address,
-    };
-
     try {
-      const result = await register(userData);
+      const result = await register(formData);
       if ("message" in result) {
         console.error(result.message);
       } else {
@@ -41,7 +40,10 @@ export const SignUp: React.FC = () => {
   };
 
   const handleLogin = async () => {
-    const loginData: LoginData = { email, password };
+    const loginData: LoginData = {
+      email: formData.email,
+      password: formData.password!,
+    };
 
     try {
       const result = await login(loginData);
@@ -70,50 +72,18 @@ export const SignUp: React.FC = () => {
       <h2 className="signUp-title">Sign Up</h2>
 
       <form onSubmit={handleRegister}>
-        <input
-          type="text"
-          placeholder="Name"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          className="signUp-input"
-          required
-        />
-
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="signUp-input"
-          required
-        />
-
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="signUp-input"
-          required
-        />
-
-        <input
-          type="text"
-          placeholder="Phone"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          className="signUp-input"
-          required
-        />
-
-        <input
-          type="text"
-          placeholder="Address"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          className="signUp-input"
-          required
-        />
+        {fieldConfig.Users.map((field) => (
+          <input
+            key={field.value}
+            type={field.type}
+            placeholder={field.placeholder}
+            name={field.value as string}
+            value={String(formData[field.value])}
+            onChange={handleChange}
+            className="signUp-input"
+            required
+          />
+        ))}
 
         <div className="signUp-buttons">
           <button type="submit" className="signUp-btn primary">
