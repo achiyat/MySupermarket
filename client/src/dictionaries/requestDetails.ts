@@ -1,17 +1,17 @@
 // client/src/dictionaries/requestDetails.ts
-import { Request, Store, User } from "../Interfaces/interfaces";
+import { Category, Request, Store, User } from "../Interfaces/interfaces";
 
-export const isUser = (data: User | Store): data is User => {
+export const isUser = (data: User | Store | Category): data is User => {
   return (data as User).email !== undefined;
 };
 
-// export const isStore = (data: User | Store): data is Store => {
-//   return "branchName" in data;
-// };
-
-export const isStore = (data: User | Store): data is Store => {
+export const isStore = (data: User | Store | Category): data is Store => {
   return (data as Store).branchName !== undefined;
 };
+
+// export const isCategory = (data: User | Store | Category): data is Category => {
+//   return (data as Category).products !== undefined;
+// };
 
 export const userDetails = (request: Request) => {
   if (isUser(request.data)) {

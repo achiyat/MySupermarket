@@ -10,6 +10,7 @@ export const Settings: React.FC = () => {
   const { user } = useOutletContext<{ user: User }>();
   const [isRequestSent, setIsRequestSent] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
 
   useEffect(() => {
     const getRequests = async () => {
@@ -93,13 +94,35 @@ export const Settings: React.FC = () => {
             setIsOpen={setIsModalOpen}
             onSent={() => setIsRequestSent(true)}
           />
-          {isRequestSent && (
-            <p className="settings-explanation">
-              The request has been sent, please wait for the response. You can
-              track the status of the request in the "Requests" area.
-            </p>
-          )}
         </div>
+      )}
+
+      {/* Create Category Section */}
+      {user.role === "employee" && (
+        <div className="settings-section">
+          <h2>Create a Category</h2>
+          <p>To create a category, fill out the form to send a request.</p>
+          <button
+            className="settings-button"
+            onClick={() => setIsCategoryModalOpen(true)}
+          >
+            Create a Category Request
+          </button>
+          <ModalForm
+            user={{ id: user._id!, username: user.username }}
+            isOpen={isCategoryModalOpen}
+            setIsOpen={setIsCategoryModalOpen}
+            onSent={() => setIsRequestSent(true)}
+            isCategory={true}
+          />
+        </div>
+      )}
+
+      {isRequestSent && user.role === "employee" && (
+        <p className="settings-explanation">
+          The request has been sent, please wait for the response. You can track
+          the status of the request in the "Requests" area.
+        </p>
       )}
     </div>
   );

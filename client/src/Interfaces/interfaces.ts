@@ -1,6 +1,17 @@
 // client/src/Interfaces/interfaces.ts
 import { Role, Status } from "../types/types";
 
+export interface Request {
+  _id?: string;
+  type: string;
+  status: Status;
+  fromUser: string;
+  username: string;
+  data: User | Store | Category;
+  created_at: string;
+  message?: string;
+}
+
 export interface User {
   _id?: string;
   username: string;
@@ -14,19 +25,6 @@ export interface User {
     stores: Store[];
   };
   __v?: number;
-}
-
-export interface LoginData {
-  email: string;
-  password: string;
-}
-
-export interface Token {
-  token: string;
-}
-
-export interface MsgRes {
-  message: string;
 }
 
 export interface Store {
@@ -45,6 +43,19 @@ export interface Category {
   products: string[];
   active?: boolean;
   __v?: number;
+}
+
+export interface LoginData {
+  email: string;
+  password: string;
+}
+
+export interface Token {
+  token: string;
+}
+
+export interface MsgRes {
+  message: string;
 }
 
 export interface Product {
@@ -72,7 +83,7 @@ export interface Request {
   status: Status;
   fromUser: string;
   username: string;
-  data: User | Store;
+  data: User | Store | Category;
   created_at: string;
   message?: string;
 }
