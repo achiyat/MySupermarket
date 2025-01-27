@@ -10,7 +10,7 @@ export const Settings: React.FC = () => {
   const { user } = useOutletContext<{ user: User }>();
   const [isRequestSent, setIsRequestSent] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+  const [modalType, setModalType] = useState<"store" | "category" | null>(null);
 
   useEffect(() => {
     const getRequests = async () => {
@@ -30,23 +30,6 @@ export const Settings: React.FC = () => {
     getRequests();
   }, [user._id]);
 
-  const handleCreateStatus = async () => {
-    try {
-      const request: Request = {
-        type: "Change status",
-        status: "pending",
-        fromUser: user._id!,
-        username: user.username,
-        data: { ...user, role: "employee" },
-        created_at: new Date().toISOString(),
-      };
-      await createRequest(request);
-      setIsRequestSent(true);
-    } catch (error) {
-      console.error("Error creating request:", error);
-    }
-  };
-
   return (
     <div className="settings-container">
       <h1 className="settings-title">Settings</h1>
@@ -61,7 +44,22 @@ export const Settings: React.FC = () => {
           </p>
           <button
             className={`settings-button ${isRequestSent ? "inactive" : ""}`}
-            onClick={handleCreateStatus}
+            onClick={async () => {
+              try {
+                const request: Request = {
+                  type: "Change status",
+                  status: "pending",
+                  fromUser: user._id!,
+                  username: user.username,
+                  data: { ...user, role: "employee" },
+                  created_at: new Date().toISOString(),
+                };
+                await createRequest(request);
+                setIsRequestSent(true);
+              } catch (error) {
+                console.error("Error creating request:", error);
+              }
+            }}
             disabled={isRequestSent}
           >
             {isRequestSent
@@ -77,52 +75,50 @@ export const Settings: React.FC = () => {
         </div>
       )}
 
-      {/* Create Store Section */}
+      {/* Create Store and Create Category Section */}
       {user.role === "employee" && (
-        <div className="settings-section">
-          <h2>Create a Store</h2>
-          <p>To create a store, you must send a request to create a store.</p>
-          <button
-            className="settings-button"
-            onClick={() => setIsModalOpen(true)}
-          >
-            Create a request to create a store
-          </button>
+        <>
+          {(["store", "category"] as const).map((type) => {
+            const isStore = type === "store";
+
+            return (
+              <div className="settings-section" key={type}>
+                <h2>{isStore ? "Create a Store" : "Create a Category"}</h2>
+                <p>
+                  {isStore
+                    ? "To create a store, you must send a request to create a store."
+                    : "To create a category, fill out the form to send a request."}
+                </p>
+                <button
+                  className="settings-button"
+                  onClick={() => {
+                    setModalType(type);
+                    setIsModalOpen(true);
+                  }}
+                >
+                  {isStore
+                    ? "Create a request to create a store"
+                    : "Create a Category Request"}
+                </button>
+              </div>
+            );
+          })}
+
           <ModalForm
             user={{ id: user._id!, username: user.username }}
             isOpen={isModalOpen}
             setIsOpen={setIsModalOpen}
             onSent={() => setIsRequestSent(true)}
+            isCategory={modalType === "category"}
           />
-        </div>
-      )}
 
-      {/* Create Category Section */}
-      {user.role === "employee" && (
-        <div className="settings-section">
-          <h2>Create a Category</h2>
-          <p>To create a category, fill out the form to send a request.</p>
-          <button
-            className="settings-button"
-            onClick={() => setIsCategoryModalOpen(true)}
-          >
-            Create a Category Request
-          </button>
-          <ModalForm
-            user={{ id: user._id!, username: user.username }}
-            isOpen={isCategoryModalOpen}
-            setIsOpen={setIsCategoryModalOpen}
-            onSent={() => setIsRequestSent(true)}
-            isCategory={true}
-          />
-        </div>
-      )}
-
-      {isRequestSent && user.role === "employee" && (
-        <p className="settings-explanation">
-          The request has been sent, please wait for the response. You can track
-          the status of the request in the "Requests" area.
-        </p>
+          {isRequestSent && (
+            <p className="settings-explanation">
+              The request has been sent, please wait for the response. You can
+              track the status of the request in the "Requests" area.
+            </p>
+          )}
+        </>
       )}
     </div>
   );

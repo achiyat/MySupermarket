@@ -3,6 +3,7 @@ import React from "react";
 import { createRequest } from "../../../services/api";
 import { Request } from "../../../Interfaces/interfaces";
 import "./modalForm.css";
+import { fieldConfig } from "../../../dictionaries/fieldConfig";
 
 interface ModalFormProps {
   user: {
@@ -82,42 +83,23 @@ export const ModalForm: React.FC<ModalFormProps> = ({
               {isCategory ? "Create a Category" : "Create a Store"}
             </h3>
             <form onSubmit={handleSubmit}>
-              <label className="modalForm-label">
-                {isCategory ? "Category Name:" : "Store Name:"}
-                <input
-                  className="modalForm-input"
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                />
-              </label>
-              {!isCategory && (
-                <>
-                  <label className="modalForm-label">
-                    Branch:
+              {fieldConfig[isCategory ? "Categories" : "Stores"].map(
+                (field) => (
+                  <label
+                    key={field.value as string}
+                    className="modalForm-label"
+                  >
+                    {field.label}:
                     <input
                       className="modalForm-input"
-                      type="text"
-                      name="branchName"
-                      value={formData.branchName}
+                      type={field.type}
+                      name={field.value as string}
+                      value={formData[field.value as keyof typeof formData]}
                       onChange={handleChange}
                       required
                     />
                   </label>
-                  <label className="modalForm-label">
-                    Address:
-                    <input
-                      className="modalForm-input"
-                      type="text"
-                      name="address"
-                      value={formData.address}
-                      onChange={handleChange}
-                      required
-                    />
-                  </label>
-                </>
+                )
               )}
               <button
                 className="modalForm-button"
