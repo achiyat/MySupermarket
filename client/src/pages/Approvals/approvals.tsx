@@ -1,4 +1,3 @@
-// client/src/pages/Approvals/approvals.tsx
 import React, { useEffect, useState } from "react";
 import "./approvals.css";
 import {
@@ -28,6 +27,10 @@ export const Approvals: React.FC = () => {
       message: string;
     };
   }>({});
+  const [filters, setFilters] = useState({
+    type: "All",
+    status: "All",
+  });
 
   useEffect(() => {
     const fetchRequests = async () => {
@@ -90,11 +93,46 @@ export const Approvals: React.FC = () => {
     }
   };
 
+  const handleFilterChange = (filterKey: string, value: string) => {
+    setFilters((prevFilters) => ({ ...prevFilters, [filterKey]: value }));
+  };
+
+  const filteredRequests = requests.filter((request) => {
+    const { type, status } = filters;
+    const isTypeFilter = type === "All" || request.type === type;
+    const isStatusFilter = status === "All" || request.status === status;
+    return isTypeFilter && isStatusFilter;
+  });
+
   return (
     <div className="approvals-container">
-      <h1>Request Approvals</h1>
-      <div className="requests-list">
-        {requests.map((request) => {
+      <h1 className="approvals-h1">Request Approvals</h1>
+
+      {/* Filters */}
+      <div className="approvals-filters">
+        <select
+          value={filters.type}
+          onChange={(e) => handleFilterChange("type", e.target.value)}
+        >
+          <option value="All">All</option>
+          <option value="Change status">Change status</option>
+          <option value="Create a store">Create a store</option>
+          <option value="Create a category">Create a category</option>
+        </select>
+        <select
+          value={filters.status}
+          onChange={(e) => handleFilterChange("status", e.target.value)}
+        >
+          <option value="All">All</option>
+          <option value="pending">Pending</option>
+          <option value="approved">Approved</option>
+          <option value="rejected">Rejected</option>
+        </select>
+      </div>
+
+      {/* Requests List */}
+      <div className="approvals-list">
+        {filteredRequests.map((request) => {
           const details =
             userDetails(request) ||
             storeDetails(request) ||
@@ -115,17 +153,17 @@ export const Approvals: React.FC = () => {
                   onClick: () => handleRequest(request._id!),
                 }
             : {
-                className: "check-btn",
+                className: "approvals-check",
                 label: "Check Request",
                 onClick: () => handleCheckRequest(request),
               };
 
           return (
-            <div key={request._id} className="request-item">
-              <div className="request-header">
+            <div key={request._id} className="approvals-item">
+              <div className="approvals-header">
                 <h2>{request.type}</h2>
               </div>
-              <div className="request-details">
+              <div className="approvals-details">
                 <div>
                   {details.map((field, index) => (
                     <p key={index}>
@@ -134,9 +172,9 @@ export const Approvals: React.FC = () => {
                   ))}
                 </div>
               </div>
-              <div className="request-actions">
+              <div className="approvals-actions">
                 {request.message ? (
-                  <p className={`message ${request.status}`}>
+                  <p className={`approvals-message ${request.status}`}>
                     {request.message}
                   </p>
                 ) : (
