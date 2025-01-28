@@ -5,10 +5,10 @@ import { User } from "../models/User";
 // Middleware to validate requests
 export const checkRequest = async (req: Request) => {
   const { fromUser, type, data } = req.body;
-
+  const _id = fromUser;
   // Handle "Change status" type requests
   if (type === "Change status") {
-    const user = await User.findOne({ fromUser });
+    const user = await User.findOne({ _id });
     const { role, active } = user || {};
     // Condition 1: Status already defined for "employee"
     if (role === "employee") {
