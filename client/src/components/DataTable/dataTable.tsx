@@ -1,9 +1,10 @@
 // client/src/components/DataTable/dataTable.tsx
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import "./dataTable.css";
 import { headerMapping } from "../../dictionaries/headerMapping";
 import { useNavigate } from "react-router-dom";
 import { PageType } from "../../types/types";
+import { Filter } from "../Filter/filter";
 
 interface DataTableProps<T> {
   pageType: PageType;
@@ -18,29 +19,16 @@ export const DataTable = <T,>({ pageType, data }: DataTableProps<T>) => {
     active: "all",
   });
 
-  const handleTextSelectChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setFilters({
-      ...filters,
-      [name]: value,
-    });
-  };
-
   const filteredData = data.filter((item) => {
-    // Ensure the 'name' property exists before applying the filter
     const itemName = (item as any).name || (item as any).username;
     const filterByName =
       itemName && itemName.toLowerCase().includes(filters.name.toLowerCase());
 
-    // Filter by "type" (only for users page)
     const filterByType =
       pageType === "users" && filters.type
         ? (item as any).role === filters.type
         : true;
 
-    // Filter by "active" status
     const filterByActive =
       filters.active === "all" ||
       (filters.active === "active" && (item as any).active) ||
@@ -105,38 +93,7 @@ export const DataTable = <T,>({ pageType, data }: DataTableProps<T>) => {
         <div className="page-title">{String(pageType).toUpperCase()}</div>
         <button className="add-new-btn">Add New</button>
       </header>
-      <div className="filters">
-        <input
-          type="text"
-          name="name"
-          placeholder="Filter by Name"
-          value={filters.name}
-          onChange={handleTextSelectChange}
-          className="filter-input"
-        />
-        {pageType === "users" && (
-          <select
-            name="type"
-            value={filters.type}
-            onChange={handleTextSelectChange}
-            className="filter-select"
-          >
-            <option value="">Select Type</option>
-            <option value="employee">Employee</option>
-            <option value="buyer">Buyer</option>
-          </select>
-        )}
-        <select
-          name="active"
-          value={filters.active}
-          onChange={handleTextSelectChange}
-          className="filter-select"
-        >
-          <option value="all">{`All ${String(pageType)}`}</option>
-          <option value="active">Active</option>
-          <option value="inactive">Inactive</option>
-        </select>
-      </div>
+      <Filter page={pageType} filters={filters} onSetFilters={setFilters} />
       <table className="data-table">
         <thead>
           <tr>{renderTableHeaders()}</tr>

@@ -1,3 +1,4 @@
+// client/src/pages/Approvals/approvals.tsx
 import React, { useEffect, useState } from "react";
 import "./approvals.css";
 import {
@@ -18,6 +19,7 @@ import {
   storeDetails,
   userDetails,
 } from "../../dictionaries/requestDetails";
+import { Filter } from "../../components/Filter/filter";
 
 export const Approvals: React.FC = () => {
   const [requests, setRequests] = useState<Request[]>([]);
@@ -40,6 +42,13 @@ export const Approvals: React.FC = () => {
 
     fetchRequests();
   }, []);
+
+  const filteredRequests = requests.filter((request) => {
+    const { type, status } = filters;
+    const isTypeFilter = type === "All" || request.type === type;
+    const isStatusFilter = status === "All" || request.status === status;
+    return isTypeFilter && isStatusFilter;
+  });
 
   const handleCheckRequest = async (_request: Request) => {
     const response = await checkRequest(_request);
@@ -93,42 +102,12 @@ export const Approvals: React.FC = () => {
     }
   };
 
-  const handleFilterChange = (filterKey: string, value: string) => {
-    setFilters((prevFilters) => ({ ...prevFilters, [filterKey]: value }));
-  };
-
-  const filteredRequests = requests.filter((request) => {
-    const { type, status } = filters;
-    const isTypeFilter = type === "All" || request.type === type;
-    const isStatusFilter = status === "All" || request.status === status;
-    return isTypeFilter && isStatusFilter;
-  });
-
   return (
     <div className="approvals-container">
       <h1 className="approvals-h1">Request Approvals</h1>
 
-      {/* Filters */}
-      <div className="approvals-filters">
-        <select
-          value={filters.type}
-          onChange={(e) => handleFilterChange("type", e.target.value)}
-        >
-          <option value="All">All</option>
-          <option value="Change status">Change status</option>
-          <option value="Create a store">Create a store</option>
-          <option value="Create a category">Create a category</option>
-        </select>
-        <select
-          value={filters.status}
-          onChange={(e) => handleFilterChange("status", e.target.value)}
-        >
-          <option value="All">All</option>
-          <option value="pending">Pending</option>
-          <option value="approved">Approved</option>
-          <option value="rejected">Rejected</option>
-        </select>
-      </div>
+      {/* Using the Filter component */}
+      <Filter page="approvals" filters={filters} onSetFilters={setFilters} />
 
       {/* Requests List */}
       <div className="approvals-list">
