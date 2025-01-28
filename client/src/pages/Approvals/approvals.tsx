@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import "./approvals.css";
 import {
   checkRequest,
+  createCategory,
   createStore,
   getAllRequests,
   updateRequest,
@@ -11,6 +12,8 @@ import {
 import { Request } from "../../Interfaces/interfaces";
 import { Status } from "../../types/types";
 import {
+  CategoryDetails,
+  isCategory,
   isStore,
   isUser,
   storeDetails,
@@ -49,18 +52,19 @@ export const Approvals: React.FC = () => {
     }
   };
 
-  const handleRequest = async (userId: string) => {
-    const request = requests.find((req) => req.fromUser === userId);
+  const handleRequest = async (id: string) => {
+    const request = requests.find((req) => req._id === id);
     if (!request) return;
 
-    const { response, message } = checkedRequests[userId] || {};
-
+    const { response, message } = checkedRequests[request._id!] || {};
     try {
       if (response === "approved") {
         if (isUser(request.data)) {
-          await updateUser(userId, request.data);
+          await updateUser(request.fromUser, request.data);
         } else if (isStore(request.data)) {
           await createStore(request.data);
+        } else if (isCategory(request.data)) {
+          await createCategory(request.data);
         }
       }
 
@@ -68,6 +72,7 @@ export const Approvals: React.FC = () => {
         ...request,
         status: response,
         message,
+        active: false,
       };
 
       await updateRequest(updatedRequestData._id!, updatedRequestData);
@@ -75,7 +80,9 @@ export const Approvals: React.FC = () => {
       // Update the state after performing actions
       setRequests((prevRequests) =>
         prevRequests.map((req) =>
-          req.fromUser === userId ? { ...req, status: response, message } : req
+          req._id === id
+            ? { ...req, status: response, message, active: false }
+            : req
         )
       );
     } catch (error) {
@@ -88,20 +95,24 @@ export const Approvals: React.FC = () => {
       <h1>Request Approvals</h1>
       <div className="requests-list">
         {requests.map((request) => {
-          const details = userDetails(request) || storeDetails(request) || [];
-          const response = checkedRequests[request.fromUser!]?.response;
+          const details =
+            userDetails(request) ||
+            storeDetails(request) ||
+            CategoryDetails(request) ||
+            [];
+          const response = checkedRequests[request._id!]?.response;
 
           const buttonProps = response
             ? response === "approved"
               ? {
                   className: "approve-btn",
                   label: "Approve",
-                  onClick: () => handleRequest(request.fromUser),
+                  onClick: () => handleRequest(request._id!),
                 }
               : {
                   className: "reject-btn",
                   label: "Reject",
-                  onClick: () => handleRequest(request.fromUser),
+                  onClick: () => handleRequest(request._id!),
                 }
             : {
                 className: "check-btn",
