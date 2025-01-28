@@ -38,8 +38,11 @@ export const Requests: React.FC = () => {
       const requestWithId = {
         ...updatedRequest,
         _id: selectedRequest?._id,
+        created_at: selectedRequest?.created_at || updatedRequest.created_at,
         message: "",
+        active: true,
       };
+
       const response = await updateRequest(requestWithId._id!, requestWithId);
       const _requests = requests.map((req) =>
         req._id === response._id ? response : req
