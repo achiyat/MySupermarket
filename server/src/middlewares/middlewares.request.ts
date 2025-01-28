@@ -1,14 +1,14 @@
 import { Request } from "express";
 import { Store } from "../models/Store";
 import { User } from "../models/User";
+import { Category } from "../models/Category";
 
 // Middleware to validate requests
 export const checkRequest = async (req: Request) => {
   const { fromUser, type, data } = req.body;
-  const _id = fromUser;
   // Handle "Change status" type requests
   if (type === "Change status") {
-    const user = await User.findOne({ _id });
+    const user = await User.findOne({ _id: fromUser });
     const { role, active } = user || {};
     // Condition 1: Status already defined for "employee"
     if (role === "employee") {
@@ -50,6 +50,30 @@ export const checkRequest = async (req: Request) => {
       return {
         isValid: false,
         message: "A store already exists under the given address.",
+        fromUser,
+      };
+    }
+  }
+
+  // Handle "Create a category" type requests
+  if (type === "Create a category") {
+    const { name } = data || {};
+
+    // Condition 5: Missing category name
+    if (!name) {
+      return {
+        isValid: false,
+        message: "Category name is required for a Create a category request.",
+        fromUser,
+      };
+    }
+
+    // Condition 6: Duplicate category name
+    const categoryExists = await Category.findOne({ name: name });
+    if (categoryExists) {
+      return {
+        isValid: false,
+        message: "A category with this name already exists.",
         fromUser,
       };
     }
