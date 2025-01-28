@@ -19,11 +19,8 @@ export const Settings: React.FC = () => {
         if (data) setIsRequestSent(true);
         return true;
       } catch (error: any) {
-        if (error.response && error.response.status === 404) {
-          setIsRequestSent(false);
-        } else {
-          console.error("Error fetching requests:", error);
-        }
+        setIsRequestSent(false);
+        console.error("Error fetching requests:", error);
       }
     };
 
