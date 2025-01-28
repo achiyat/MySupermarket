@@ -1,0 +1,12 @@
+/* client/src/components/Filter/filter.css */
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filters select {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
