@@ -5,7 +5,7 @@ import { Category } from "../models/Category";
 
 // Middleware to validate requests
 export const checkRequest = async (req: Request) => {
-  const { fromUser, type, data } = req.body;
+  const { _id, fromUser, type, data } = req.body;
   // Handle "Change status" type requests
   if (type === "Change status") {
     const user = await User.findOne({ _id: fromUser });
@@ -15,7 +15,7 @@ export const checkRequest = async (req: Request) => {
       return {
         isValid: false,
         message: "The status you are requesting is already defined.",
-        fromUser,
+        _id,
       };
     }
 
@@ -24,7 +24,7 @@ export const checkRequest = async (req: Request) => {
       return {
         isValid: false,
         message: "Cannot process a request for an inactive user.",
-        fromUser,
+        _id,
       };
     }
   }
@@ -38,7 +38,7 @@ export const checkRequest = async (req: Request) => {
         isValid: false,
         message:
           "Store name, branch, and address are all required for a Create a store request.",
-        fromUser,
+        _id,
       };
     }
 
@@ -50,7 +50,7 @@ export const checkRequest = async (req: Request) => {
       return {
         isValid: false,
         message: "A store already exists under the given address.",
-        fromUser,
+        _id,
       };
     }
   }
@@ -64,7 +64,7 @@ export const checkRequest = async (req: Request) => {
       return {
         isValid: false,
         message: "Category name is required for a Create a category request.",
-        fromUser,
+        _id,
       };
     }
 
@@ -74,7 +74,7 @@ export const checkRequest = async (req: Request) => {
       return {
         isValid: false,
         message: "A category with this name already exists.",
-        fromUser,
+        _id,
       };
     }
   }
@@ -83,6 +83,6 @@ export const checkRequest = async (req: Request) => {
   return {
     isValid: true,
     message: "The request was approved.",
-    fromUser,
+    _id,
   };
 };

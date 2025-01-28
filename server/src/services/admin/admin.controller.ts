@@ -97,11 +97,11 @@ export const getRequestById = <T>(model: Model<T & Document>) => {
 export const getCheckRequest = async (req: Request, res: Response) => {
   try {
     // Call the checkRequest function to validate the request
-    const { isValid, message, fromUser } = await checkRequest(req);
+    const { isValid, message, _id } = await checkRequest(req);
 
     // Prepare the response object
     const response = {
-      _id: fromUser,
+      _id: _id,
       response: isValid ? "approved" : "rejected",
       message: message,
     };
