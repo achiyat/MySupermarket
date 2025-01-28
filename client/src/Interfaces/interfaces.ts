@@ -10,6 +10,7 @@ export interface Request {
   data: User | Store | Category;
   created_at: string;
   message?: string;
+  active?: boolean;
 }
 
 export interface User {

@@ -97,7 +97,6 @@ export const Requests: React.FC = () => {
           }}
           isOpen={isModalOpen}
           setIsOpen={setIsModalOpen}
-          onSent={() => {}}
           onUpdated={handleRequestUpdated}
           initialData={{
             name: selectedRequest.data.name,

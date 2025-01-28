@@ -11,6 +11,7 @@ interface IRequest extends Document {
   data: mongoose.Types.ObjectId;
   created_at: Date;
   message?: string;
+  active: boolean;
 }
 
 // Define the schema
@@ -23,6 +24,7 @@ const RequestSchema: Schema<IRequest> = new Schema(
     data: { type: Schema.Types.Mixed, required: true },
     created_at: { type: Date, default: Date.now },
     message: { type: String },
+    active: { type: Boolean, default: true },
   },
   { collection: "requests" }
 );

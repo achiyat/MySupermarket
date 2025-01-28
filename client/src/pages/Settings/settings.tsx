@@ -66,12 +66,10 @@ export const Settings: React.FC = () => {
               ? "Request sent"
               : "Create a request to change status"}
           </button>
-          {isRequestSent && (
-            <p className="settings-explanation">
-              The request has been sent, please wait for the response. You can
-              track the status of the request in the "Requests" area.
-            </p>
-          )}
+          <p className="settings-explanation">
+            The request has been sent, please wait for the response. You can
+            track the status of the request in the "Requests" area.
+          </p>
         </div>
       )}
 
@@ -112,12 +110,10 @@ export const Settings: React.FC = () => {
             isCategory={modalType === "category"}
           />
 
-          {isRequestSent && (
-            <p className="settings-explanation">
-              The request has been sent, please wait for the response. You can
-              track the status of the request in the "Requests" area.
-            </p>
-          )}
+          <p className="settings-explanation">
+            The request has been sent, please wait for the response. You can
+            track the status of the request in the "Requests" area.
+          </p>
         </>
       )}
     </div>
