@@ -56,7 +56,7 @@ export interface Token {
 }
 
 export interface MsgRes {
-  message: string;
+  message: { [key: string]: string };
 }
 
 export interface Product {

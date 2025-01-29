@@ -31,18 +31,16 @@ export const SignUp: React.FC = () => {
 
     try {
       const result = await register(formData);
+      console.log(result);
       if ("message" in result) {
         if (result.message.username || result.message.email) {
           setErrorMessages(result.message);
-        } else {
-          console.error(result.message);
         }
       } else {
         console.log(result);
         handleLogin();
       }
     } catch (error) {
-      console.error("Registration failed:", error);
       setErrorMessages({
         error: "Internal Server Error, please try again later.",
       });

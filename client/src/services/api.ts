@@ -5,6 +5,7 @@ import {
   Category,
   Check,
   LoginData,
+  MsgRes,
   Product,
   Request,
   Store,
@@ -93,15 +94,17 @@ export const checkRequest = async (data: Request): Promise<Check> => {
 };
 
 // Register a new user
-export const register = async (data: User): Promise<User> => {
+export const register = async (data: User): Promise<User | MsgRes> => {
   try {
-    const response = await axios.post<User>(
+    const response = await axios.post<User | MsgRes>(
       `${API_BASE_URL}/auth/register`,
       data
     );
     return response.data;
   } catch (error) {
-    console.log(error);
+    if (axios.isAxiosError(error)) {
+      return error.response?.data;
+    }
     throw new Error("Failed to register user");
   }
 };

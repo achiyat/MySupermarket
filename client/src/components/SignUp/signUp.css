@@ -20,13 +20,13 @@
 .signUp-title {
   color: #4caf50;
   font-size: 30px;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
   position: relative;
 }
 
 .signUp-input {
   width: 95%;
-  margin-bottom: 15px;
+  margin-top: 15px;
   padding: 10px;
   border: 1px solid #4caf50;
   border-radius: 5px;
@@ -42,7 +42,7 @@
 .signUp-buttons {
   display: flex;
   justify-content: space-between;
-  margin-top: 20px;
+  margin-top: 35px;
 }
 
 .signUp-btn {
