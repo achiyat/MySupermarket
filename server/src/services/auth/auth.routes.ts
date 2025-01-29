@@ -4,7 +4,7 @@ import { login, protectedRoute } from "./auth.controller";
 import { authenticateToken } from "./auth.middlewares";
 import { createEntity } from "../admin/admin.controller";
 import { Models } from "../../utils";
-import { validateUser } from "../../middlewares/middlewares.user";
+import { validateUser } from "../../middlewares/mw.user";
 
 const router = Router();
 

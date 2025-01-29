@@ -4,7 +4,7 @@ import { respond } from "./admin.middlewares";
 import mongoose, { Model } from "mongoose";
 import { create, getAll, getById, update } from "./admin.service";
 import { User } from "../../models/User";
-import { checkRequest } from "../../middlewares/middlewares.request";
+import { checkRequest } from "../../middlewares/mw.request";
 
 export const createEntity = <T>(model: Model<T & Document>) => {
   return async (req: Request, res: Response) => {

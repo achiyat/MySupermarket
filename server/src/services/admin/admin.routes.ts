@@ -10,6 +10,7 @@ import {
   getRequestById,
   updateEntity,
 } from "./admin.controller";
+import checkCategoryDeactivation from "../../middlewares/mw.Category";
 
 export const adminRoutes: Router = Router();
 
@@ -37,7 +38,11 @@ adminRoutes.put("/stores/:id", updateEntity(Models.Store));
 adminRoutes.post("/categories", createEntity(Models.Category)); // validate validateCategory
 adminRoutes.get("/categories/:id", getEntityById(Models.Category));
 adminRoutes.get("/categories", getAllEntity(Models.Category));
-adminRoutes.put("/categories/:id", updateEntity(Models.Category));
+adminRoutes.put(
+  "/categories/:id",
+  checkCategoryDeactivation,
+  updateEntity(Models.Category)
+);
 adminRoutes.get(
   "/fields/categories",
   getAllEntity(Models.Category, ["products", "products.categories"])
