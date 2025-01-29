@@ -3,13 +3,7 @@ import { Role } from "../types/types";
 import { links } from "./links";
 
 export const navbarUsers: Record<Role, string[]> = {
-  administrator: [
-    links.users,
-    links.stores,
-    links.categories,
-    links.approvals,
-    links.requests,
-  ],
+  administrator: [links.users, links.stores, links.categories, links.approvals],
   employee: [links.work, links.settings, links.requests],
-  buyer: [links.shopping, links.settings, links.requests],
+  buyer: [links.shopping, links.settings],
 };

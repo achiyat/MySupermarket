@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { Request, User } from "../../Interfaces/interfaces";
-import { createRequest, getRequestById } from "../../services/api";
+import { createRequest, getRequestsByUserId } from "../../services/api";
 import { ModalForm } from "../../components/Modals/ModalForm/modalForm";
 import "./settings.css";
 
@@ -11,12 +11,24 @@ export const Settings: React.FC = () => {
   const [isRequestSent, setIsRequestSent] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState<"store" | "category" | null>(null);
+  const [isRejected, setIsRejected] = useState(false);
 
   useEffect(() => {
     const getRequests = async () => {
       try {
-        const data = await getRequestById(user._id!);
-        if (data) setIsRequestSent(true);
+        const data: Request[] = await getRequestsByUserId(user._id!);
+
+        if (Array.isArray(data) && data.length > 0) {
+          console.log(data[0]);
+
+          const hasRejectedRequest = data.some(
+            (req) => req.status === "rejected"
+          );
+
+          setIsRequestSent(true);
+          setIsRejected(hasRejectedRequest);
+        }
+
         return true;
       } catch (error: any) {
         setIsRequestSent(false);
@@ -24,7 +36,9 @@ export const Settings: React.FC = () => {
       }
     };
 
-    getRequests();
+    if (user.role === "buyer") {
+      getRequests();
+    }
   }, [user._id]);
 
   return (
@@ -39,6 +53,7 @@ export const Settings: React.FC = () => {
             To become a seller and create your own store, you must create a
             status change request.
           </p>
+
           <button
             className={`settings-button ${isRequestSent ? "inactive" : ""}`}
             onClick={async () => {
@@ -63,10 +78,16 @@ export const Settings: React.FC = () => {
               ? "Request sent"
               : "Create a request to change status"}
           </button>
-          <p className="settings-explanation">
-            The request has been sent, please wait for the response. You can
-            track the status of the request in the "Requests" area.
-          </p>
+
+          {isRequestSent && (
+            <p
+              className={`settings-explanation ${isRejected ? "rejected" : ""}`}
+            >
+              {isRejected
+                ? "Your previous request was rejected. You can submit a new one."
+                : "The request has been sent, please wait for the response."}
+            </p>
+          )}
         </div>
       )}
 

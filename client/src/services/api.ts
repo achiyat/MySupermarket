@@ -50,6 +50,20 @@ export const getRequestById = async (id: string): Promise<Request> => {
   }
 };
 
+export const getRequestsByUserId = async (
+  userId: string
+): Promise<Request[]> => {
+  try {
+    const response = await axios.get<Request[]>(
+      `${API_BASE_URL}/admin/requests/${userId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to fetch requests by user ID");
+  }
+};
+
 export const updateRequest = async (
   id: string,
   data: Request
