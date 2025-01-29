@@ -33,7 +33,11 @@ export const SignUp: React.FC = () => {
       const result = await register(formData);
       console.log(result);
       if ("message" in result) {
-        if (result.message.username || result.message.email) {
+        if (
+          result.message.username ||
+          result.message.email ||
+          result.message.password
+        ) {
           setErrorMessages(result.message);
         }
       } else {
