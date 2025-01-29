@@ -39,7 +39,6 @@ export const DataTable = <T,>({ pageType, data }: DataTableProps<T>) => {
 
   const handleShowDetails = (item: any) => {
     const name = item.username || item.name;
-    console.log(`/${pageType}/${name}`);
     navigate(`/${pageType}/${name}`, { state: { item } });
   };
 
