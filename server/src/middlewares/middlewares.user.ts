@@ -1,6 +1,7 @@
 // server/src/middlewares/middlewares.user.ts
 import { Request, Response, NextFunction } from "express";
 import { User } from "../models/User";
+import { respond } from "../services/admin/admin.middlewares";
 
 export const validateUser = async (
   req: Request,
@@ -27,7 +28,6 @@ export const validateUser = async (
 
     next();
   } catch (error) {
-    console.error("Error checking duplicate user:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    respond(res, 500, "Internal Server Error");
   }
 };

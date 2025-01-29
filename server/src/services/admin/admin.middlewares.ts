@@ -7,7 +7,7 @@ export const respond = (
   message: string
 ): void => {
   // res.status(statusCode).json(new Error(message));
-  res.status(statusCode).json({ message });
+  res.status(statusCode).json({ message: { error: message } });
 };
 
 export const validateCategory = (

@@ -1,4 +1,3 @@
-// client/src/components/SignUp/signUp.tsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { register, login } from "../../services/api";
@@ -16,6 +15,9 @@ export const SignUp: React.FC = () => {
     role: "buyer",
   });
 
+  const [errorMessages, setErrorMessages] = useState<{ [key: string]: string }>(
+    {}
+  );
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,17 +27,25 @@ export const SignUp: React.FC = () => {
 
   const handleRegister = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
+    setErrorMessages({}); // Clear previous errors
 
     try {
       const result = await register(formData);
       if ("message" in result) {
-        console.error(result.message);
+        if (result.message.username || result.message.email) {
+          setErrorMessages(result.message);
+        } else {
+          console.error(result.message);
+        }
       } else {
         console.log(result);
         handleLogin();
       }
     } catch (error) {
       console.error("Registration failed:", error);
+      setErrorMessages({
+        error: "Internal Server Error, please try again later.",
+      });
     }
   };
 
@@ -73,17 +83,27 @@ export const SignUp: React.FC = () => {
 
       <form onSubmit={handleRegister}>
         {fieldConfig.Users.map((field) => (
-          <input
-            key={field.value}
-            type={field.type}
-            placeholder={field.placeholder}
-            name={field.value as string}
-            value={String(formData[field.value])}
-            onChange={handleChange}
-            className="signUp-input"
-            required
-          />
+          <div key={field.value}>
+            <input
+              type={field.type}
+              placeholder={field.placeholder}
+              name={field.value as string}
+              value={String(formData[field.value])}
+              onChange={handleChange}
+              className="signUp-input"
+              required
+            />
+            {errorMessages[field.value as string] && (
+              <div className="error-message">
+                {errorMessages[field.value as string]}
+              </div>
+            )}
+          </div>
         ))}
+
+        {errorMessages.error && (
+          <div className="error-message">{errorMessages.error}</div>
+        )}
 
         <div className="signUp-buttons">
           <button type="submit" className="signUp-btn primary">
