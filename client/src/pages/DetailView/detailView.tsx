@@ -37,9 +37,14 @@ export const DetailView = <T extends User | Store | Category>({
   };
 
   const handleUpdateSuccess = (updatedData: T) => {
-    setItem(updatedData);
-    setItemData(updatedData);
-    setIsModalOpen(false);
+    if ("message" in updatedData) {
+      setIsModalOpen(false);
+      setItemData((prev: T) => ({ ...prev, active: !prev.active }));
+    } else {
+      setItem(updatedData);
+      setItemData(updatedData);
+      setIsModalOpen(false);
+    }
   };
 
   return (

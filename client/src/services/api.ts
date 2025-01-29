@@ -205,13 +205,17 @@ export const getStoreById = async (id: string): Promise<Store> => {
 // Update a store by ID
 export const updateStore = async (id: string, data: Store): Promise<Store> => {
   try {
+    console.log(data);
     const response = await axios.put<Store>(
       `${API_BASE_URL}/admin/stores/${id}`,
       data
     );
     return response.data;
   } catch (error) {
-    console.log(error);
+    if (axios.isAxiosError(error)) {
+      console.log(error.response?.data);
+      return error.response?.data;
+    }
     throw new Error("Failed to update store");
   }
 };
@@ -269,7 +273,10 @@ export const updateCategory = async (
     );
     return response.data;
   } catch (error) {
-    console.log(error);
+    if (axios.isAxiosError(error)) {
+      console.log(error.response?.data);
+      return error.response?.data;
+    }
     throw new Error("Failed to update category");
   }
 };
