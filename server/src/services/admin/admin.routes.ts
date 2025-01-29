@@ -1,6 +1,5 @@
 // server/src/services/admin/admin.routes.ts
 import { Router } from "express";
-// import { validateUser } from "./admin.middlewares";
 import { Models } from "../../utils";
 import {
   createEntity,
@@ -15,7 +14,6 @@ import {
 export const adminRoutes: Router = Router();
 
 // User CRUD operations
-adminRoutes.post("/users", createEntity(Models.User));
 adminRoutes.get("/users/:id", getEntityById(Models.User));
 adminRoutes.get("/users", getAllEntity(Models.User));
 adminRoutes.put("/users/:id", updateEntity(Models.User));
