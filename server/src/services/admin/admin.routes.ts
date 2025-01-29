@@ -11,6 +11,7 @@ import {
   updateEntity,
 } from "./admin.controller";
 import checkCategoryDeactivation from "../../middlewares/mw.Category";
+import checkStoreDeactivation from "../../middlewares/mw.Store";
 
 export const adminRoutes: Router = Router();
 
@@ -32,7 +33,11 @@ adminRoutes.get(
 adminRoutes.post("/stores", createEntity(Models.Store)); // validate validateStore
 adminRoutes.get("/stores/:id", getEntityById(Models.Store));
 adminRoutes.get("/stores", getAllEntity(Models.Store));
-adminRoutes.put("/stores/:id", updateEntity(Models.Store));
+adminRoutes.put(
+  "/stores/:id",
+  checkStoreDeactivation,
+  updateEntity(Models.Store)
+);
 
 // Category CRU operations
 adminRoutes.post("/categories", createEntity(Models.Category)); // validate validateCategory

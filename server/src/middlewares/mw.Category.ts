@@ -14,9 +14,6 @@ const checkCategoryDeactivation = async (
 
     // Fetch products under this category
     const products = await Product.find({ categories: _id });
-    // console.log(products[0].categories);
-    // console.log(products[1].categories);
-    // console.log(products[2].categories);
 
     // Check if any active products exist
     const hasActiveProducts = products.some((product) => product.active);
