@@ -1,83 +1,50 @@
-.dynamic-page {
+.dataTable-page {
   padding: 20px;
 }
 
-.dynamic-page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.page-title {
+.dataTable-title {
   font-size: 24px;
   font-weight: bold;
+  margin-bottom: 10px;
 }
 
-.add-new-btn {
-  padding: 10px 20px;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.add-new-btn:hover {
-  background-color: #218838;
-}
-
-.filters {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.filter-input,
-.filter-select,
-.filter-checkbox {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.data-table {
+.dataTable-table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.data-table th,
-.data-table td {
+.dataTable-table th,
+.dataTable-table td {
   border: 1px solid #ddd;
   padding: 8px;
 }
 
-.data-table th {
+.dataTable-table th {
   background-color: #f4f4f4;
   font-weight: bold;
 }
 
 /* Style for cells in the "Active" column */
-.active-cell {
+.dataTable-active {
   background-color: #d4edda;
   color: #155724;
   text-align: center;
 }
 
-.inactive-cell {
+.dataTable-inactive {
   background-color: #f8d7da;
   color: #721c24;
   text-align: center;
 }
 
-.show-details-cell {
+.dataTable-details {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 /* Button styling (already centered within its cell) */
-.show-details-btn {
+.dataTable-button {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -90,6 +57,6 @@
   transition: background-color 0.3s;
 }
 
-.show-details-btn:hover {
+.dataTable-button:hover {
   background-color: #0056b3;
 }

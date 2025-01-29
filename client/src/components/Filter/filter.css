@@ -5,6 +5,7 @@
   margin-bottom: 20px;
 }
 
+.filters input,
 .filters select {
   padding: 8px;
   border-radius: 4px;

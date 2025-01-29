@@ -57,7 +57,7 @@ export const DataTable = <T,>({ pageType, data }: DataTableProps<T>) => {
           let cellClass = "";
 
           if (key === "active") {
-            cellClass = value ? "active-cell" : "inactive-cell";
+            cellClass = value ? "dataTable-active" : "dataTable-inactive";
             value = value ? "V" : "X";
           }
 
@@ -66,11 +66,11 @@ export const DataTable = <T,>({ pageType, data }: DataTableProps<T>) => {
           }
 
           if (key === "showDetails") {
-            cellClass = "show-details-cell";
+            cellClass = "dataTable-details";
             value = (
               <button
                 onClick={() => handleShowDetails(item)}
-                className="show-details-btn"
+                className="dataTable-button"
               >
                 Show Details
               </button>
@@ -88,13 +88,10 @@ export const DataTable = <T,>({ pageType, data }: DataTableProps<T>) => {
   };
 
   return (
-    <div className="dynamic-page">
-      <header className="dynamic-page-header">
-        <div className="page-title">{String(pageType).toUpperCase()}</div>
-        <button className="add-new-btn">Add New</button>
-      </header>
+    <div className="dataTable-page">
+      <div className="dataTable-title">{String(pageType).toUpperCase()}</div>
       <Filter page={pageType} filters={filters} onSetFilters={setFilters} />
-      <table className="data-table">
+      <table className="dataTable-table">
         <thead>
           <tr>{renderTableHeaders()}</tr>
         </thead>

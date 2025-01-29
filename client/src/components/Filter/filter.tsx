@@ -123,7 +123,7 @@ export const Filter = <T extends { [key: string]: string }>({
   return (
     <div className="filters">
       {pageFilters.map((filter) => (
-        <div key={filter.key} className="filter-item">
+        <div key={filter.key}>
           {filter.type === "input" ? (
             <input
               id={filter.key}
@@ -132,7 +132,6 @@ export const Filter = <T extends { [key: string]: string }>({
               placeholder={filter.label}
               value={filters[filter.key] || ""}
               onChange={(e) => handleFilterChange(filter.key, e.target.value)}
-              className="filter-input"
             />
           ) : (
             <select
@@ -140,7 +139,6 @@ export const Filter = <T extends { [key: string]: string }>({
               name={filter.key}
               value={filters[filter.key] || ""}
               onChange={(e) => handleFilterChange(filter.key, e.target.value)}
-              className="filter-select"
             >
               {filter.options?.map((option) => (
                 <option key={option.value} value={option.value}>
