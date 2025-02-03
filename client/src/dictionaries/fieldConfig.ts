@@ -1,4 +1,4 @@
-import { Category, Store, User } from "../Interfaces/interfaces";
+import { Category, Store, User, Product } from "../Interfaces/interfaces";
 
 interface FieldConfig<T> {
   type: string;
@@ -23,4 +23,19 @@ export const fieldConfig = {
   Categories: [
     { type: "text", label: "Name", value: "name" },
   ] as FieldConfig<Category>[],
+  Products: [
+    { type: "text", placeholder: "Product Name", value: "name" },
+    { type: "text", placeholder: "Description", value: "description" },
+    { type: "number", placeholder: "Price", value: "price" },
+    {
+      type: "text",
+      placeholder: "Categories (comma-separated)",
+      value: "categories",
+    },
+    {
+      type: "text",
+      placeholder: "Image URLs (comma-separated)",
+      value: "images",
+    },
+  ] as FieldConfig<Product>[],
 };
