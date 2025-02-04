@@ -16,6 +16,7 @@ import { Settings } from "./pages/Settings/settings";
 import { Requests } from "./pages/Requests/requests";
 import { Approvals } from "./pages/Approvals/approvals";
 import { CreateProduct } from "./pages/CreateProduct/createProduct";
+import { MyProducts } from "./pages/MyProducts/myProducts";
 
 const App: React.FC = () => {
   return (
@@ -30,6 +31,8 @@ const App: React.FC = () => {
         <Route path={`/${links.approvals}`} element={<Approvals />} />
         <Route path={`/${links.work}`} element={<div>Work Page</div>} />
         <Route path={`/${links.shopping}`} element={<div>Shopping Page</div>} />
+        <Route path={`/${links.createProduct}`} element={<CreateProduct />} />
+        <Route path={`/${links.myProducts}`} element={<MyProducts />} />
         <Route path={`/${links.users}`} element={<Users />} />
         <Route
           path={`/${links.users}/:id`}

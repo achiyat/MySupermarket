@@ -21,12 +21,11 @@ export const CreateProduct = () => {
   });
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
-  // Fetch categories from API when the component mounts
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const fetchedCategories = await getAllCategories();
-        setCategories(fetchedCategories.map((cat) => cat.name)); // Assuming 'name' is the key
+        setCategories(fetchedCategories.map((cat) => cat.name));
       } catch (error) {
         setError("Failed to load categories");
       }
