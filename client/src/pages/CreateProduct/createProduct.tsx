@@ -13,6 +13,7 @@ export const CreateProduct = () => {
     categories: "",
     images: [] as File[],
   });
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -24,7 +25,12 @@ export const CreateProduct = () => {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      setFormData({ ...formData, images: Array.from(e.target.files) });
+      const files = Array.from(e.target.files);
+      setFormData({ ...formData, images: files });
+
+      // Generate preview URLs
+      const previews = files.map((file) => URL.createObjectURL(file));
+      setImagePreviews(previews);
     }
   };
 
@@ -78,6 +84,19 @@ export const CreateProduct = () => {
           required
         />
         <input type="file" name="images" onChange={handleFileChange} multiple />
+
+        {/* Image Preview Section */}
+        <div className="image-preview-container">
+          {imagePreviews.map((src, index) => (
+            <img
+              key={index}
+              src={src}
+              alt="Preview"
+              className="image-preview"
+            />
+          ))}
+        </div>
+
         <button type="submit">Create Product</button>
       </form>
     </div>
