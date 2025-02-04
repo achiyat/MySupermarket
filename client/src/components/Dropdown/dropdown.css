@@ -1,0 +1,56 @@
+/* client/src/components/Dropdown/dropdown.css */
+.dropdown-container {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.dropdown-select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  font-size: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.dropdown-select span {
+  font-size: 18px;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: -webkit-fill-available;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: white;
+  max-height: 125px;
+  overflow-y: auto;
+  z-index: 10;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Dropdown items with hover effect */
+.dropdown-item {
+  display: flex;
+  height: 20px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.dropdown-item:hover {
+  background-color: #f0f0f0;
+}
+
+/* Properly align checkbox with text */
+.dropdown-item input {
+  margin-right: 12px;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}

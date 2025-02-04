@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import "./createProduct.css";
 import { User } from "../../Interfaces/interfaces";
 import { useOutletContext } from "react-router-dom";
+import { Dropdown } from "../../components/Dropdown/dropdown";
 
 export const CreateProduct = () => {
   const { user } = useOutletContext<{ user: User }>();
@@ -12,7 +13,7 @@ export const CreateProduct = () => {
     name: "",
     description: "",
     price: "",
-    categories: "",
+    categories: [] as string[],
     images: [] as File[],
   });
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
@@ -22,7 +23,13 @@ export const CreateProduct = () => {
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >
   ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    if (e.target.name) {
+      setFormData({ ...formData, [e.target.name]: e.target.value });
+    }
+  };
+
+  const handleCategoryChange = (selectedCategories: string[]) => {
+    setFormData({ ...formData, categories: selectedCategories });
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,11 +78,13 @@ export const CreateProduct = () => {
     const productData = {
       ...formData,
       store: formData.store,
-      categories: formData.categories.split(",").map((cat) => cat.trim()),
+      categories: formData.categories,
       images: formData.images.map((file) => file.name),
     };
     console.log("Product Data Submitted:", productData);
   };
+
+  const categories = ["Electronics", "Furniture", "Clothing", "Toys"];
 
   return (
     <div className="create-product-container">
@@ -108,13 +117,7 @@ export const CreateProduct = () => {
           onChange={handleChange}
           required
         />
-        <input
-          type="text"
-          name="categories"
-          placeholder="Categories (comma-separated)"
-          onChange={handleChange}
-          required
-        />
+        <Dropdown categories={categories} onChange={handleCategoryChange} />
         <input
           type="file"
           name="images"
