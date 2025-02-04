@@ -1,12 +1,15 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./createProduct.css";
 import { User } from "../../Interfaces/interfaces";
 import { useOutletContext } from "react-router-dom";
 import { Dropdown } from "../../components/Dropdown/dropdown";
+import { getAllCategories } from "../../services/api";
 
 export const CreateProduct = () => {
   const { user } = useOutletContext<{ user: User }>();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
     store: "",
@@ -17,6 +20,20 @@ export const CreateProduct = () => {
     images: [] as File[],
   });
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+
+  // Fetch categories from API when the component mounts
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const fetchedCategories = await getAllCategories();
+        setCategories(fetchedCategories.map((cat) => cat.name)); // Assuming 'name' is the key
+      } catch (error) {
+        setError("Failed to load categories");
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -84,8 +101,6 @@ export const CreateProduct = () => {
     console.log("Product Data Submitted:", productData);
   };
 
-  const categories = ["Electronics", "Furniture", "Clothing", "Toys"];
-
   return (
     <div className="create-product-container">
       <h2>Create Product</h2>
@@ -117,7 +132,13 @@ export const CreateProduct = () => {
           onChange={handleChange}
           required
         />
-        <Dropdown categories={categories} onChange={handleCategoryChange} />
+
+        {categories ? (
+          <Dropdown categories={categories} onChange={handleCategoryChange} />
+        ) : (
+          <p className="error">{error}</p>
+        )}
+
         <input
           type="file"
           name="images"
