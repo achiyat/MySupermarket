@@ -10,7 +10,6 @@ const checkStoreDeactivation = async (
 ): Promise<void> => {
   try {
     const { _id } = req.body;
-    console.log(_id);
 
     // Fetch products under this store and Check if any active products exist
     const activeProducts = await Product.find({

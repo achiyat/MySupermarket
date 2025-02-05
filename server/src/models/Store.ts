@@ -33,8 +33,6 @@ StoreSchema.pre("save", async function (next) {
     address: store.address,
   });
   if (existingUser) {
-    // if (existingUser.branch === store.branch)
-    //   return next(new Error("Store with the same branch name already exists"));
     if (existingUser.address === store.address)
       return next(new Error("Store with the same address already exists"));
   }

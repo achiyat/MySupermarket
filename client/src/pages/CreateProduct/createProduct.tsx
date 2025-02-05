@@ -108,7 +108,7 @@ export const CreateProduct = () => {
           <option value="">Select Store</option>
           {user.employeeFields?.stores?.map((store) => (
             <option key={store._id} value={store._id}>
-              {store.name}
+              {store.address}
             </option>
           ))}
         </select>
@@ -129,6 +129,8 @@ export const CreateProduct = () => {
           name="price"
           placeholder="Price"
           onChange={handleChange}
+          step="0.01"
+          min="0"
           required
         />
 

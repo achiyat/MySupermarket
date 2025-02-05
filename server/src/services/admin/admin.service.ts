@@ -1,6 +1,5 @@
 // server/src/services/admin/admin.service.ts
-import { Request, Response } from "express";
-import { Model, MongooseError } from "mongoose";
+import { Model } from "mongoose";
 import { MongoServerError } from "mongodb";
 import { resError } from "../../utils";
 

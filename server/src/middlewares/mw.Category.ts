@@ -10,14 +10,12 @@ const checkCategoryDeactivation = async (
 ): Promise<void> => {
   try {
     const { _id } = req.body;
-    console.log(_id);
 
     // Fetch products under this category
     const products = await Product.find({ categories: _id });
 
     // Check if any active products exist
     const hasActiveProducts = products.some((product) => product.active);
-    console.log(hasActiveProducts);
     if (hasActiveProducts) {
       res
         .status(400)

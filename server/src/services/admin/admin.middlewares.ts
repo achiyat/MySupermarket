@@ -56,9 +56,6 @@ export const validateUser = (
     buyerFields,
   } = req.body;
 
-  console.log(username);
-  console.log(employeeFields);
-
   if (!username || !email || !password || !role) {
     respond(res, 400, "All fields are required");
     return;
