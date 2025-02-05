@@ -1,5 +1,6 @@
 // client/src/pages/MyProducts/myProducts.tsx
 import React, { useEffect, useState } from "react";
+import { format } from "date-fns";
 import { getAllProducts } from "../../services/api";
 import { Product } from "../../Interfaces/interfaces";
 import "./myProducts.css";
@@ -15,9 +16,9 @@ export const MyProducts = () => {
       try {
         const data = await getAllProducts();
         console.log(data);
-        console.log(myProducts);
-        setProducts(myProducts);
-        setFilteredProducts(myProducts);
+        console.log(data);
+        setProducts(data);
+        setFilteredProducts(data);
       } catch (error) {
         console.log("Error fetching products:", error);
       }
@@ -50,6 +51,8 @@ export const MyProducts = () => {
       e.target.value === "all" ? null : e.target.value === "active"
     );
   };
+
+  const formatDate = (date: Date) => format(date, "dd/MM/yyyy");
 
   return (
     <div className="product-list-container">
@@ -98,7 +101,10 @@ export const MyProducts = () => {
                 )}
               </div>
 
-              <p className="sale-period">The sale lasts until 31/02/2025</p>
+              {product.sale && product.sale.toDate && (
+                <p className="sale-period">The sale lasts until {formatDate(product.sale.toDate)}</p>
+              )}
+
               <div className="stock-container">
                 <p className="stock-info">
                   In Stock: {product.numberInStock ?? 0} items
@@ -129,53 +135,53 @@ export const MyProducts = () => {
   );
 };
 
-const myProducts: Product[] = [
-  {
-    _id: "1",
-    store: "Store 1",
-    name: "Product 1",
-    description: "Description of Product 1",
-    categories: ["Electronics", "Mobile"],
-    price: 299.99,
-    sale: {
-      price: 249.99,
-      fromDate: new Date("2025-02-01"),
-      toDate: new Date("2025-02-28"),
-    },
-    images: ["https://cdn.store-assets.com/s/377840/i/32382133.jpg"],
-    lastUpdateDate: new Date(),
-    numberInStock: 10,
-    active: true,
-  },
-  {
-    _id: "2",
-    store: "Store 2",
-    name: "Product 2",
-    description: "Description of Product 2",
-    categories: ["Furniture"],
-    price: 499.99,
-    images: ["https://m.media-amazon.com/images/I/71VFLk-6LQL.jpg"],
-    lastUpdateDate: new Date(),
-    numberInStock: 5,
-    active: false,
-  },
-  {
-    _id: "3",
-    store: "Store 3",
-    name: "Product 3",
-    description: "Description of Product 3",
-    categories: ["Clothing"],
-    price: 49.99,
-    sale: {
-      price: 39.99,
-      fromDate: new Date("2025-02-01"),
-      toDate: new Date("2025-02-14"),
-    },
-    images: [
-      "https://images.heb.com/is/image/HEBGrocery/prd-medium/002116056.jpg",
-    ],
-    lastUpdateDate: new Date(),
-    numberInStock: 0,
-    active: true,
-  },
-];
+// const myProducts: Product[] = [
+//   {
+//     _id: "1",
+//     store: "Store 1",
+//     name: "Product 1",
+//     description: "Description of Product 1",
+//     categories: ["Electronics", "Mobile"],
+//     price: 299.99,
+//     sale: {
+//       price: 249.99,
+//       fromDate: new Date("2025-02-01"),
+//       toDate: new Date("2025-02-28"),
+//     },
+//     images: ["https://cdn.store-assets.com/s/377840/i/32382133.jpg"],
+//     lastUpdateDate: new Date(),
+//     numberInStock: 10,
+//     active: true,
+//   },
+//   {
+//     _id: "2",
+//     store: "Store 2",
+//     name: "Product 2",
+//     description: "Description of Product 2",
+//     categories: ["Furniture"],
+//     price: 499.99,
+//     images: ["https://m.media-amazon.com/images/I/71VFLk-6LQL.jpg"],
+//     lastUpdateDate: new Date(),
+//     numberInStock: 5,
+//     active: false,
+//   },
+//   {
+//     _id: "3",
+//     store: "Store 3",
+//     name: "Product 3",
+//     description: "Description of Product 3",
+//     categories: ["Clothing"],
+//     price: 49.99,
+//     sale: {
+//       price: 39.99,
+//       fromDate: new Date("2025-02-01"),
+//       toDate: new Date("2025-02-14"),
+//     },
+//     images: [
+//       "https://images.heb.com/is/image/HEBGrocery/prd-medium/002116056.jpg",
+//     ],
+//     lastUpdateDate: new Date(),
+//     numberInStock: 0,
+//     active: true,
+//   },
+// ];
