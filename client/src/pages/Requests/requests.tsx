@@ -103,7 +103,7 @@ export const Requests: React.FC = () => {
           onUpdated={handleRequestUpdated}
           initialData={{
             name: selectedRequest.data.name,
-            branchName: selectedRequest.data.branchName,
+            branch: selectedRequest.data.branch,
             address: selectedRequest.data.address,
           }}
         />

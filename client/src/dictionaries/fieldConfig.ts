@@ -17,7 +17,7 @@ export const fieldConfig = {
   ] as FieldConfig<User>[],
   Stores: [
     { type: "text", label: "Store Name", value: "name" },
-    { type: "text", label: "Branch", value: "branchName" },
+    { type: "text", label: "Branch", value: "branch" },
     { type: "text", label: "Address", value: "address" },
   ] as FieldConfig<Store>[],
   Categories: [

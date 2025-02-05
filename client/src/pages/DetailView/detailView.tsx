@@ -95,7 +95,7 @@ export const DetailView = <T extends User | Store | Category>({
               <div key={store._id} className="detailView-array-item">
                 <p>Store ID: {store._id}</p>
                 <p>Name: {store.name}</p>
-                <p>Branch: {store.branchName}</p>
+                <p>Branch: {store.branch}</p>
                 <p>Address: {store.address}</p>
                 <p>Active: {store.active ? "Yes" : "No"}</p>
               </div>

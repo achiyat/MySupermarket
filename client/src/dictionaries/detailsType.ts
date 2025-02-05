@@ -33,9 +33,9 @@ export const detailsType: DetailsType = {
       { label: "ID", name: "id", value: "_id", type: "text" },
       { label: "Name", name: "name", value: "name", type: "text" },
       {
-        label: "Branch Name",
-        name: "branchName",
-        value: "branchName",
+        label: "Branch",
+        name: "branch",
+        value: "branch",
         type: "text",
       },
       { label: "Address", name: "address", value: "address", type: "text" },

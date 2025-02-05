@@ -31,9 +31,9 @@ export const checkRequest = async (req: Request) => {
 
   // Handle "Create a store" type requests
   if (type === "Create a store") {
-    const { name, branchName, address } = data || {};
+    const { name, branch, address } = data || {};
     // Condition 3: Missing required store fields
-    if (!name || !branchName || !address) {
+    if (!name || !branch || !address) {
       return {
         isValid: false,
         message:

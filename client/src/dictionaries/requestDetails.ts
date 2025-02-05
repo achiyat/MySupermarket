@@ -6,7 +6,7 @@ export const isUser = (data: User | Store | Category): data is User => {
 };
 
 export const isStore = (data: User | Store | Category): data is Store => {
-  return (data as Store).branchName !== undefined;
+  return (data as Store).branch !== undefined;
 };
 
 export const isCategory = (data: User | Store | Category): data is Category => {
@@ -29,7 +29,7 @@ export const storeDetails = (request: Request) => {
     return [
       { label: "Name", value: request.username },
       { label: "Store Name", value: request.data.name },
-      { label: "Branch", value: request.data.branchName },
+      { label: "Branch", value: request.data.branch },
       { label: "Address", value: request.data.address },
     ];
   }

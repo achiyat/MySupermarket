@@ -12,7 +12,7 @@ export const headerMapping: HeaderMapping = {
   },
   stores: {
     name: "Name",
-    branchName: "Branch",
+    branch: "Branch",
     address: "Address",
     active: "Active",
     showDetails: "Details",

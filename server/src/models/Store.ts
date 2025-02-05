@@ -5,7 +5,7 @@ import { Product } from "./Product";
 
 interface IStore extends Document {
   name: string;
-  branchName: string;
+  branch: string;
   address: string;
   employeeId: mongoose.Types.ObjectId;
   active: boolean;
@@ -14,7 +14,7 @@ interface IStore extends Document {
 const StoreSchema: Schema<IStore> = new Schema(
   {
     name: { type: String, required: true },
-    branchName: { type: String, required: true },
+    branch: { type: String, required: true },
     address: { type: String, required: true, unique: true },
     employeeId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -33,7 +33,7 @@ StoreSchema.pre("save", async function (next) {
     address: store.address,
   });
   if (existingUser) {
-    // if (existingUser.branchName === store.branchName)
+    // if (existingUser.branch === store.branch)
     //   return next(new Error("Store with the same branch name already exists"));
     if (existingUser.address === store.address)
       return next(new Error("Store with the same address already exists"));

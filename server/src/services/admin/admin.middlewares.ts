@@ -31,9 +31,9 @@ export const validateStore = (
   res: Response,
   next: NextFunction
 ): void => {
-  const { name, branchName, address, employeeId } = req.body;
+  const { name, branch, address, employeeId } = req.body;
 
-  if (!name || !branchName || !address || !employeeId) {
+  if (!name || !branch || !address || !employeeId) {
     respond(res, 400, "All fields are required");
     return;
   }

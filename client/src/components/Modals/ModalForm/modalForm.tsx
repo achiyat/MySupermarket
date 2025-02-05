@@ -17,7 +17,7 @@ interface ModalFormProps {
   isCategory?: boolean;
   initialData?: {
     name: string;
-    branchName: string;
+    branch: string;
     address: string;
   };
 }
@@ -29,7 +29,7 @@ export const ModalForm: React.FC<ModalFormProps> = ({
   onSent,
   onUpdated,
   isCategory = false,
-  initialData = { name: "", branchName: "", address: "" },
+  initialData = { name: "", branch: "", address: "" },
 }) => {
   const [formData, setFormData] = React.useState(initialData);
 
@@ -58,7 +58,7 @@ export const ModalForm: React.FC<ModalFormProps> = ({
         await createRequest(request);
         onSent();
       }
-      setFormData({ name: "", branchName: "", address: "" });
+      setFormData({ name: "", branch: "", address: "" });
       setIsOpen(false);
     } catch (error) {
       console.error("Error saving request:", error);
@@ -68,7 +68,7 @@ export const ModalForm: React.FC<ModalFormProps> = ({
   const isFormEmpty = (): boolean => {
     return isCategory
       ? !formData.name
-      : !formData.name || !formData.branchName || !formData.address;
+      : !formData.name || !formData.branch || !formData.address;
   };
 
   return (

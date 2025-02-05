@@ -31,7 +31,7 @@ export interface User {
 export interface Store {
   _id?: string;
   name: string;
-  branchName: string;
+  branch: string;
   address: string;
   employeeId: string;
   active?: boolean;
