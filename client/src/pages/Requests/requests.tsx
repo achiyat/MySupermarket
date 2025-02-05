@@ -1,21 +1,30 @@
 // client/src/pages/Requests/requests.tsx
 import React, { useEffect, useState } from "react";
-import { Request } from "../../Interfaces/interfaces";
+import { Request, User } from "../../Interfaces/interfaces";
 import { getAllRequests, updateRequest } from "../../services/api";
 import { ModalForm } from "../../components/Modals/ModalForm/modalForm";
 import { isStore } from "../../dictionaries/requestDetails";
 import "./requests.css";
+import { useOutletContext } from "react-router-dom";
 
 export const Requests: React.FC = () => {
   const [requests, setRequests] = useState<Request[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState<Request | null>(null);
 
+  // Remove later
+  const { user } = useOutletContext<{ user: User }>();
+
   useEffect(() => {
     const getRequests = async () => {
       try {
-        const data = await getAllRequests();
-        setRequests(data);
+        const allRequests = await getAllRequests();
+        // Remove later
+        const userRequests = allRequests.filter(
+          (req) => req.fromUser === user._id
+        );
+        console.log(userRequests);
+        setRequests(userRequests);
       } catch (error) {
         console.error("Error fetching requests:", error);
       }
