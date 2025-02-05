@@ -1,21 +1,23 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./createProduct.css";
-import { User } from "../../Interfaces/interfaces";
+import { Product, User } from "../../Interfaces/interfaces";
 import { useOutletContext } from "react-router-dom";
 import { Dropdown } from "../../components/Dropdown/dropdown";
-import { getAllCategories } from "../../services/api";
+import { getAllCategories, createProduct } from "../../services/api";
 
 export const CreateProduct = () => {
   const { user } = useOutletContext<{ user: User }>();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [categories, setCategories] = useState<string[]>([]);
+  const [categories, setCategories] = useState<{ id: string; name: string }[]>(
+    []
+  );
   const [error, setError] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
     store: "",
     name: "",
     description: "",
-    price: "",
+    price: 0,
     categories: [] as string[],
     images: [] as File[],
   });
@@ -25,7 +27,11 @@ export const CreateProduct = () => {
     const fetchCategories = async () => {
       try {
         const fetchedCategories = await getAllCategories();
-        setCategories(fetchedCategories.map((cat) => cat.name));
+        const mappedCategories = fetchedCategories.map((cat: any) => ({
+          id: cat._id,
+          name: cat.name,
+        }));
+        setCategories(mappedCategories);
       } catch (error) {
         setError("Failed to load categories");
       }
@@ -39,25 +45,19 @@ export const CreateProduct = () => {
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >
   ) => {
-    if (e.target.name) {
-      setFormData({ ...formData, [e.target.name]: e.target.value });
-    }
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleCategoryChange = (selectedCategories: string[]) => {
-    setFormData({ ...formData, categories: selectedCategories });
+  const handleCategoryChange = (selectedCategoryIds: string[]) => {
+    setFormData({ ...formData, categories: selectedCategoryIds });
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
 
     const newFiles = Array.from(e.target.files);
-
     const updatedImages = [...formData.images, ...newFiles];
-    setFormData({
-      ...formData,
-      images: updatedImages,
-    });
+    setFormData({ ...formData, images: updatedImages });
 
     addImagePreviews(newFiles);
     updateFileInput(updatedImages);
@@ -69,16 +69,12 @@ export const CreateProduct = () => {
   };
 
   const handleRemoveImage = (index: number) => {
-    if (!fileInputRef.current?.files) return;
-
-    const files = Array.from(fileInputRef.current.files);
-    const filteredFiles = files.filter((_, i) => i !== index);
     const filteredImages = formData.images.filter((_, i) => i !== index);
     const filteredPreviews = imagePreviews.filter((_, i) => i !== index);
 
     setFormData({ ...formData, images: filteredImages });
     setImagePreviews(filteredPreviews);
-    updateFileInput(filteredFiles);
+    updateFileInput(filteredImages);
   };
 
   const updateFileInput = (files: File[]) => {
@@ -89,15 +85,19 @@ export const CreateProduct = () => {
     fileInputRef.current.files = dataTransfer.files;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const productData = {
+    const productData: Product = {
       ...formData,
-      store: formData.store,
-      categories: formData.categories,
       images: formData.images.map((file) => file.name),
     };
-    console.log("Product Data Submitted:", productData);
+
+    try {
+      const newProduct = await createProduct(productData);
+      console.log(newProduct);
+    } catch (error) {
+      console.error("Error creating product:", error);
+    }
   };
 
   return (
@@ -134,7 +134,7 @@ export const CreateProduct = () => {
           required
         />
 
-        {categories ? (
+        {categories.length > 0 ? (
           <Dropdown categories={categories} onChange={handleCategoryChange} />
         ) : (
           <p className="error">{error}</p>
