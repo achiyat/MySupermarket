@@ -5,6 +5,7 @@ import mongoose, { Model } from "mongoose";
 import { create, getAll, getById, update } from "./admin.service";
 import { User } from "../../models/User";
 import { checkRequest } from "../../middlewares/mw.request";
+import { Product } from "../../models/Product";
 
 export const createEntity = <T>(model: Model<T & Document>) => {
   return async (req: Request, res: Response) => {
@@ -113,12 +114,16 @@ export const getCheckRequest = async (req: Request, res: Response) => {
   }
 };
 
-// export const getUserWithStores = async (req: Request, res: Response) => {
-//   try {
-//     const user = await getById(Models.User, req, res, "employeeFields.stores");
-//     if (!user) respond(res, 404, "User not found");
-//     if (user) res.status(200).json(user);
-//   } catch (error) {
-//     res.status(404).json(resError(error));
-//   }
-// };
+export const getProducts = async (req: Request, res: Response) => {
+  try {
+    const products = await Product.find().populate({
+      path: "categories",
+      select: "_id name",
+    });
+
+    if (!products) respond(res, 404, "not found");
+    if (products) res.status(200).json(products);
+  } catch (error) {
+    respond(res, 500, "Internal Server Error");
+  }
+};

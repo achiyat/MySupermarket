@@ -7,6 +7,7 @@ import {
   getAllEntity,
   getCheckRequest,
   getEntityById,
+  getProducts,
   getRequestById,
   updateEntity,
 } from "./admin.controller";
@@ -62,6 +63,8 @@ adminRoutes.post("/products", createEntity(Models.Product));
 adminRoutes.get("/products", getAllEntity(Models.Product));
 adminRoutes.get("/products/:id", getEntityById(Models.Product));
 adminRoutes.put("/products/:id", updateEntity(Models.Product));
+
+adminRoutes.get("/fields/products", getProducts);
 
 // Product CRU operations
 adminRoutes.post("/requests", createEntity(Models.Request));
