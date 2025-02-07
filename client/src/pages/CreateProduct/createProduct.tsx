@@ -4,6 +4,7 @@ import { Category, Product, User } from "../../Interfaces/interfaces";
 import { useOutletContext } from "react-router-dom";
 import { Dropdown } from "../../components/Dropdown/dropdown";
 import { getAllCategories, createProduct } from "../../services/api";
+import { DropBox } from "../../components/DropBox/dropbox";
 
 export const CreateProduct = () => {
   const { user } = useOutletContext<{ user: User }>();
@@ -140,29 +141,7 @@ export const CreateProduct = () => {
           <p className="error">{error}</p>
         )}
 
-        <input
-          type="file"
-          name="images"
-          onChange={handleFileChange}
-          multiple
-          ref={fileInputRef}
-        />
-
-        {/* Image Preview Section */}
-        <div className="image-preview-container">
-          {imagePreviews.map((src, index) => (
-            <div key={index} className="image-preview">
-              <img src={src} alt="Preview" />
-              <button
-                type="button"
-                className="remove"
-                onClick={() => handleRemoveImage(index)}
-              >
-                &times;
-              </button>
-            </div>
-          ))}
-        </div>
+        <DropBox />
 
         <button className="create" type="submit">
           Create Product
