@@ -1,10 +1,33 @@
-import { useRef, useState, DragEvent, ChangeEvent, useEffect } from "react";
+import { useRef, DragEvent, ChangeEvent, useState } from "react";
 import "./dropbox.css";
 
-export const DropBox = () => {
+interface DropBoxProps {
+  images: string[];
+  onImageChange: (images: string[]) => void;
+}
+
+export const DropBox = ({ images, onImageChange }: DropBoxProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
-  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>(images);
+
+  const handleImageChange = (data: string) => {
+    const newImages = [...imagePreviews, data];
+    setImagePreviews(newImages);
+    onImageChange(newImages);
+  };
+
+  const handleUrl = (url: string): string => {
+    return url.endsWith(".jpg") ? url : extractImageUrl(url);
+  };
+
+  const extractImageUrl = (text: string): string => {
+    const match = text.match(/imgurl=([^&]+)/);
+    if (match && match[1]) {
+      return decodeURIComponent(match[1]);
+    }
+    return "not found";
+  };
 
   const handleDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -18,11 +41,11 @@ export const DropBox = () => {
       if (item.kind === "string") {
         item.getAsString((content) => {
           if (item.type !== "text/html") {
-            setImagePreviews((prev) => [...prev, content]);
+            handleImageChange(handleUrl(content));
           } else {
             const urlMatch = content.match(/src=["'](https?:\/\/[^"']+)/i);
             if (urlMatch) {
-              setImagePreviews((prev) => [...prev, urlMatch[1]]);
+              handleImageChange(handleUrl(urlMatch[1]));
             }
           }
         });
@@ -31,7 +54,7 @@ export const DropBox = () => {
         const file = item.getAsFile();
         if (file && file.type.startsWith("image/")) {
           const url = URL.createObjectURL(file);
-          setImagePreviews((prev) => [...prev, url]);
+          handleImageChange(handleUrl(url));
           break;
         }
       }
@@ -43,17 +66,19 @@ export const DropBox = () => {
     if (files && files.length > 0) {
       const file = files[0];
       const url = URL.createObjectURL(file);
-      setImagePreviews((prev) => [...prev, url]);
+      handleImageChange(handleUrl(url));
     }
   };
 
   const handleRemoveImage = (index: number) => {
-    setImagePreviews((prev) => prev.filter((_, i) => i !== index));
+    const updatedImages = imagePreviews.filter((_, i) => i !== index);
+    setImagePreviews(updatedImages);
+    onImageChange(updatedImages);
   };
 
-  useEffect(() => {
-    console.log(imagePreviews);
-  }, [imagePreviews]);
+  //   useEffect(() => {
+  //     console.log(imagePreviews);
+  //   }, [imagePreviews]);
 
   return (
     <>

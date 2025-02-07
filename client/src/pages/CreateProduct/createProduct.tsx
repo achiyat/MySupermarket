@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./createProduct.css";
 import { Category, Product, User } from "../../Interfaces/interfaces";
 import { useOutletContext } from "react-router-dom";
@@ -8,7 +8,6 @@ import { DropBox } from "../../components/DropBox/dropbox";
 
 export const CreateProduct = () => {
   const { user } = useOutletContext<{ user: User }>();
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [categories, setCategories] = useState<{ id: string; name: string }[]>(
     []
   );
@@ -19,10 +18,9 @@ export const CreateProduct = () => {
     name: "",
     description: "",
     price: 0,
-    categories: [] as Category[],
-    images: [] as File[],
+    categories: [] as string[],
+    images: [] as string[],
   });
-  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -49,53 +47,36 @@ export const CreateProduct = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // Modify this to store only category IDs
   const handleCategoryChange = (selectedCategories: Category[]) => {
-    setFormData({ ...formData, categories: selectedCategories });
+    const categoryIds = selectedCategories
+      .map((category) => category._id)
+      .filter((id): id is string => id !== undefined); // Filter out undefined values
+
+    setFormData({ ...formData, categories: categoryIds });
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) return;
-
-    const newFiles = Array.from(e.target.files);
-    const updatedImages = [...formData.images, ...newFiles];
-    setFormData({ ...formData, images: updatedImages });
-
-    addImagePreviews(newFiles);
-    updateFileInput(updatedImages);
-  };
-
-  const addImagePreviews = (files: File[]) => {
-    const newPreviews = files.map((file) => URL.createObjectURL(file));
-    setImagePreviews((prevPreviews) => [...prevPreviews, ...newPreviews]);
-  };
-
-  const handleRemoveImage = (index: number) => {
-    const filteredImages = formData.images.filter((_, i) => i !== index);
-    const filteredPreviews = imagePreviews.filter((_, i) => i !== index);
-
-    setFormData({ ...formData, images: filteredImages });
-    setImagePreviews(filteredPreviews);
-    updateFileInput(filteredImages);
-  };
-
-  const updateFileInput = (files: File[]) => {
-    if (!fileInputRef.current) return;
-
-    const dataTransfer = new DataTransfer();
-    files.forEach((file) => dataTransfer.items.add(file));
-    fileInputRef.current.files = dataTransfer.files;
+  const handleImageChange = (images: string[]) => {
+    setFormData((prev) => ({ ...prev, images }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const categories = formData.categories.map((id) => ({
+      _id: id,
+      name: "", // You can fetch the name based on the ID if needed
+    }));
+
     const productData: Product = {
       ...formData,
-      images: formData.images.map((file) => file.name),
+      categories,
     };
 
+    console.log(productData);
     try {
-      const newProduct = await createProduct(productData);
-      console.log(newProduct);
+      // const newProduct = await createProduct(productData);
+      // console.log(newProduct);
     } catch (error) {
       console.error("Error creating product:", error);
     }
@@ -141,7 +122,7 @@ export const CreateProduct = () => {
           <p className="error">{error}</p>
         )}
 
-        <DropBox />
+        <DropBox images={formData.images} onImageChange={handleImageChange} />
 
         <button className="create" type="submit">
           Create Product
