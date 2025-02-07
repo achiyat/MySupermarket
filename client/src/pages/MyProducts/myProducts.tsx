@@ -102,7 +102,9 @@ export const MyProducts = () => {
               </div>
 
               {product.sale && product.sale.toDate && (
-                <p className="sale-period">The sale lasts until {formatDate(product.sale.toDate)}</p>
+                <p className="sale-period">
+                  The sale lasts until {formatDate(product.sale.toDate)}
+                </p>
               )}
 
               <div className="stock-container">
@@ -122,7 +124,7 @@ export const MyProducts = () => {
               <div className="category-tags">
                 {product.categories.map((category, index) => (
                   <span key={index} className="category-tag">
-                    {category}
+                    {category.name}
                   </span>
                 ))}
               </div>

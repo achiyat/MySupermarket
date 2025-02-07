@@ -41,7 +41,7 @@ export interface Store {
 export interface Category {
   _id?: string;
   name: string;
-  products: string[];
+  products?: string[];
   active?: boolean;
   __v?: number;
 }
@@ -64,7 +64,7 @@ export interface Product {
   store: string;
   name: string;
   description?: string;
-  categories: string[];
+  categories: Category[];
   price: number;
   sale?: {
     price: number;

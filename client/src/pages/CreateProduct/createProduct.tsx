@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./createProduct.css";
-import { Product, User } from "../../Interfaces/interfaces";
+import { Category, Product, User } from "../../Interfaces/interfaces";
 import { useOutletContext } from "react-router-dom";
 import { Dropdown } from "../../components/Dropdown/dropdown";
 import { getAllCategories, createProduct } from "../../services/api";
@@ -18,7 +18,7 @@ export const CreateProduct = () => {
     name: "",
     description: "",
     price: 0,
-    categories: [] as string[],
+    categories: [] as Category[],
     images: [] as File[],
   });
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
@@ -48,8 +48,8 @@ export const CreateProduct = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleCategoryChange = (selectedCategoryIds: string[]) => {
-    setFormData({ ...formData, categories: selectedCategoryIds });
+  const handleCategoryChange = (selectedCategories: Category[]) => {
+    setFormData({ ...formData, categories: selectedCategories });
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {

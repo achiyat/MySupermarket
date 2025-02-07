@@ -298,8 +298,11 @@ export const createProduct = async (data: Product): Promise<Product> => {
 // Retrieve all products
 export const getAllProducts = async (): Promise<Product[]> => {
   try {
+    // const response = await axios.get<Product[]>(
+    //   `${API_BASE_URL}/admin/products`
+    // );
     const response = await axios.get<Product[]>(
-      `${API_BASE_URL}/admin/products`
+      `${API_BASE_URL}/admin/fields/products`
     );
     return response.data;
   } catch (error) {

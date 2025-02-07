@@ -8,26 +8,26 @@ interface Category {
 
 interface DropdownProps {
   categories: Category[];
-  onChange: (selectedCategoryIds: string[]) => void;
+  onChange: (selectedCategories: Category[]) => void;
 }
 
 export const Dropdown: React.FC<DropdownProps> = ({ categories, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggleDropdown = () => setIsOpen((prev) => !prev);
 
-  const handleCategoryChange = (categoryId: string) => {
-    const updatedCategoryIds = selectedCategoryIds.includes(categoryId)
-      ? selectedCategoryIds.filter((id) => id !== categoryId)
-      : [...selectedCategoryIds, categoryId];
+  const handleCategoryChange = (category: Category) => {
+    const exists = selectedCategories.some((c) => c.id === category.id);
+    const updatedCategories = exists
+      ? selectedCategories.filter((c) => c.id !== category.id)
+      : [...selectedCategories, category];
 
-    setSelectedCategoryIds(updatedCategoryIds);
-    onChange(updatedCategoryIds);
+    setSelectedCategories(updatedCategories);
+    onChange(updatedCategories);
   };
 
-  // Close dropdown if clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -49,11 +49,8 @@ export const Dropdown: React.FC<DropdownProps> = ({ categories, onChange }) => {
         className="dropdown-select"
         onClick={toggleDropdown}
       >
-        {selectedCategoryIds.length > 0
-          ? categories
-              .filter((category) => selectedCategoryIds.includes(category.id))
-              .map((category) => category.name)
-              .join(", ")
+        {selectedCategories.length > 0
+          ? selectedCategories.map((category) => category.name).join(", ")
           : "Select Categories"}{" "}
         <span>{isOpen ? "▲" : "▼"}</span>
       </button>
@@ -64,9 +61,8 @@ export const Dropdown: React.FC<DropdownProps> = ({ categories, onChange }) => {
             <label key={id} className="dropdown-item">
               <input
                 type="checkbox"
-                value={id}
-                checked={selectedCategoryIds.includes(id)}
-                onChange={() => handleCategoryChange(id)}
+                checked={selectedCategories.some((c) => c.id === id)}
+                onChange={() => handleCategoryChange({ id, name })}
               />
               {name}
             </label>
