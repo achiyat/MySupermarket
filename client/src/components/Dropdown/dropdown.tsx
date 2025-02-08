@@ -1,10 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./dropdown.css";
-
-interface Category {
-  id: string;
-  name: string;
-}
+import { Category } from "../../Interfaces/interfaces";
 
 interface DropdownProps {
   categories: Category[];
@@ -19,9 +15,9 @@ export const Dropdown: React.FC<DropdownProps> = ({ categories, onChange }) => {
   const toggleDropdown = () => setIsOpen((prev) => !prev);
 
   const handleCategoryChange = (category: Category) => {
-    const exists = selectedCategories.some((c) => c.id === category.id);
+    const exists = selectedCategories.some((c) => c._id === category._id);
     const updatedCategories = exists
-      ? selectedCategories.filter((c) => c.id !== category.id)
+      ? selectedCategories.filter((c) => c._id !== category._id)
       : [...selectedCategories, category];
 
     setSelectedCategories(updatedCategories);
@@ -57,12 +53,12 @@ export const Dropdown: React.FC<DropdownProps> = ({ categories, onChange }) => {
 
       {isOpen && (
         <div className="dropdown-menu">
-          {categories.map(({ id, name }) => (
-            <label key={id} className="dropdown-item">
+          {categories.map(({ _id, name }) => (
+            <label key={_id} className="dropdown-item">
               <input
                 type="checkbox"
-                checked={selectedCategories.some((c) => c.id === id)}
-                onChange={() => handleCategoryChange({ id, name })}
+                checked={selectedCategories.some((c) => c._id === _id)}
+                onChange={() => handleCategoryChange({ _id, name })}
               />
               {name}
             </label>

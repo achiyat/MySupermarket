@@ -8,9 +8,7 @@ import { DropBox } from "../../components/DropBox/dropbox";
 
 export const CreateProduct = () => {
   const { user } = useOutletContext<{ user: User }>();
-  const [categories, setCategories] = useState<{ id: string; name: string }[]>(
-    []
-  );
+  const [categories, setCategories] = useState<Category[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
@@ -18,7 +16,7 @@ export const CreateProduct = () => {
     name: "",
     description: "",
     price: 0,
-    categories: [] as string[],
+    categories: [] as Category[],
     images: [] as string[],
   });
 
@@ -27,7 +25,7 @@ export const CreateProduct = () => {
       try {
         const fetchedCategories = await getAllCategories();
         const mappedCategories = fetchedCategories.map((cat: any) => ({
-          id: cat._id,
+          _id: cat._id,
           name: cat.name,
         }));
         setCategories(mappedCategories);
@@ -49,11 +47,11 @@ export const CreateProduct = () => {
 
   // Modify this to store only category IDs
   const handleCategoryChange = (selectedCategories: Category[]) => {
-    const categoryIds = selectedCategories
-      .map((category) => category._id)
-      .filter((id): id is string => id !== undefined); // Filter out undefined values
-
-    setFormData({ ...formData, categories: categoryIds });
+    const _categories = selectedCategories.map((cat) => ({
+      _id: cat._id,
+      name: "",
+    }));
+    setFormData({ ...formData, categories: _categories });
   };
 
   const handleImageChange = (images: string[]) => {
@@ -63,20 +61,10 @@ export const CreateProduct = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const categories = formData.categories.map((id) => ({
-      _id: id,
-      name: "", // You can fetch the name based on the ID if needed
-    }));
+    const productData: Product = { ...formData };
 
-    const productData: Product = {
-      ...formData,
-      categories,
-    };
-
-    console.log(productData);
     try {
-      // const newProduct = await createProduct(productData);
-      // console.log(newProduct);
+      await createProduct(productData);
     } catch (error) {
       console.error("Error creating product:", error);
     }
