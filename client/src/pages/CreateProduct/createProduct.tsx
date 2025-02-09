@@ -3,10 +3,14 @@ import "./createProduct.css";
 import { Category, Product, User } from "../../Interfaces/interfaces";
 import { useOutletContext } from "react-router-dom";
 import { Dropdown } from "../../components/Dropdown/dropdown";
-import { getAllCategories, createProduct } from "../../services/api";
+import { getAllCategories } from "../../services/api";
 import { DropBox } from "../../components/DropBox/dropbox";
 
-export const CreateProduct = () => {
+interface CreateProductProps {
+  onCreate: (createed: Product) => void;
+}
+
+export const CreateProduct: React.FC<CreateProductProps> = ({ onCreate }) => {
   const { user } = useOutletContext<{ user: User }>();
   const [categories, setCategories] = useState<Category[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -126,11 +130,7 @@ export const CreateProduct = () => {
     };
 
     console.log(productData);
-    try {
-      await createProduct(productData);
-    } catch (error) {
-      console.error("Error creating product:", error);
-    }
+    onCreate(productData);
   };
 
   return (
