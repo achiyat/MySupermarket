@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { getAllProducts } from "../../services/api";
 import { Product } from "../../Interfaces/interfaces";
+import { ModalProductForm } from "../../components/Modals/ModalProductForm/modalProductForm";
 import "./myProducts.css";
 
 export const MyProducts = () => {
@@ -11,12 +12,14 @@ export const MyProducts = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isActiveFilter, setIsActiveFilter] = useState<boolean | null>(null);
 
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [modalTitle, setModalTitle] = useState<string>("");
+  const [modalButtonText, setModalButtonText] = useState<string>("");
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const data = await getAllProducts();
-        console.log(data);
-        console.log(data);
         setProducts(data);
         setFilteredProducts(data);
       } catch (error) {
@@ -52,13 +55,27 @@ export const MyProducts = () => {
     );
   };
 
+  const handleCreate = () => {
+    setModalTitle("Create Product");
+    setModalButtonText("Create");
+    setIsModalOpen(true);
+  };
+
+  const handleEdit = () => {
+    setModalTitle("Edit Product");
+    setModalButtonText("Edit");
+    setIsModalOpen(true);
+  };
+
   const formatDate = (date: Date) => format(date, "dd/MM/yyyy");
 
   return (
     <div className="product-list-container">
       <div className="header">
         <h2>My Products</h2>
-        <button className="create-button">Create Product</button>
+        <button className="create-button" onClick={handleCreate}>
+          Create Product
+        </button>
       </div>
 
       <div className="filters">
@@ -128,62 +145,20 @@ export const MyProducts = () => {
                   </span>
                 ))}
               </div>
-              <button className="edit-button">Edit</button>
+              <button className="edit-button" onClick={handleEdit}>
+                Edit
+              </button>
             </div>
           </div>
         ))}
       </div>
+
+      <ModalProductForm
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title={modalTitle}
+        buttonText={modalButtonText}
+      />
     </div>
   );
 };
-
-// const myProducts: Product[] = [
-//   {
-//     _id: "1",
-//     store: "Store 1",
-//     name: "Product 1",
-//     description: "Description of Product 1",
-//     categories: ["Electronics", "Mobile"],
-//     price: 299.99,
-//     sale: {
-//       price: 249.99,
-//       fromDate: new Date("2025-02-01"),
-//       toDate: new Date("2025-02-28"),
-//     },
-//     images: ["https://cdn.store-assets.com/s/377840/i/32382133.jpg"],
-//     lastUpdateDate: new Date(),
-//     numberInStock: 10,
-//     active: true,
-//   },
-//   {
-//     _id: "2",
-//     store: "Store 2",
-//     name: "Product 2",
-//     description: "Description of Product 2",
-//     categories: ["Furniture"],
-//     price: 499.99,
-//     images: ["https://m.media-amazon.com/images/I/71VFLk-6LQL.jpg"],
-//     lastUpdateDate: new Date(),
-//     numberInStock: 5,
-//     active: false,
-//   },
-//   {
-//     _id: "3",
-//     store: "Store 3",
-//     name: "Product 3",
-//     description: "Description of Product 3",
-//     categories: ["Clothing"],
-//     price: 49.99,
-//     sale: {
-//       price: 39.99,
-//       fromDate: new Date("2025-02-01"),
-//       toDate: new Date("2025-02-14"),
-//     },
-//     images: [
-//       "https://images.heb.com/is/image/HEBGrocery/prd-medium/002116056.jpg",
-//     ],
-//     lastUpdateDate: new Date(),
-//     numberInStock: 0,
-//     active: true,
-//   },
-// ];

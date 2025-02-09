@@ -18,13 +18,13 @@ export const ModalProductForm: React.FC<ModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className=".modalProduct-overlay" onClick={onClose}>
+    <div className="modalProduct-overlay" onClick={onClose}>
       <div
-        className=".modalProduct-content"
+        className="modalProduct-content"
         onClick={(e) => e.stopPropagation()}
       >
         <h2>{title}</h2>
-        <button className=".modalProduct-button" onClick={onClose}>
+        <button className="modalProduct-button" onClick={onClose}>
           {buttonText}
         </button>
       </div>
