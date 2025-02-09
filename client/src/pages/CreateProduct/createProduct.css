@@ -115,3 +115,37 @@
   align-items: center;
   justify-content: center;
 }
+
+.sale-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.sale-checkbox input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+}
+
+.sale-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.sale-section input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.error {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
