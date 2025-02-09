@@ -5,15 +5,13 @@ import "./modalProductForm.css";
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  title: string;
-  buttonText: string;
+  content: { title: string; button: string };
 }
 
 export const ModalProductForm: React.FC<ModalProps> = ({
   isOpen,
   onClose,
-  title,
-  buttonText,
+  content,
 }) => {
   if (!isOpen) return null;
 
@@ -23,9 +21,9 @@ export const ModalProductForm: React.FC<ModalProps> = ({
         className="modalProduct-content"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2>{title}</h2>
+        <h2>{content.title}</h2>
         <button className="modalProduct-button" onClick={onClose}>
-          {buttonText}
+          {content.button}
         </button>
       </div>
     </div>

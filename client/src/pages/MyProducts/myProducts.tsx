@@ -13,8 +13,10 @@ export const MyProducts = () => {
   const [isActiveFilter, setIsActiveFilter] = useState<boolean | null>(null);
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [modalTitle, setModalTitle] = useState<string>("");
-  const [modalButtonText, setModalButtonText] = useState<string>("");
+  const [modalConfig, setModalConfig] = useState<{
+    title: string;
+    button: string;
+  }>({ title: "", button: "" });
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -56,14 +58,12 @@ export const MyProducts = () => {
   };
 
   const handleCreate = () => {
-    setModalTitle("Create Product");
-    setModalButtonText("Create");
+    setModalConfig({ title: "Create Product", button: "Create" });
     setIsModalOpen(true);
   };
 
   const handleEdit = () => {
-    setModalTitle("Edit Product");
-    setModalButtonText("Edit");
+    setModalConfig({ title: "Edit Product", button: "Edit" });
     setIsModalOpen(true);
   };
 
@@ -156,8 +156,7 @@ export const MyProducts = () => {
       <ModalProductForm
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title={modalTitle}
-        buttonText={modalButtonText}
+        content={modalConfig}
       />
     </div>
   );
