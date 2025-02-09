@@ -9,6 +9,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
 }
 
 .modalProduct-content {
@@ -16,7 +17,15 @@
   padding: 20px;
   border-radius: 8px;
   width: 400px;
+  max-height: 80vh;
+  overflow-y: auto;
   text-align: center;
+  scrollbar-width: none;
+  z-index: 1001;
+}
+
+.modalProduct-content::-webkit-scrollbar {
+  display: none;
 }
 
 .modalProduct-button {
