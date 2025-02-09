@@ -22,6 +22,7 @@ export const MyProducts = () => {
     const fetchProducts = async () => {
       try {
         const data = await getAllProducts();
+        console.log(data);
         setProducts(data);
         setFilteredProducts(data);
       } catch (error) {
