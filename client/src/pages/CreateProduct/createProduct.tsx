@@ -5,6 +5,7 @@ import { useOutletContext } from "react-router-dom";
 import { Dropdown } from "../../components/Dropdown/dropdown";
 import { getAllCategories } from "../../services/api";
 import { DropBox } from "../../components/DropBox/dropbox";
+import { productFields } from "../../dictionaries/saleFields";
 
 interface CreateProductProps {
   onCreate: (createed: Product) => void;
@@ -145,34 +146,32 @@ export const CreateProduct: React.FC<CreateProductProps> = ({ onCreate }) => {
             </option>
           ))}
         </select>
-        <input
-          type="text"
-          name="name"
-          placeholder="Product Name"
-          onChange={handleChange}
-          required
-        />
-        <textarea
-          name="description"
-          placeholder="Description"
-          onChange={handleChange}
-        />
-        <input
-          type="number"
-          name="price"
-          placeholder="Price"
-          onChange={handleChange}
-          step="0.01"
-          min="0"
-          required
-        />
-        <input
-          type="number"
-          name="numberInStock"
-          placeholder="Stock (default: 0)"
-          onChange={handleChange}
-          min="0"
-        />
+
+        {productFields.map(({ section, type, name, placeholder, ...attrs }) =>
+          section === "sale" && !showSale ? null : type === "textarea" ? (
+            <textarea
+              key={name}
+              name={name}
+              placeholder={placeholder}
+              onChange={handleChange}
+            />
+          ) : (
+            <input
+              key={name}
+              type={type}
+              name={name}
+              placeholder={placeholder}
+              onChange={section === "sale" ? handleSaleChange : handleChange}
+              {...attrs}
+            />
+          )
+        )}
+
+        <label className="sale-checkbox">
+          <input type="checkbox" onChange={() => setShowSale(!showSale)} /> Add
+          Sale
+        </label>
+        {showSale && saleError && <p className="error">{saleError}</p>}
 
         {categories.length > 0 ? (
           <Dropdown categories={categories} onChange={handleCategoryChange} />
@@ -181,40 +180,6 @@ export const CreateProduct: React.FC<CreateProductProps> = ({ onCreate }) => {
         )}
 
         <DropBox images={formData.images} onImageChange={handleImageChange} />
-
-        <label className="sale-checkbox">
-          <input type="checkbox" onChange={() => setShowSale(!showSale)} />
-          Add Sale
-        </label>
-
-        {showSale && (
-          <div className="sale-section">
-            <input
-              type="number"
-              name="price"
-              placeholder="Sale Price"
-              onChange={handleSaleChange}
-              step="0.01"
-              min="0"
-              required
-            />
-            <input
-              type="text"
-              name="fromDate"
-              placeholder="Start Date (MM/DD/YYYY)"
-              onChange={handleSaleChange}
-              required
-            />
-            <input
-              type="text"
-              name="toDate"
-              placeholder="End Date (MM/DD/YYYY)"
-              onChange={handleSaleChange}
-              required
-            />
-            {saleError && <p className="error">{saleError}</p>}
-          </div>
-        )}
 
         <button className="create" type="submit">
           Create Product
