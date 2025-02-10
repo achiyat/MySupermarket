@@ -8,19 +8,19 @@ import { createProduct } from "../../../services/api";
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  content: { title: string; button: string };
+  isEditing: boolean;
 }
 
 export const ModalProductForm: React.FC<ModalProps> = ({
   isOpen,
   onClose,
-  content,
+  isEditing,
 }) => {
   if (!isOpen) return null;
 
   const handleCreate = async (product: Product) => {
     try {
-      // await createProduct(product);
+      await createProduct(product);
       console.log(product);
       console.log("Product created successfully!");
     } catch (error) {
@@ -36,12 +36,12 @@ export const ModalProductForm: React.FC<ModalProps> = ({
         className="modalProduct-content"
         onClick={(e) => e.stopPropagation()}
       >
-        {content.button === "Create" ? (
-          <CreateProduct onCreate={handleCreate} />
-        ) : (
+        {isEditing ? (
           <button className="modalProduct-button" onClick={onClose}>
-            {content.button}
+            Edit
           </button>
+        ) : (
+          <CreateProduct onCreate={handleCreate} />
         )}
       </div>
     </div>

@@ -13,10 +13,7 @@ export const MyProducts = () => {
   const [isActiveFilter, setIsActiveFilter] = useState<boolean | null>(null);
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [modalConfig, setModalConfig] = useState<{
-    title: string;
-    button: string;
-  }>({ title: "", button: "" });
+  const [isEditing, setIsEditing] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -59,12 +56,12 @@ export const MyProducts = () => {
   };
 
   const handleCreate = () => {
-    setModalConfig({ title: "Create Product", button: "Create" });
+    setIsEditing(false);
     setIsModalOpen(true);
   };
 
   const handleEdit = () => {
-    setModalConfig({ title: "Edit Product", button: "Edit" });
+    setIsEditing(true);
     setIsModalOpen(true);
   };
 
@@ -78,7 +75,6 @@ export const MyProducts = () => {
           Create Product
         </button>
       </div>
-
       <div className="filters">
         <input
           type="text"
@@ -92,7 +88,6 @@ export const MyProducts = () => {
           <option value="inactive">Inactive</option>
         </select>
       </div>
-
       <div className="product-grid">
         {filteredProducts.map((product) => (
           <div key={product._id} className="product-card">
@@ -153,12 +148,12 @@ export const MyProducts = () => {
           </div>
         ))}
       </div>
-
       <ModalProductForm
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        content={modalConfig}
+        isEditing={isEditing}
       />
+      ;
     </div>
   );
 };
