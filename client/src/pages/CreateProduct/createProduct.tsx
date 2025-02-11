@@ -12,8 +12,8 @@ interface CreateProductProps {
 
 export const CreateProduct: React.FC<CreateProductProps> = ({ onCreate }) => {
   const { user } = useOutletContext<{ user: User }>();
-  const [saleError, setSaleError] = useState<string | null>(null);
   const [showSale, setShowSale] = useState(false);
+  const [saleError, setSaleError] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
     store: "",

@@ -67,6 +67,16 @@ export const MyProducts = () => {
     setIsModalOpen(true);
   };
 
+  const handleUpdateProduct = (product: Product) => {
+    const updateList = (list: Product[]) =>
+      list.some((p) => p._id === product._id)
+        ? list.map((p) => (p._id === product._id ? product : p))
+        : [...list, product];
+
+    setProducts(updateList);
+    setFilteredProducts(updateList);
+  };
+
   const formatDate = (date: Date) => format(date, "dd/MM/yyyy");
 
   return (
@@ -158,6 +168,7 @@ export const MyProducts = () => {
         onClose={() => setIsModalOpen(false)}
         isEditing={isEditing}
         product={selectedProduct}
+        onUpdate={handleUpdateProduct}
       />
       ;
     </div>

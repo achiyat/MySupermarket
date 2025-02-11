@@ -11,6 +11,7 @@ interface ModalProps {
   onClose: () => void;
   isEditing: boolean;
   product?: Product | null;
+  onUpdate: (updatedProduct: Product) => void;
 }
 
 export const ModalProductForm: React.FC<ModalProps> = ({
@@ -18,13 +19,15 @@ export const ModalProductForm: React.FC<ModalProps> = ({
   onClose,
   isEditing,
   product,
+  onUpdate,
 }) => {
   if (!isOpen) return null;
 
   const handleCreate = async (product: Product) => {
     try {
-      await createProduct(product);
       console.log(product);
+      const response = await createProduct(product);
+      onUpdate(response);
       console.log("Product created successfully!");
     } catch (error) {
       console.error("Error creating product:", error);
@@ -36,7 +39,8 @@ export const ModalProductForm: React.FC<ModalProps> = ({
   const handleEdit = async (_product: Product) => {
     try {
       console.log(_product);
-      // await updateProduct(_product._id!, _product);
+      const response = await updateProduct(_product._id!, _product);
+      onUpdate(response);
       console.log("Product updated successfully!");
     } catch (error) {
       console.error("Error updating product:", error);
