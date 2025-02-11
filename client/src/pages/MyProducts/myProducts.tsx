@@ -14,6 +14,7 @@ export const MyProducts = () => {
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -60,7 +61,8 @@ export const MyProducts = () => {
     setIsModalOpen(true);
   };
 
-  const handleEdit = () => {
+  const handleEdit = (product: Product) => {
+    setSelectedProduct(product);
     setIsEditing(true);
     setIsModalOpen(true);
   };
@@ -141,7 +143,10 @@ export const MyProducts = () => {
                   </span>
                 ))}
               </div>
-              <button className="edit-button" onClick={handleEdit}>
+              <button
+                className="edit-button"
+                onClick={() => handleEdit(product)}
+              >
                 Edit
               </button>
             </div>
@@ -152,6 +157,7 @@ export const MyProducts = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         isEditing={isEditing}
+        product={selectedProduct}
       />
       ;
     </div>
