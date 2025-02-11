@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./createProduct.css";
 import { Category, Product, User } from "../../Interfaces/interfaces";
 import { useOutletContext } from "react-router-dom";
 import { Dropdown } from "../../components/Dropdown/dropdown";
-import { getAllCategories } from "../../services/api";
 import { DropBox } from "../../components/DropBox/dropbox";
 import { productFields } from "../../dictionaries/saleFields";
 
@@ -13,8 +12,6 @@ interface CreateProductProps {
 
 export const CreateProduct: React.FC<CreateProductProps> = ({ onCreate }) => {
   const { user } = useOutletContext<{ user: User }>();
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [error, setError] = useState<string | null>(null);
   const [saleError, setSaleError] = useState<string | null>(null);
   const [showSale, setShowSale] = useState(false);
 
@@ -32,23 +29,6 @@ export const CreateProduct: React.FC<CreateProductProps> = ({ onCreate }) => {
       toDate: "",
     },
   });
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const fetchedCategories = await getAllCategories();
-        const mappedCategories = fetchedCategories.map((cat: any) => ({
-          _id: cat._id,
-          name: cat.name,
-        }));
-        setCategories(mappedCategories);
-      } catch (error) {
-        setError("Failed to load categories");
-      }
-    };
-
-    fetchCategories();
-  }, []);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -173,11 +153,7 @@ export const CreateProduct: React.FC<CreateProductProps> = ({ onCreate }) => {
         </label>
         {showSale && saleError && <p className="error">{saleError}</p>}
 
-        {categories.length > 0 ? (
-          <Dropdown categories={categories} onChange={handleCategoryChange} />
-        ) : (
-          <p className="error">{error}</p>
-        )}
+        <Dropdown onChange={handleCategoryChange} />
 
         <DropBox images={formData.images} onImageChange={handleImageChange} />
 
