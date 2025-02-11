@@ -4,6 +4,7 @@ import { Category, Product } from "../../Interfaces/interfaces";
 import { updateProduct } from "../../services/api";
 import "./editProduct.css";
 import { Dropdown } from "../Dropdown/dropdown";
+import { DropBox } from "../DropBox/dropbox";
 
 interface EditProductProps {
   product: Product;
@@ -34,6 +35,10 @@ export const EditProduct: React.FC<EditProductProps> = ({
       name: "",
     }));
     setFormData({ ...formData, categories: _categories });
+  };
+
+  const handleImageChange = (images: string[]) => {
+    setFormData((prev) => ({ ...prev, images }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -87,6 +92,11 @@ export const EditProduct: React.FC<EditProductProps> = ({
         <Dropdown
           _categories={formData.categories}
           onChange={handleCategoryChange}
+        />
+
+        <DropBox
+          images={formData.images ?? []}
+          onImageChange={handleImageChange}
         />
 
         <button type="submit" className="submit-button">
