@@ -4,12 +4,18 @@ import { Category } from "../../Interfaces/interfaces";
 import { getAllCategories } from "../../services/api";
 
 interface DropdownProps {
+  _categories?: Category[];
   onChange: (selectedCategories: Category[]) => void;
 }
 
-export const Dropdown: React.FC<DropdownProps> = ({ onChange }) => {
+export const Dropdown: React.FC<DropdownProps> = ({
+  _categories,
+  onChange,
+}) => {
   const [categories, setCategories] = useState<Category[]>([]);
-  const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<Category[]>(
+    _categories || []
+  );
   const [isOpen, setIsOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);

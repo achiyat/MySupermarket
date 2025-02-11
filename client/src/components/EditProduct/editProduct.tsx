@@ -1,8 +1,9 @@
 // client/src/components/EditProduct/editProduct.tsx
 import React, { useState } from "react";
-import { Product } from "../../Interfaces/interfaces";
+import { Category, Product } from "../../Interfaces/interfaces";
 import { updateProduct } from "../../services/api";
 import "./editProduct.css";
+import { Dropdown } from "../Dropdown/dropdown";
 
 interface EditProductProps {
   product: Product;
@@ -25,6 +26,14 @@ export const EditProduct: React.FC<EditProductProps> = ({
       ...prevData,
       [name]: value,
     }));
+  };
+
+  const handleCategoryChange = (selectedCategories: Category[]) => {
+    const _categories = selectedCategories.map((cat) => ({
+      _id: cat._id,
+      name: "",
+    }));
+    setFormData({ ...formData, categories: _categories });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -73,6 +82,11 @@ export const EditProduct: React.FC<EditProductProps> = ({
           value={formData.numberInStock}
           onChange={handleChange}
           min="0"
+        />
+
+        <Dropdown
+          _categories={formData.categories}
+          onChange={handleCategoryChange}
         />
 
         <button type="submit" className="submit-button">
