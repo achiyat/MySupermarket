@@ -155,6 +155,7 @@ export const EditProduct: React.FC<EditProductProps> = ({
           <input type="checkbox" onChange={() => setShowSale(!showSale)} /> Add
           Sale
         </label>
+        {showSale && saleError && <p className="error">{saleError}</p>}
 
         <Dropdown
           _categories={formData.categories}
