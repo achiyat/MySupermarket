@@ -4,7 +4,7 @@ import { Category, Product } from "../../Interfaces/interfaces";
 import "./editProduct.css";
 import { Dropdown } from "../Dropdown/dropdown";
 import { DropBox } from "../DropBox/dropbox";
-import { format, parse } from "date-fns";
+import { format } from "date-fns";
 
 interface EditProductProps {
   product: Product;

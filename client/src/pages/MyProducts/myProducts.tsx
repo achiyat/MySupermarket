@@ -170,7 +170,6 @@ export const MyProducts = () => {
         product={selectedProduct}
         onUpdate={handleUpdateProduct}
       />
-      ;
     </div>
   );
 };

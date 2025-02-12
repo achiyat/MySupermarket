@@ -12,7 +12,7 @@ export type DetailsType = {
   stores: PageDetail<Store>;
   categories: PageDetail<Category>;
 };
-// <p>Active: {store.active ? "Yes" : "No"}</p>
+
 export const detailsType: DetailsType = {
   users: {
     type: "users",
@@ -59,10 +59,3 @@ export const detailsType: DetailsType = {
     hesProduct: true,
   },
 };
-
-// interface Field<T> {
-//   label: string;
-//   name: string;
-//   value: keyof T;
-//   type: string;
-// }
