@@ -52,3 +52,59 @@ export const productFields = [
     required: true,
   },
 ];
+
+export const productConfig = [
+  {
+    name: "name",
+    type: "text",
+    label: "Product Name",
+    section: "product",
+    required: true,
+  },
+  {
+    name: "description",
+    type: "textarea",
+    label: "Description",
+    section: "product",
+  },
+  {
+    name: "price",
+    type: "number",
+    label: "Price",
+    section: "product",
+    step: "0.01",
+    min: "0",
+    required: true,
+  },
+  {
+    name: "numberInStock",
+    type: "number",
+    label: "Stock",
+    section: "product",
+    min: "0",
+  },
+
+  {
+    name: "price",
+    type: "number",
+    label: "Sale Price",
+    section: "sale",
+    step: "0.01",
+    min: "0",
+    required: true,
+  },
+  {
+    name: "fromDate",
+    type: "text",
+    label: "Start Date (DD/MM/YYYY)",
+    section: "sale",
+    required: true,
+  },
+  {
+    name: "toDate",
+    type: "text",
+    label: "End Date (DD/MM/YYYY)",
+    section: "sale",
+    required: true,
+  },
+];
