@@ -5,11 +5,18 @@ import "./editProduct.css";
 import { Dropdown } from "../Dropdown/dropdown";
 import { DropBox } from "../DropBox/dropbox";
 import { format } from "date-fns";
+import { productConfig } from "../../dictionaries/saleFields";
 
 interface EditProductProps {
   product: Product;
   onEdit: (updatedProduct: Product) => void;
 }
+
+type Sale = {
+  price: string;
+  fromDate: string;
+  toDate: string;
+};
 
 export const EditProduct: React.FC<EditProductProps> = ({
   product,
@@ -110,74 +117,44 @@ export const EditProduct: React.FC<EditProductProps> = ({
     <div className="editProduct-form-container">
       <h2>Edit Product</h2>
       <form onSubmit={handleSubmit} className="editProduct-form">
-        <input
-          type="text"
-          name="name"
-          id="name"
-          value={formData.name}
-          onChange={handleChange}
-          required
-        />
-        <textarea
-          name="description"
-          id="description"
-          value={formData.description}
-          onChange={handleChange}
-        />
-        <input
-          type="number"
-          name="price"
-          id="price"
-          value={formData.price}
-          onChange={handleChange}
-          step="0.01"
-          min="0"
-          required
-        />
-        <input
-          type="number"
-          name="numberInStock"
-          id="numberInStock"
-          value={formData.numberInStock}
-          onChange={handleChange}
-          min="0"
-        />
+        {productConfig.map((field) =>
+          field.type === "textarea" ? (
+            <textarea
+              key={field.name}
+              name={field.name}
+              placeholder={field.label}
+              value={String(formData[field.name as keyof Product] ?? "")}
+              onChange={handleChange}
+              {...(field.required ? { required: true } : {})}
+            />
+          ) : (
+            <input
+              key={field.name}
+              type={field.type}
+              name={field.name}
+              placeholder={field.label}
+              value={
+                field.section === "sale"
+                  ? String(sale[field.name as keyof Sale] ?? "")
+                  : String(formData[field.name as keyof Product] ?? "")
+              }
+              onChange={
+                field.section === "sale" ? handleSaleChange : handleChange
+              }
+              {...(field.required ? { required: true } : {})}
+              {...(field.step ? { step: field.step } : {})}
+              {...(field.min ? { min: field.min } : {})}
+              style={
+                field.section === "sale" && !showSale ? { display: "none" } : {}
+              }
+            />
+          )
+        )}
 
         <label className="sale-checkbox">
           <input type="checkbox" onChange={() => setShowSale(!showSale)} /> Add
           Sale
         </label>
-        {showSale && (
-          <div className="sale-section">
-            <input
-              type="number"
-              name="price"
-              placeholder="Sale Price"
-              value={sale.price}
-              onChange={handleSaleChange}
-              step="0.01"
-              min="0"
-              required
-            />
-            <input
-              type="text"
-              name="fromDate"
-              placeholder="Start Date (DD/MM/YYYY)"
-              value={sale.fromDate}
-              onChange={handleSaleChange}
-              required
-            />
-            <input
-              type="text"
-              name="toDate"
-              placeholder="End Date (DD/MM/YYYY)"
-              value={sale.toDate}
-              onChange={handleSaleChange}
-              required
-            />
-            {saleError && <p className="error">{saleError}</p>}
-          </div>
-        )}
 
         <Dropdown
           _categories={formData.categories}
