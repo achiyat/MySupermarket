@@ -1,0 +1,78 @@
+/* client/src/components/ProductForm/productForm.css */
+.productForm-container {
+  max-width: 500px;
+  margin: auto;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.productForm-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.productForm-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.productForm-form input,
+.productForm-form textarea,
+.productForm-form select {
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  font-size: 16px;
+}
+
+.productForm-form input:focus,
+.productForm-form textarea:focus,
+.productForm-form select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.productForm-form select option {
+  padding: 10px;
+  font-size: 16px;
+}
+
+.productForm-sale {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.productForm-sale input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+}
+
+.productForm-error {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.productForm-submit {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.productForm-submit:hover {
+  background-color: #45a049;
+}
