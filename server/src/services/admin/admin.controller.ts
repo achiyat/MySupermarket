@@ -127,3 +127,22 @@ export const getProducts = async (req: Request, res: Response) => {
     respond(res, 500, "Internal Server Error");
   }
 };
+
+export const getProductsByStores = <T>(model: Model<T & Document>) => {
+  return async (req: Request, res: Response) => {
+    try {
+      const { storeIds } = req.body;
+
+      if (!storeIds || !Array.isArray(storeIds) || storeIds.length === 0) {
+        res
+          .status(400)
+          .json({ message: "No products found under the customer" });
+      } else {
+        const products = await model.find({ store: { $in: storeIds } });
+        res.json(products);
+      }
+    } catch (error) {
+      res.status(500).json({ message: "Error fetching products by stores" });
+    }
+  };
+};

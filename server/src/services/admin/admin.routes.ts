@@ -8,6 +8,7 @@ import {
   getCheckRequest,
   getEntityById,
   getProducts,
+  getProductsByStores,
   getRequestById,
   updateEntity,
 } from "./admin.controller";
@@ -63,6 +64,7 @@ adminRoutes.post("/products", createEntity(Models.Product));
 adminRoutes.get("/products", getAllEntity(Models.Product));
 adminRoutes.get("/products/:id", getEntityById(Models.Product));
 adminRoutes.put("/products/:id", updateEntity(Models.Product));
+adminRoutes.post("/products/stores", getProductsByStores(Models.Product));
 
 adminRoutes.get("/fields/products", getProducts);
 
