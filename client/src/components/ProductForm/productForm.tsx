@@ -72,10 +72,6 @@ export const ProductForm: React.FC<ProductFormProps> = ({
   };
 
   const handleCategoryChange = (selectedCategories: Category[]) => {
-    // const _categories = selectedCategories.map((cat) => ({
-    //   _id: cat._id,
-    //   name: "",
-    // }));
     setFormData((prev) => ({ ...prev, categories: selectedCategories }));
   };
 

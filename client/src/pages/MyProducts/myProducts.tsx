@@ -1,13 +1,15 @@
 // client/src/pages/MyProducts/myProducts.tsx
 import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
-import { getAllProducts } from "../../services/api";
-import { Product } from "../../Interfaces/interfaces";
+import { getProductByStores } from "../../services/api";
+import { Product, User } from "../../Interfaces/interfaces";
 import { ModalProductForm } from "../../components/Modals/ModalProductForm/modalProductForm";
 import "./myProducts.css";
+import { useOutletContext } from "react-router-dom";
 
 export const MyProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const { user } = useOutletContext<{ user: User }>();
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isActiveFilter, setIsActiveFilter] = useState<boolean | null>(null);
@@ -19,8 +21,12 @@ export const MyProducts = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const data = await getAllProducts();
-        console.log(data);
+        if (!user || !user.employeeFields?.stores) return;
+        const storeIds = user.employeeFields.stores.flatMap((store) =>
+          store._id ? [store._id] : []
+        );
+
+        const data = await getProductByStores(storeIds);
         setProducts(data);
         setFilteredProducts(data);
       } catch (error) {

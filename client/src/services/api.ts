@@ -324,6 +324,22 @@ export const getProductById = async (id: string): Promise<Product> => {
   }
 };
 
+// Retrieve a product by stores
+export const getProductByStores = async (
+  storeIds: string[]
+): Promise<Product[]> => {
+  try {
+    const response = await axios.post<Product[]>(
+      `${API_BASE_URL}/admin/products/stores`,
+      { storeIds }
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to fetch products by stores");
+  }
+};
+
 // Update a product by ID
 export const updateProduct = async (
   id: string,
