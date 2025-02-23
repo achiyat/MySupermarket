@@ -7,7 +7,7 @@ interface IProduct extends Document {
   store: mongoose.Types.ObjectId;
   name: string;
   description: string;
-  categories: string[];
+  categories: { _id: mongoose.Types.ObjectId; name: string }[];
   price: number;
   sale?: {
     price: number;
@@ -31,10 +31,12 @@ const ProductSchema: Schema<IProduct> = new Schema(
     description: { type: String, default: "No description available" },
     categories: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Category",
-        required: true,
-        default: [],
+        _id: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Category",
+          required: true,
+        },
+        name: { type: String, required: true },
       },
     ],
     price: { type: Number, required: true },
@@ -77,7 +79,7 @@ ProductSchema.pre("save", async function (next) {
   try {
     // Bulk update categories
     await Category.updateMany(
-      { _id: { $in: product.categories } },
+      { _id: { $in: product.categories.map((category) => category._id) } },
       { $push: { products: product._id } }
     );
   } catch (error) {
@@ -95,7 +97,13 @@ ProductSchema.pre("findOneAndUpdate", async function (next) {
     try {
       // Remove the product from the products array
       await Category.updateMany(
-        { _id: { $in: product.categories } },
+        {
+          _id: {
+            $in: product.categories.map(
+              (category: { _id: string }) => category._id
+            ),
+          },
+        },
         { $pull: { products: product._id } }
       );
     } catch (error) {
