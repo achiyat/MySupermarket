@@ -22,6 +22,8 @@ export const ModalProductForm: React.FC<ModalProps> = ({
 }) => {
   if (!isOpen) return null;
 
+  const isEditingProduct = isEditing && product;
+
   const handleCreate = async (product: Product) => {
     try {
       console.log(product);
@@ -54,7 +56,7 @@ export const ModalProductForm: React.FC<ModalProps> = ({
         className="modalProduct-content"
         onClick={(e) => e.stopPropagation()}
       >
-        {isEditing && product ? (
+        {isEditingProduct ? (
           <ProductForm initialData={product} onSubmit={handleEdit} />
         ) : (
           <ProductForm onSubmit={handleCreate} />
