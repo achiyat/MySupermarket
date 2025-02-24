@@ -2,8 +2,6 @@
 @import "../../App.css";
 
 .productForm-container {
-  max-width: 500px;
-  margin: auto;
   padding: 20px;
   background: #f9f9f9;
   border-radius: 8px;
