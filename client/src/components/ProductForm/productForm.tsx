@@ -182,7 +182,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
           )
         )}
 
-        <label className="productForm-sale">
+        <label className="productForm-saleToggle">
           <input
             type="checkbox"
             checked={showSale}
