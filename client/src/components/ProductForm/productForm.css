@@ -1,4 +1,6 @@
 /* client/src/components/ProductForm/productForm.css */
+@import "../../App.css";
+
 .productForm-container {
   max-width: 500px;
   margin: auto;
@@ -23,16 +25,16 @@
 .productForm-form select {
   margin-bottom: 15px;
   padding: 10px;
-  border: 1px solid #ccc;
+  border: var(--input-form-border);
+  background-color: var(--input-form-background);
   border-radius: 5px;
-  background-color: #f9f9f9;
   font-size: 16px;
 }
 
 .productForm-form input:focus,
 .productForm-form textarea:focus,
 .productForm-form select:focus {
-  border-color: #007bff;
+  border-color: var(--input-border-focus-blue);
   outline: none;
 }
 
@@ -63,7 +65,7 @@
 }
 
 .productForm-submit {
-  background-color: #4caf50;
+  background-color: var(--btn-greenish);
   color: white;
   padding: 10px 20px;
   font-size: 16px;
@@ -74,5 +76,5 @@
 }
 
 .productForm-submit:hover {
-  background-color: #45a049;
+  background-color: var(--btn-greenish-hover);
 }
