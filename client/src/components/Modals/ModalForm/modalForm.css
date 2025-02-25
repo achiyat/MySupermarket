@@ -1,4 +1,6 @@
 /* client/src/components/Modals/ModalForm/modalForm.css */
+@import "../../../App.css";
+
 .modalForm-overlay {
   position: fixed;
   top: 0;
@@ -50,7 +52,7 @@
 .modalForm-input {
   padding: 10px;
   font-size: 16px;
-  border: 1px solid #ccc;
+  border: var(--input-form-border);
   border-radius: 4px;
 }
 

@@ -5,7 +5,6 @@ export const links = {
   settings: "settings",
   requests: "requests",
   products: "products",
-  createProduct: "createProduct", // create-Product
   myProducts: "myProducts", // myProducts
   approvals: "approvals",
   work: "work",

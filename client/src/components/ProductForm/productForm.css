@@ -1,0 +1,78 @@
+/* client/src/components/ProductForm/productForm.css */
+@import "../../App.css";
+
+.productForm-container {
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.productForm-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.productForm-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.productForm-form input,
+.productForm-form textarea,
+.productForm-form select {
+  margin-bottom: 15px;
+  padding: 10px;
+  border: var(--input-form-border);
+  background-color: var(--input-form-background);
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.productForm-form input:focus,
+.productForm-form textarea:focus,
+.productForm-form select:focus {
+  border-color: var(--input-border-focus-blue);
+  outline: none;
+}
+
+.productForm-form select option {
+  padding: 10px;
+  font-size: 16px;
+}
+
+.productForm-saleToggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.productForm-saleToggle input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+}
+
+.productForm-error {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.productForm-submit {
+  background-color: var(--btn-greenish);
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.productForm-submit:hover {
+  background-color: var(--btn-greenish-hover);
+}

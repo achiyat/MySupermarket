@@ -1,3 +1,6 @@
+/* client/src/pages/MyProducts/myProducts.css */
+@import "../../App.css";
+
 .product-list-container {
   padding: 20px;
 }
@@ -10,7 +13,7 @@
 }
 
 .create-button {
-  background-color: #4caf50;
+  background-color: var(--btn-greenish);
   color: white;
   padding: 10px 20px;
   border: none;
@@ -19,7 +22,7 @@
 }
 
 .create-button:hover {
-  background-color: #45a049;
+  background-color: var(--btn-greenish-hover);
 }
 
 .filters {
@@ -31,7 +34,7 @@
 .filters input,
 .filters select {
   padding: 8px;
-  border: 1px solid #ccc;
+  border: var(--input-form-border);
   border-radius: 5px;
 }
 
@@ -167,7 +170,7 @@
 
 .edit-button {
   padding: 6px 35px;
-  background-color: #ffa500;
+  background-color: var(--btn-orange);
   font-size: 18px;
   color: white;
   border: none;
@@ -178,5 +181,5 @@
 }
 
 .edit-button:hover {
-  background-color: #ff8c00;
+  background-color: var(--btn-orange-hover);
 }

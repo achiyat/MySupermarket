@@ -1,10 +1,9 @@
 // client/src/components/Modals/ModalProductForm/modalProductForm.tsx
 import React from "react";
 import "./modalProductForm.css";
-import { CreateProduct } from "../../../pages/CreateProduct/createProduct";
 import { Product } from "../../../Interfaces/interfaces";
 import { createProduct, updateProduct } from "../../../services/api";
-import { EditProduct } from "../../EditProduct/editProduct";
+import { ProductForm } from "../../ProductForm/productForm";
 
 interface ModalProps {
   isOpen: boolean;
@@ -22,6 +21,8 @@ export const ModalProductForm: React.FC<ModalProps> = ({
   onUpdate,
 }) => {
   if (!isOpen) return null;
+
+  const isEditingProduct = isEditing && product;
 
   const handleCreate = async (product: Product) => {
     try {
@@ -55,10 +56,10 @@ export const ModalProductForm: React.FC<ModalProps> = ({
         className="modalProduct-content"
         onClick={(e) => e.stopPropagation()}
       >
-        {isEditing && product ? (
-          <EditProduct product={product} onEdit={handleEdit} />
+        {isEditingProduct ? (
+          <ProductForm initialData={product} onSubmit={handleEdit} />
         ) : (
-          <CreateProduct onCreate={handleCreate} />
+          <ProductForm onSubmit={handleCreate} />
         )}
       </div>
     </div>

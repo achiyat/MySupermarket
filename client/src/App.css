@@ -13,3 +13,20 @@ body {
   font-size: 24px;
   color: #333;
 }
+
+:root {
+  /*btn*/
+  --btn-greenish: #4caf50;
+  --btn-greenish-hover: #45a049;
+  --btn-blue: #0056b3;
+  --btn-blue-hover: #007bff;
+  --btn-gray: #eee;
+  --btn-gray-hover: #ddd;
+  --btn-orange: #ffa500;
+  --btn-orange-hover: #ff8c00;
+
+  --input-form-border: 1px solid #ccc;
+  --input-form-background: #f9f9f9;
+
+  --input-border-focus-blue: #007bff;
+}

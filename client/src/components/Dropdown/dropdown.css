@@ -1,4 +1,6 @@
 /* client/src/components/Dropdown/dropdown.css */
+@import "../../App.css";
+
 .dropdown-container {
   position: relative;
   margin-bottom: 15px;
@@ -6,8 +8,8 @@
 
 .dropdown-select {
   padding: 10px;
-  border: 1px solid #ccc;
-  background-color: #f9f9f9;
+  border: var(--input-form-border);
+  background-color: var(--input-form-background);
   border-radius: 5px;
   font-size: 16px;
   display: flex;

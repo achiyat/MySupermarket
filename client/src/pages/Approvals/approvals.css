@@ -1,4 +1,6 @@
 /* client/src/pages/Approvals/approvals.css */
+@import "../../App.css";
+
 .approvals-container {
   padding: 20px;
   background-color: #f9f9f9;
@@ -18,7 +20,7 @@
 .approvals-filters select {
   padding: 8px;
   border-radius: 4px;
-  border: 1px solid #ccc;
+  border: var(--input-form-border);
 }
 
 .approvals-list {
